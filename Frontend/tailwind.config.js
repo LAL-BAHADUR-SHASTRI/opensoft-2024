@@ -18,7 +18,7 @@ export default {
     },
     extend: {
       backgroundImage:() => ({
-          "signin": "url('./src/assets/signin.png')",
+          "signin": "url('signin.png')",
           "logo":"url('./src/assets/logo.png')",
         }),
       colors: {

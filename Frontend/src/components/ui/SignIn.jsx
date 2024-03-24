@@ -1,11 +1,11 @@
 function SignIn() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 bg-signin backdrop-blur-md object-contain">
-      <div className="my-8 w-full max-w-sm p-4  border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 backdrop-blur-lg">
-        <form className="space-y-3 m-6" action="#">
-          <h5 className="text-xl font-medium text-white">
-            Sign in to our platform
-          </h5>
+    <div className="flex items-center justify-center min-h-screen bg-signin backdrop-blur-lg object-contain">
+      <div className="my-8 w-full max-w-lg p-4 space-y-4  rounded-lg shadow-lg shadow-blue-900 sm:p-6 md:p-8 backdrop-blur-lg">
+        <form className="space-y-8 m-6" action="#">
+          <div className="flex justify-center">
+            <img alt="Logo" src="logo.png" className="h-8 w-auto bg-logo" />
+          </div>
           <div>
             <label
               htmlFor="email"
@@ -17,7 +17,7 @@ function SignIn() {
               type="email"
               name="email"
               id="email"
-              className="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="bg-transparent border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="name@company.com"
               required
             />
@@ -27,14 +27,14 @@ function SignIn() {
               htmlFor="password"
               className="block mb-2 text-sm font-medium text-white"
             >
-              Create  Password
+              Create Password
             </label>
             <input
               type="password"
               name="password"
               id="password"
               placeholder="••••••••"
-              className="backdrop-blur-lg border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="backdrop-blur-lg bg-transparent border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               required
             />
           </div>
@@ -45,27 +45,27 @@ function SignIn() {
                   id="remember"
                   type="checkbox"
                   value=""
-                  className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+                  className="w-4 h-4 border border-gray-300 rounded bg-transparent focus:ring-3 focus:ring-blue-300"
                   required
                 />
               </div>
               <label
                 htmlFor="remember"
-                className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="ms-2 text-sm font-medium text-white"
               >
                 Remember me
               </label>
             </div>
             <a
               href="#"
-              className="ms-auto text-sm text-blue-700 hover:underline dark:text-blue-500"
+              className="ms-auto text-sm text-blue-700 hover:underline"
             >
               Lost Password?
             </a>
           </div>
           <button
             type="submit"
-            className="w-full text-black bg-gold hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="w-full text-black bg-gradient-to-r from-gold to-yellow-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
             Sign in
           </button>
@@ -80,15 +80,13 @@ function SignIn() {
               <span className=" px-2 py-1 text-white">Login with Google</span>
             </button>
           </div> */}
-          <div className="text-sm font-medium text-white dark:text-gray-300">
-              Don&apos;t have an account?{" "}
+          <div className="text-sm font-medium text-white flex justify-center">
+            Don&apos;t have an account?{" "}
             <a
               href="#"
-              className="text-g-700 hover:underline dark:text-blue-500"
+              className="text-g-700 hover:underline"
             >
-              <span className="text-gold">
-              Signup
-              </span>
+              <span className="text-gold">Signup</span>
             </a>
           </div>
         </form>
