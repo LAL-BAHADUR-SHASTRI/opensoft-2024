@@ -1,22 +1,24 @@
 import "./App.css";
 //import { Button } from './components/ui/button'
 import useWindowDimensions from "./hooks/useWindowDimensions";
-import Footer from "./components/ui/Footer";
-import SignIn from "./components/ui/SignIn";
-import NavBar from "./components/ui/NavBar";
+import Footer from "./components/Footer";
+import SignIn from "./components/SignIn";
+import NavBar from "./components/NavBar";
+import Home from "./pages/Home";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Intro from "./pages/Intro";
 
 function App() {
   const { height, width } = useWindowDimensions();
 
   return (
-    <>
-      {/* <div style={{ height: height, backgroundColor: 'gray'}}>
-      <Button style={{ margin: '50%'}}> hello </Button>
-    </div> */}
-      <NavBar />
-      <SignIn />
+   <Router>
+      <Routes>
+        <Route path="/" element={<Intro />} />
+        <Route path="/signIn" element={<SignIn />} />
+      </Routes>
       <Footer />
-    </>
+    </Router>
   );
 }
 

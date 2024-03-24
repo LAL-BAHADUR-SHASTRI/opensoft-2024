@@ -1,10 +1,15 @@
-function NavBar() {
+import { React,useState } from "react";
+import './Navbar.css';
+
+function NavBar({onTabChange}) {
+  const tabs=['Home','About','Statistics','Contact'];
+  const [activeTab, setActiveTab] = useState(0);
   return (
     <div>
       <nav className=" bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600 py-4">
         <div className="flex flex-wrap items-center justify-between mx-auto px-4">
           <div className="bg-logo">
-            <img alt="Logo" className="h-8 w-auto bg-logo" />
+            <img alt="Logo" src="logo.png" className="h-8 w-auto bg-logo" />
           </div>
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             <button
@@ -43,7 +48,19 @@ function NavBar() {
             id="navbar-sticky"
           >
             <ul className="flex flex-col px-4 md:p-0 mt-4 font-medium border text-white border-gray-100 rounded-lg  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
-              <li>
+             {tabs.map((tab,index)=>(
+                            <li>
+                            <a
+                              href="#"
+                              className={`tab block py-2 px-3 text-gray-600 rounded hover:border-yellow-500 hover:border-b-2 md:hover:bg-transparent md:hover:text-blue-700 md:p-0  ${index === activeTab ? 'active' : ''}`}
+                              aria-current="page"
+                              onClick={()=>{setActiveTab(index);onTabChange(index)}}
+                            >
+                              {tab}
+                            </a>
+                          </li>
+             ))} 
+              {/* <li>
                 <a
                   href="#"
                   className="block py-2 px-3 text-white rounded md:bg-transparent md:p-0 border-yellow-500 border-b-2 "
@@ -75,7 +92,7 @@ function NavBar() {
                 >
                   Contact
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>
