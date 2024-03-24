@@ -3,7 +3,7 @@ function Footer() {
     <>
       <footer className="divide bg-gray-800 px-8 text-gray-400">
         <div className="container flex flex-col justify-between py-10  space-y-8 lg:flex-row lg:space-y-0">
-          <div className="grid grid-cols-3 text-sm gap-y-8 lg:w-2/3 sm:grid-cols-4">
+          <div className="inline-grid grid-cols-2 text-sm gap-y-8 lg:w-2/3 sm:grid-cols-5">
             <div className="space-y-3">
               <h3 className="tracking-wide uppercase text-white">
                 Home
@@ -93,7 +93,7 @@ function Footer() {
                 </li>
               </ul>
             </div>
-            <div className="space-y-3 text-white">
+            <div className="space-y-3 text-white justify-self-end mr-7">
               <div className="uppercase text-white">Connect With Us</div>
               <div className="flex justify-start space-x-3">
                 <a
@@ -144,7 +144,7 @@ function Footer() {
             </div>
           </div>
         </div>
-        <hr />
+        <hr className="mt-11" />
         <div className="py-6 text-sm text-center dark:text-gray-400 flex justify-between px-4">
           <p>©2024opensoft_All rights reserved.</p>
           <ul className="flex justify-evenly space-x-4">

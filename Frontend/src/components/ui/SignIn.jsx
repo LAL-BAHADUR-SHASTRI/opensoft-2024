@@ -1,23 +1,23 @@
 function SignIn() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 mt-20">
-      <div className="my-8 w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-        <form className="space-y-3" action="#">
-          <h5 className="text-xl font-medium text-gray-900 dark:text-white">
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 bg-signin backdrop-blur-md object-contain">
+      <div className="my-8 w-full max-w-sm p-4  border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 backdrop-blur-lg">
+        <form className="space-y-3 m-6" action="#">
+          <h5 className="text-xl font-medium text-white">
             Sign in to our platform
           </h5>
           <div>
             <label
               htmlFor="email"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-white"
             >
-              Your email
+              Email
             </label>
             <input
               type="email"
               name="email"
               id="email"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               placeholder="name@company.com"
               required
             />
@@ -25,16 +25,16 @@ function SignIn() {
           <div>
             <label
               htmlFor="password"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-white"
             >
-              Your password
+              Create  Password
             </label>
             <input
               type="password"
               name="password"
               id="password"
               placeholder="••••••••"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="backdrop-blur-lg border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               required
             />
           </div>
@@ -69,7 +69,7 @@ function SignIn() {
           >
             Login to your account
           </button>
-          <div className="flex items-center justify-center h-screen dark:bg-gray-800">
+          {/* <div className="flex items-center justify-center dark:bg-gray-800">
             <button className="bg-blue-700 border flex gap-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150">
               <img
                 className="w-8 h-8 bg-white border rounded-sm py-1 px-1"
@@ -79,14 +79,16 @@ function SignIn() {
               ></img>
               <span className=" px-2 py-1 text-white">Login with Google</span>
             </button>
-          </div>
-          <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
-            Not registered?{" "}
+          </div> */}
+          <div className="text-sm font-medium text-white dark:text-gray-300">
+              Don&apos;t have an account?{" "}
             <a
               href="#"
-              className="text-blue-700 hover:underline dark:text-blue-500"
+              className="text-g-700 hover:underline dark:text-blue-500"
             >
-              Create account
+              <span className="text-gold">
+              Signup
+              </span>
             </a>
           </div>
         </form>

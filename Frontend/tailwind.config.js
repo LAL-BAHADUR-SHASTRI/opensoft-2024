@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   darkMode: ["class"],
   content: [
     './pages/**/*.{js,jsx}',
@@ -17,7 +17,12 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage:() => ({
+          "signin": "url('./src/assets/signin.png')",
+          "logo":"url('./src/assets/logo.png')",
+        }),
       colors: {
+        gold: '#FFD700',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
