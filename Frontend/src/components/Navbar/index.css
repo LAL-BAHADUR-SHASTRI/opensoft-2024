@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+:root {
+  --nav-height: 70px;
+  --dark-shadow: rgba(15, 15, 15, 0.75); 
+  --yellow: rgba(270, 171, 0, 1);
+}
+
+#root{
+  font-family: "Manrope", sans-serif;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  background: var(--dark-shadow);
+  height: var(--nav-height);
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 2rem;
+}
+
+.logo {
+  align-self: center;
+  margin-left: 20px;
+}
+
+.menuButton {
+  font-size: 20px;
+  color: rgba(153, 153, 153, 1);
+  padding: 0.5rem;
+}
+
+.menuButton:hover {
+  padding: 0.52rem;
+  background-color: rgba(200, 200, 200, 0.1);
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.searchbox {
+  margin-left: 1rem;
+  background-color: rgba(20, 20, 20, 1);
+  color: white;
+  width: 100%;
+}
+.searchbox:focus-visible {
+  outline: none;
+}
+
+.signup {
+  align-items: center;
+  background-color: var(--yellow);
+  padding-top: 0.3rem;
+  padding-bottom: 0.1rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  border-radius: 1rem;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.signin {
+  color: var(--yellow);
+  align-items: center;
+  padding: 0.3rem;
+  justify-content: center;
+  margin-right: 10px;
+}
