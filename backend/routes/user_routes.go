@@ -24,7 +24,7 @@ func (router UserServiceRouter) Router(r *gin.Engine) {
 		user.POST("/sign_in", router.sign_in)
 		user.GET("/", router.GetUsers)
 
-		user.POST("/", router.CreateUser)
+		user.POST("/sign_up", router.CreateUser)
 		user.Use(middlewares.JwtMiddleware)
 
 		user.GET("/with_token", router.GetUserWithToken)
