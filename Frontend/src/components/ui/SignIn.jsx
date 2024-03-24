@@ -27,7 +27,7 @@ function SignIn() {
               htmlFor="password"
               className="block mb-2 text-sm font-medium text-white"
             >
-              Create Password
+              Password
             </label>
             <input
               type="password"
