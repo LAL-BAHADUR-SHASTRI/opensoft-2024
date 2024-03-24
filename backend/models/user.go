@@ -1,6 +1,5 @@
 package models
 
-
 type Tier uint
 
 const (
@@ -10,10 +9,7 @@ const (
 )
 
 type User struct {
-	ID       uint   `json:"id" gorm:"primaryKey"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Tier     Tier   `json:"tier"`
-
 }
-

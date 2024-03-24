@@ -1,17 +1,20 @@
 package routes
 
 import (
-	"opensoft_2024/models"
+	"context"
+	"log"
 
 	"opensoft_2024/middlewares"
+	"opensoft_2024/models"
 
 	"github.com/gin-gonic/gin"
-
-	"gorm.io/gorm"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type UserServiceRouter struct {
-	DB *gorm.DB
+	Coll *mongo.Collection
+	Ctx  context.Context
 }
 
 func (router UserServiceRouter) Router(r *gin.Engine) {
@@ -20,12 +23,9 @@ func (router UserServiceRouter) Router(r *gin.Engine) {
 	{
 		user.POST("/sign_in", router.sign_in)
 		user.GET("/", router.GetUsers)
-		user.GET("/:id", router.GetUser)
+
 		user.POST("/", router.CreateUser)
 		user.Use(middlewares.JwtMiddleware)
-		user.PUT("/:id", router.UpdateUser)
-
-		user.DELETE("/:id", router.DeleteUser)
 
 		user.GET("/with_token", router.GetUserWithToken)
 
@@ -34,10 +34,22 @@ func (router UserServiceRouter) Router(r *gin.Engine) {
 
 func (router *UserServiceRouter) GetUsers(c *gin.Context) {
 
-	var users []models.User
+	// var users []models.User
 
-	router.DB.Find(&users)
-	c.JSON(200, users)
+	cursor, err := router.Coll.Find(router.Ctx, bson.D{})
+	// check for errors in the finding
+	if err != nil {
+		panic(err)
+	}
+
+	// convert the cursor result to bson
+	var results []bson.M
+	// check for errors in the conversion
+	if err = cursor.All(context.TODO(), &results); err != nil {
+		panic(err)
+	}
+
+	c.JSON(200, results)
 }
 
 func (router *UserServiceRouter) GetUserWithToken(c *gin.Context) {
@@ -46,13 +58,18 @@ func (router *UserServiceRouter) GetUserWithToken(c *gin.Context) {
 
 	var user models.User
 
-	router.DB.Find(&user, "email = ?", _user["user_email"])
-	if user.ID == 0 {
-		c.JSON(404, gin.H{"error": "user not found"})
+	filter := bson.D{{"email", _user["user_email"]}}
+	// var result bson.M
+	err := router.Coll.FindOne(context.TODO(), filter).Decode(&user)
+	log.Println(user)
+
+	if err != nil {
+		c.JSON(500, gin.H{"error": "error fetching user"})
 		return
 	}
 
 	c.JSON(200, user)
+
 }
 
 func (router *UserServiceRouter) sign_in(c *gin.Context) {
@@ -61,8 +78,9 @@ func (router *UserServiceRouter) sign_in(c *gin.Context) {
 	c.BindJSON(&userAuth)
 
 	//check if the user exists
-	router.DB.Find(&user, "email = ?", userAuth.Email)
-	if user.ID == 0 {
+	filter := bson.D{{"email", userAuth.Email}}
+	err := router.Coll.FindOne(context.TODO(), filter).Decode(&user)
+	if err != nil {
 		c.JSON(404, gin.H{"error": "user not found"})
 		return
 	} else if user.Password != userAuth.Password {
@@ -71,7 +89,7 @@ func (router *UserServiceRouter) sign_in(c *gin.Context) {
 	}
 
 	//if the user exists, create a jwt token and send it to the user
-	userAuth.UserId = int(user.ID)
+	// userAuth.UserId = int(user.ID)
 	token, err := middlewares.CreateJwtToken(userAuth)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "error signing in"})
@@ -81,36 +99,19 @@ func (router *UserServiceRouter) sign_in(c *gin.Context) {
 
 }
 
-func (router *UserServiceRouter) GetUser(c *gin.Context) {
-	id := c.Param("id")
-	var user models.User
-	router.DB.First(&user, id)
-	c.JSON(200, user)
-}
-
 func (router *UserServiceRouter) CreateUser(c *gin.Context) {
 	var user models.User
-	// c.ShouldBindJSON(&user)
 	c.BindJSON(&user)
 
-	router.DB.Create(&user)
+	_, err := router.Coll.InsertOne(router.Ctx, bson.D{
+		{"email", user.Email},
+		{"password", user.Password},
+		{"tier", int(user.Tier)}, // Store Tier as an integer
+	})
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
 
-	c.JSON(200, user)
-}
-
-func (router *UserServiceRouter) UpdateUser(c *gin.Context) {
-	id := c.Param("id")
-	var user models.User
-	router.DB.First(&user, id)
-	c.BindJSON(&user)
-	router.DB.Save(&user)
-	c.JSON(200, user)
-}
-
-func (router *UserServiceRouter) DeleteUser(c *gin.Context) {
-	id := c.Param("id")
-	var user models.User
-	router.DB.First(&user, id)
-	router.DB.Delete(&user)
 	c.JSON(200, user)
 }

@@ -23,15 +23,16 @@ func setupRouter() *gin.Engine {
 		c.String(http.StatusOK, "pong")
 	})
 
-	db := database.InitDB()
+	client, ctx := database.InitDB()
+	userColl := client.Database("opensoft_2024").Collection("users")
 	routes.UserServiceRouter{
-		DB: db,
+		Coll: userColl,
+		Ctx:  ctx,
 	}.Router(r)
 
 	r.GET("/ws", func(c *gin.Context) {
 		routes.ServeWebSocket(c.Writer, c.Request)
 	})
-
 
 	return r
 }
