@@ -18,8 +18,8 @@ export default {
     },
     extend: {
       backgroundImage:() => ({
-          "signin": "url('./src/assets/signin.png')",
-          "logo":"url('./src/assets/logo.png')",
+          "signin": "url('signin.png')",
+          "logo":"url('logo.png')",
         }),
       colors: {
         gold: '#FFD700',

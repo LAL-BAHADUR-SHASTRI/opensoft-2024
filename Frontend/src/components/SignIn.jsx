@@ -1,4 +1,21 @@
+import React, { useState } from "react";
+
+
 function SignIn() {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const HandleSubmit=()=>{
+    console.log(formData);
+  }
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 bg-signin backdrop-blur-md object-contain">
       <div className="my-8 w-full max-w-sm p-4  border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 backdrop-blur-lg">
@@ -17,6 +34,8 @@ function SignIn() {
               type="email"
               name="email"
               id="email"
+              value={formData.email}
+              onChange={handleInputChange}
               className="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               placeholder="name@company.com"
               required
@@ -27,13 +46,15 @@ function SignIn() {
               htmlFor="password"
               className="block mb-2 text-sm font-medium text-white"
             >
-              Create  Password
+              Password
             </label>
             <input
               type="password"
               name="password"
               id="password"
               placeholder="••••••••"
+              value={formData.password}
+              onChange={handleInputChange}
               className="backdrop-blur-lg border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               required
             />
@@ -66,6 +87,7 @@ function SignIn() {
           <button
             type="submit"
             className="w-full text-black bg-gold hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            onClick={HandleSubmit}
           >
             Sign in
           </button>
@@ -82,14 +104,13 @@ function SignIn() {
           </div> */}
           <div className="text-sm font-medium text-white dark:text-gray-300">
               Don&apos;t have an account?{" "}
-            <a
-              href="#"
+            <button
               className="text-g-700 hover:underline dark:text-blue-500"
             >
               <span className="text-gold">
               Signup
               </span>
-            </a>
+            </button>
           </div>
         </form>
       </div>
