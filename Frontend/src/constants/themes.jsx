@@ -28,3 +28,8 @@ export const SQLDATETOSTRING = (date) => {
   t = date.split(/[- :]/);
   return { date: `${t[0]} ${Months[t[1] - 1]} ${t[2]}`, time: `${t[3]}:${t[4]}` };
 };
+
+export const COLORS = {
+  white :'rgba(255, 255, 255, 1)',
+  offwhite: 'rgba(153, 153, 153, 1)'
+}

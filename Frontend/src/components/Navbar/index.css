@@ -4,6 +4,7 @@
   --nav-height: 70px;
   --dark-shadow: rgba(15, 15, 15, 0.75); 
   --yellow: rgba(270, 171, 0, 1);
+  --offwhite: rgba(153, 153, 153, 1);
 }
 
 #root{
@@ -27,7 +28,7 @@
 
 .menuButton {
   font-size: 20px;
-  color: rgba(153, 153, 153, 1);
+  color: var(--offwhite);
   padding: 0.5rem;
 }
 

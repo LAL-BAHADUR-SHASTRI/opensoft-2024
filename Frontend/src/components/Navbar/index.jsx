@@ -3,6 +3,7 @@ import logo from '../../assets/logo.svg'
 import { useState } from "react"
 import { LuSearch } from "react-icons/lu";
 import Stylesheet from "reactjs-stylesheet";
+import { COLORS } from "@/constants/themes";
 
 //<--buttons-->
 
@@ -75,7 +76,7 @@ const UserData = ({isLoggedin}) => {
 const Nav = () => {
 
   const [isActive, setActive] = useState(false)
-  const sLoggedin = false;
+  const isLoggedin = false;
   
   return (
     <nav className="navbar">
@@ -85,7 +86,7 @@ const Nav = () => {
         <Search isActive={isActive} setActive={setActive}/>
       </div>
       <div />
-      <UserData />
+      <UserData isLoggedin={isLoggedin}/>
     </nav>
   )
 }
@@ -97,7 +98,7 @@ export default Nav;
 const styles = Stylesheet.create({
   selectedStyle : {
     borderBottomWidth: 3,
-    color: 'rgba(255, 255, 255, 1)',
+    color: COLORS.white,
     borderBottomColor: 'rgba(240, 171, 0, 1)', 
   },
  searchContainer : {

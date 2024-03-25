@@ -1,0 +1,38 @@
+.card {
+  width: 55%;
+  display: flex;
+  align-items:center;
+  justify-content: center;
+}
+
+.image {
+  border-radius: 10px;
+}
+
+.left1 {
+  position: absolute;  
+  left: calc(-12%);
+  scale: 0.6;
+  filter: blur(3px);
+}
+.left2 {
+  position: absolute;  
+  left: 0px;
+  scale: 0.8;
+  filter: blur(3px);
+}
+.right1 {
+  position: absolute;  
+  filter: blur(3px);
+  right: 0px;
+  scale: 0.8;
+}
+.right2 {
+  position: absolute;  
+  right: calc(-12%);
+  scale: 0.6;
+  filter: blur(3px);
+}
+.front{
+  z-index: 9
+}
