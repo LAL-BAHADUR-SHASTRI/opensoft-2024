@@ -5,12 +5,27 @@ import (
 	"net/http"
 
 	// "github.com/gin-gonic/gin"
+	"encoding/json"
+	"fmt"
+
 	"github.com/gorilla/websocket"
 )
 
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+}
+
+type SockDataType string
+
+const (
+	Search SockDataType = "search"
+	Click  SockDataType = "click"
+)
+
+type SockData struct {
+	Type SockDataType `json:"type"`
+	Msg  string       `json:"msg"`
 }
 
 func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
@@ -22,16 +37,31 @@ func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 	defer conn.Close()
 
 	for {
-		messageType, p, err := conn.ReadMessage()
+		// Read message from the client
+		_, msg, err := conn.ReadMessage()
 		if err != nil {
-			log.Println("Failed to read message: ", err)
-			return
+			log.Println("Error reading message:", err)
+			break
 		}
 
-		err = conn.WriteMessage(messageType, p)
+		// Unmarshal the received JSON message into SockData struct
+		var sockData SockData
+		err = json.Unmarshal(msg, &sockData)
 		if err != nil {
-			log.Println("Failed to write message: ", err)
-			return
+			log.Println("Error unmarshalling JSON:", err)
+			continue
+		}
+
+		// Perform actions based on the type of message
+		switch sockData.Type {
+		case Search:
+			fmt.Println("Received search message:", sockData.Msg)
+			// Perform search action
+		case Click:
+			fmt.Println("Received click message:", sockData.Msg)
+			// Perform click action
+		default:
+			fmt.Println("Unknown message type:", sockData.Type)
 		}
 	}
 }
