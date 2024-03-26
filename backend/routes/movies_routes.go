@@ -13,7 +13,7 @@ import (
 )
 
 // movieCollection is the MongoDB collection for movies
-var movieCollection *mongo.Collection = database.OpenCollection(database.Client, "movies")
+//var movieCollection *mongo.Collection = database.OpenCollection(database.Client, "movies")
 
 // MovieServiceRouter sets up movie service routes on the provided Gin engine
 func MovieServiceRouter(r *gin.Engine) {

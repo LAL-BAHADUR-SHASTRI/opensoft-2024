@@ -3,14 +3,17 @@ package routes
 import (
 	"log"
 	"net/http"
+	"opensoft_2024/database"
+	"opensoft_2024/utils"
 
 	// "github.com/gin-gonic/gin"
 	"encoding/json"
 	"fmt"
 
 	"github.com/gorilla/websocket"
+	"go.mongodb.org/mongo-driver/mongo"
 )
-
+var movieCollection *mongo.Collection = database.OpenCollection(database.Client, "movies")
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
@@ -56,6 +59,9 @@ func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		switch sockData.Type {
 		case Search:
 			fmt.Println("Received search message:", sockData.Msg)
+
+			utils.AutocompleteSearch(movieCollection, sockData.Msg)
+			utils.FuzzySearch(movieCollection,sockData.Msg)
 			// Perform search action
 		case Click:
 			fmt.Println("Received click message:", sockData.Msg)
