@@ -14,8 +14,8 @@ const (
 )
 
 type User struct {
-	ID       primitive.ObjectID `bson:"_id";json:"_id"`
-	Email    string             `json:"email"`
-	Password string             `json:"password"`
+	ID       primitive.ObjectID `bson:"_id"`
+	Email    string             `json:"email" validate:"email, required"`
+	Password string             `json:"password" validate:"required"`
 	Tier     Tier               `json:"tier"`
 }

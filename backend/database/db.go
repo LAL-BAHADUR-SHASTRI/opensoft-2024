@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -18,8 +19,9 @@ func InitDB() (*mongo.Client, context.Context) {
 	// Create a new client and connect to the server
 	ctx := context.TODO()
 	client, err := mongo.Connect(ctx, opts)
+
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	// Send a ping to confirm a successful connection
@@ -29,4 +31,11 @@ func InitDB() (*mongo.Client, context.Context) {
 	
 	fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
 	return client, ctx
+}
+
+var	Client, Ctx = InitDB()
+
+func OpenCollection(client *mongo.Client, collectionName string)*mongo.Collection{
+	var collection *mongo.Collection =client.Database("sample_mflix").Collection(collectionName)
+	return collection
 }

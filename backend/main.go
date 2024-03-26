@@ -1,42 +1,16 @@
 package main
 
 import (
-	"net/http"
-	"opensoft_2024/database"
 	"opensoft_2024/routes"
-
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
 )
-
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-}
 
 func setupRouter() *gin.Engine {
 
-	r := gin.Default()
+	r := gin.New()
 
-	// Ping test
-	r.GET("/ping", func(c *gin.Context) {
-		c.String(http.StatusOK, "pong")
-	})
-
-	client, ctx := database.InitDB()
-	userColl := client.Database("sample_mflix").Collection("users")
-	movieColl := client.Database("sample_mflix").Collection("movies")
-	
-	routes.UserServiceRouter{
-		Coll: userColl,
-		Ctx:  ctx,
-	}.Router(r)
-
-	routes.MovieServiceRouter{
-		Coll: movieColl,
-		Ctx:  ctx,
-	}.Router(r)
-	
+	routes.UserServiceRouter(r)
+	routes.MovieServiceRouter(r)
 
 	r.GET("/ws", func(c *gin.Context) {
 		routes.ServeWebSocket(c.Writer, c.Request)

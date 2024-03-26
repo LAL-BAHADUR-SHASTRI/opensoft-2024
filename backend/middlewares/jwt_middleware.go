@@ -3,7 +3,6 @@ package middlewares
 import (
 	"opensoft_2024/models"
 	"time"
-
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -70,18 +69,3 @@ func CreateJwtToken(userAuth UserAuth, id primitive.ObjectID) (string, error) {
 
 	return tokenString, nil
 }
-
-// func (router *UserServiceRouter) GetUserWithToken(c *gin.Context) {
-
-// 	_user := c.MustGet("user").(map[string]interface{})
-
-// 	var user models.User
-
-// 	router.DB.Find(&user, "email = ?", _user["user_email"])
-// 	if user.ID == 0 {
-// 		c.JSON(404, gin.H{"error": "user not found"})
-// 		return
-// 	}
-
-// 	c.JSON(200, user)
-// }
