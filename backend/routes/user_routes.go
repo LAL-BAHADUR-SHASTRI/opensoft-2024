@@ -6,6 +6,7 @@ import (
 
 	"opensoft_2024/middlewares"
 	"opensoft_2024/models"
+	"opensoft_2024/utils"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
@@ -26,6 +27,7 @@ func (router UserServiceRouter) Router(r *gin.Engine) {
 
 		user.POST("/sign_up", router.CreateUser)
 		user.Use(middlewares.JwtMiddleware)
+		user.PUT("/", router.UpdateUser)
 
 		user.GET("/with_token", router.GetUserWithToken)
 
@@ -77,7 +79,9 @@ func (router *UserServiceRouter) sign_in(c *gin.Context) {
 	var user models.User
 	c.BindJSON(&userAuth)
 
-	//check if the user exists
+	// hash the password
+	userAuth.Password = utils.HashPassword(userAuth.Password)
+
 	filter := bson.D{{"email", userAuth.Email}}
 	err := router.Coll.FindOne(context.TODO(), filter).Decode(&user)
 	if err != nil {
@@ -90,7 +94,7 @@ func (router *UserServiceRouter) sign_in(c *gin.Context) {
 
 	//if the user exists, create a jwt token and send it to the user
 	// userAuth.UserId = int(user.ID)
-	token, err := middlewares.CreateJwtToken(userAuth)
+	token, err := middlewares.CreateJwtToken(userAuth, user.ID)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "error signing in"})
 		return
@@ -102,7 +106,10 @@ func (router *UserServiceRouter) sign_in(c *gin.Context) {
 func (router *UserServiceRouter) CreateUser(c *gin.Context) {
 	var user models.User
 	c.BindJSON(&user)
+	// hash the password
+	user.Password = utils.HashPassword(user.Password)
 
+	log.Println(user.Password)
 	_, err := router.Coll.InsertOne(router.Ctx, bson.D{
 		{"email", user.Email},
 		{"password", user.Password},
@@ -114,4 +121,27 @@ func (router *UserServiceRouter) CreateUser(c *gin.Context) {
 	}
 
 	c.JSON(200, user)
+}
+
+func (router *UserServiceRouter) UpdateUser(c *gin.Context) {
+	var user models.User
+	c.BindJSON(&user)
+
+	_, err := router.Coll.UpdateOne(router.Ctx, bson.D{{"email", user.Email}}, bson.D{
+		{"$set", bson.D{
+			{"password", user.Password},
+
+			{"tier", int(user.Tier)},
+		},
+		},
+	},
+	)
+
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(200, user)
+
 }

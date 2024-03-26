@@ -1,5 +1,10 @@
 package models
 
+// "github.com/google/uuid"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
 type Tier uint
 
 const (
@@ -9,7 +14,8 @@ const (
 )
 
 type User struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Tier     Tier   `json:"tier"`
+	ID       primitive.ObjectID `bson:"_id";json:"_id"`
+	Email    string             `json:"email"`
+	Password string             `json:"password"`
+	Tier     Tier               `json:"tier"`
 }
