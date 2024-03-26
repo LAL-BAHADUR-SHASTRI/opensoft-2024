@@ -1,19 +1,12 @@
 function Purchase() {
   return (
     <div className="bg-gray-600 p-8">
-      <div className="mx-auto rounded-xl overflow-hidden bg-gray-800 shadow-2xl shadow-blue-900">
+      <div className="mx-auto rounded-xl overflow-hidden bg-gray-800 shadow-2xl shadow-blue-900 mt-20">
         <div className="md:flex">
-          <div className="md:flex-shrink-0">
-            <img
-              className="h-48 w-full object-cover md:w-48"
-              src="/path/to/image.jpg"
-              alt="Card image"
-            />
-          </div>
-          <p className="mt-2 text-gray-500">
-            <div className="flex items-center flex-col p-4">
-              <div className="relative grid mt-5 h-[40rem] flex-col items-end justify-center overflow-hidden bg-white bg-clip-border text-center text-gray-700">
-                <div className="absolute inset-0 m-0 h-full overflow-hidden rounded-none bg-transparent bg-signin bg-cover bg-clip-border bg-center text-gray-700 shadow-none">
+          <p className="text-gray-500 w-full">
+            <div className="flex flex-col">
+              <div className="relative grid h-[25rem] flex-col items-end justify-center overflow-hidden bg-white bg-clip-border text-center text-gray-700">
+                <div className="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-signin bg-cover bg-clip-border bg-center text-gray-700 shadow-none">
                   <div className="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-t from-black/80 via-black/50"></div>
                 </div>
                 <div className="relative p-6 px-6 py-14 md:px-12">
@@ -30,136 +23,178 @@ function Purchase() {
                   />
                 </div>
               </div>
-              <div className="relative flex flex-col bg-clip-border rounded-xl bg-gradient-to-tr from-gray-900 to-gray-800 text-white shadow-gray-900/20 shadow-md w-full max-w-[20rem] p-8">
-                <div className="relative pb-8 m-0 mb-8 overflow-hidden text-center text-gray-700 bg-transparent border-b rounded-none shadow-none bg-clip-border border-white/10">
-                  <p className="block font-sans text-sm antialiased font-normal leading-normal text-white uppercase">
-                    standard
-                  </p>
-                  <h1 className="flex justify-center gap-1 mt-6 font-sans antialiased font-normal tracking-normal text-white text-7xl">
-                    <span className="mt-2 text-4xl">$</span>29
-                    <span className="self-end text-4xl">/mo</span>
-                  </h1>
-                </div>
-                <div className="p-0">
-                  <ul className="flex flex-col gap-4">
-                    <li className="flex items-center gap-4">
-                      <span className="p-1 border rounded-full border-white/20 bg-white/20">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                          className="w-3 h-3"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M4.5 12.75l6 6 9-13.5"
-                          ></path>
-                        </svg>
-                      </span>
-                      <p className="block font-sans text-base antialiased font-normal leading-relaxed text-inherit">
-                        5 team members
-                      </p>
-                    </li>
-                    <li className="flex items-center gap-4">
-                      <span className="p-1 border rounded-full border-white/20 bg-white/20">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                          className="w-3 h-3"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M4.5 12.75l6 6 9-13.5"
-                          ></path>
-                        </svg>
-                      </span>
-                      <p className="block font-sans text-base antialiased font-normal leading-relaxed text-inherit">
-                        200+ components
-                      </p>
-                    </li>
-                    <li className="flex items-center gap-4">
-                      <span className="p-1 border rounded-full border-white/20 bg-white/20">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                          className="w-3 h-3"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M4.5 12.75l6 6 9-13.5"
-                          ></path>
-                        </svg>
-                      </span>
-                      <p className="block font-sans text-base antialiased font-normal leading-relaxed text-inherit">
-                        40+ built-in pages
-                      </p>
-                    </li>
-                    <li className="flex items-center gap-4">
-                      <span className="p-1 border rounded-full border-white/20 bg-white/20">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                          className="w-3 h-3"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M4.5 12.75l6 6 9-13.5"
-                          ></path>
-                        </svg>
-                      </span>
-                      <p className="block font-sans text-base antialiased font-normal leading-relaxed text-inherit">
-                        1 year free updates
-                      </p>
-                    </li>
-                    <li className="flex items-center gap-4">
-                      <span className="p-1 border rounded-full border-white/20 bg-white/20">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                          className="w-3 h-3"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M4.5 12.75l6 6 9-13.5"
-                          ></path>
-                        </svg>
-                      </span>
-                      <p className="block font-sans text-base antialiased font-normal leading-relaxed text-inherit">
-                        Life time technical support
-                      </p>
-                    </li>
-                  </ul>
-                </div>
-                <div className="p-0 mt-12">
-                  <button
-                    className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm py-3.5 px-7 rounded-lg bg-white text-blue-gray-900 shadow-md shadow-blue-gray-500/10 hover:shadow-lg hover:shadow-blue-gray-500/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none block w-full hover:scale-[1.02] focus:scale-[1.02] active:scale-100"
-                    type="button"
-                  >
-                    Buy Now
-                  </button>
-                </div>
-              </div>{" "}
             </div>
           </p>
+        </div>
+        <p className="text-white p-10 text-4xl">
+          Choose the plan that&apos;s right for you
+        </p>
+        <div className="flex flex-wrap space-x-4 p-4 justify-evenly">
+          <div>
+            <div className="max-w-md p-6 bg-gray-900 border border-gray-700 rounded-lg shadow shadow-blue-900">
+              <a href="#">
+                <h5 className="mb-2 text-xl font-bold tracking-tight text-white">
+                  Starter
+                </h5>
+              </a>
+              <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">
+                Access to a wide selection of movies and shows, including new
+                releases and exclusive content.
+              </p>
+              <h5 className="my-11 text-3xl tracking-tight text-white">
+                199 <span className="text-gray-500 text-sm">/month</span>
+              </h5>
+              <button
+                type="submit"
+                className="w-full text-black bg-gradient-to-r from-gold to-yellow-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              >
+                Choose Plan
+              </button>
+            </div>
+          </div>
+          {/*  */}
+          <div>
+            <div className="max-w-md p-6 bg-gray-900 border border-gray-700 rounded-lg shadow shadow-blue-900">
+              <div className="flex justify-between">
+                <a href="#">
+                  <h5 className="mb-2 text-xl font-bold tracking-tight text-white">
+                    Standard
+                  </h5>
+                </a>
+                <img src="premium.png" alt="premium" className="h-100 w-200" />
+              </div>
+              <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">
+                Access to a wide selection of movies and shows, including new
+                releases and exclusive content and much more
+              </p>
+              <h5 className="my-8 text-3xl tracking-tight text-white">
+                169{" "}
+                <span className="text-gray-500 text-sm">
+                  /month(rs1015 for 6 months)
+                </span>
+              </h5>
+              <button
+                type="submit"
+                className="w-full text-black bg-gradient-to-r from-gold to-yellow-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              >
+                Choose Plan
+              </button>
+            </div>
+          </div>
+          {/*  */}
+
+          <div>
+            <div className="max-w-md p-6 bg-gray-900 border border-gray-700 rounded-lg shadow shadow-blue-900">
+              <a href="#">
+                <h5 className="mb-2 text-xl font-bold tracking-tight text-white">
+                  Premium
+                </h5>
+              </a>
+              <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">
+                Access to a wide selection of movies and shows, including new
+                releases and exclusive content and much more
+              </p>
+              <h5 className="my-8 text-3xl tracking-tight text-white">
+                149{" "}
+                <span className="text-gray-500 text-sm">
+                  /month(rs1799 for 12 months)
+                </span>
+              </h5>
+              <button
+                type="submit"
+                className="w-full text-black bg-gradient-to-r from-gold to-yellow-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              >
+                Choose Plan
+              </button>
+            </div>
+          </div>
+          {/*  */}
+        </div>
+        <p className="text-white p-10 text-4xl">
+          Compare our plans and find the right one for you
+        </p>
+        <div className="flex justify-center mx-40 my-10">
+          <table className="table-auto border-collapse rounded-lg">
+            <thead className="bg-indigo-900 text-white">
+              <tr>
+                <th className="border px-4 py-2">Features</th>
+                <th className="border px-4 py-2">Starter</th>
+                <th className="border px-4 py-2">
+                  <div className="flex">
+                    Standard{" "}
+                    <img
+                      src="premium.png"
+                      alt="premium"
+                      className="h-100 w-200 px-5"
+                    />
+                  </div>
+                </th>
+                <th className="border px-4 py-2">Premium</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-500">
+              <tr>
+                <td className="border px-4 py-2">Price</td>
+                <td className="border px-4 py-2">rs199/Month</td>
+                <td className="border px-4 py-2">rs169/Month</td>
+                <td className="border px-4 py-2">rs149/Month</td>
+              </tr>
+              <tr>
+                <td className="border px-4 py-2">Content</td>
+                <td className="border px-4 py-2">
+                  {" "}
+                  Access to a wide selection of movies and shows, including new
+                  releases and exclusive content and much more
+                </td>
+                <td className="border px-4 py-2">
+                  {" "}
+                  Access to a wide selection of movies and shows, including new
+                  releases and exclusive content and much more
+                </td>
+                <td className="border px-4 py-2">
+                  {" "}
+                  Access to a wide selection of movies and shows, including new
+                  releases and exclusive content and much more
+                </td>
+              </tr>
+              <tr>
+                <td className="border px-4 py-2"> Devices</td>
+                <td className="border px-4 py-2">
+                  Watch on One device simultaneously
+                </td>
+                <td className="border px-4 py-2">
+                  Watch on Two device simultaneously
+                </td>
+                <td className="border px-4 py-2">
+                  Watch on One device simultaneously
+                </td>
+              </tr>
+              <tr>
+                <td className="border px-4 py-2">Offline Viewing</td>
+                <td className="border px-4 py-2">Basic 1</td>
+                <td className="border px-4 py-2">Standard 1</td>
+                <td className="border px-4 py-2">Premium 1</td>
+              </tr>
+              <tr>
+                <td className="border px-4 py-2"> HDR</td>
+                <td className="border px-4 py-2">Basic 1</td>
+                <td className="border px-4 py-2">Standard 1</td>
+                <td className="border px-4 py-2">Premium 1</td>
+              </tr>
+              <tr>
+                <td className="border px-4 py-2">Dolby Atmos</td>
+                <td className="border px-4 py-2">Basic 1</td>
+                <td className="border px-4 py-2">Standard 1</td>
+                <td className="border px-4 py-2">Premium 1</td>
+              </tr>
+              <tr>
+                <td className="border px-4 py-2">Ad-Free</td>
+                <td className="border px-4 py-2">Basic 1</td>
+                <td className="border px-4 py-2">Standard 1</td>
+                <td className="border px-4 py-2">Premium 1</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
