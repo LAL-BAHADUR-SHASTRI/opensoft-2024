@@ -49,7 +49,7 @@ func GetUserWithToken(c *gin.Context) {
 
 	var user models.User
 
-	filter := bson.D{{"email", _user["user_email"]}}
+	filter := bson.M{"email": _user["user_email"]}
 	err := userCollection.FindOne(context.TODO(), filter).Decode(&user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user"})
@@ -73,7 +73,7 @@ func sign_in(c *gin.Context) {
 	}
 
 	// Find the user by email
-	filter := bson.D{{"email", userAuth.Email}}
+	filter := bson.M{"email": userAuth.Email}
 	err := userCollection.FindOne(context.TODO(), filter).Decode(&user)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
@@ -116,10 +116,10 @@ func CreateUser(c *gin.Context) {
 	user.Password = hashedPassword
 
 	// Insert the user into the database
-	_, err = userCollection.InsertOne(database.Ctx, bson.D{
-		{"email", user.Email},
-		{"password", user.Password},
-		{"tier", int(user.Tier)},
+	_, err = userCollection.InsertOne(database.Ctx, bson.M{
+		"email":    user.Email,
+		"password": user.Password,
+		"tier":     int(user.Tier),
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating user"})
@@ -136,11 +136,11 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	_, err := userCollection.UpdateOne(database.Ctx, bson.D{{"email", user.Email}}, bson.D{
-		{"$set", bson.D{
-			{"password", user.Password},
-			{"tier", int(user.Tier)},
-		}},
+	_, err := userCollection.UpdateOne(database.Ctx, bson.M{"email": user.Email}, bson.M{
+		"$set": bson.M{
+			"password": user.Password,
+			"tier":     int(user.Tier),
+		},
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
