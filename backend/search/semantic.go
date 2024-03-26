@@ -29,7 +29,7 @@
 // 	fmt.Println(resp.Choices[0].Message.Content)
 // }
 
-package search
+package main
 
 import (
 	"context"

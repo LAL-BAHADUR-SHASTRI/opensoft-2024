@@ -23,15 +23,24 @@ func setupRouter() *gin.Engine {
 		c.String(http.StatusOK, "pong")
 	})
 
-	db := database.InitDB()
+	client, ctx := database.InitDB()
+	userColl := client.Database("sample_mflix").Collection("users")
+	movieColl := client.Database("sample_mflix").Collection("movies")
+	
 	routes.UserServiceRouter{
-		DB: db,
+		Coll: userColl,
+		Ctx:  ctx,
 	}.Router(r)
+
+	routes.MovieServiceRouter{
+		Coll: movieColl,
+		Ctx:  ctx,
+	}.Router(r)
+	
 
 	r.GET("/ws", func(c *gin.Context) {
 		routes.ServeWebSocket(c.Writer, c.Request)
 	})
-
 
 	return r
 }

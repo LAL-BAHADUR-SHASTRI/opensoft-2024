@@ -2,7 +2,6 @@ package middlewares
 
 import (
 	"opensoft_2024/models"
-	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -44,10 +43,10 @@ func ValidateJwtToken(token string) (map[string]interface{}, error) {
 }
 
 type UserAuth struct {
-	Email    string      `json:"email"`
-	Tier     models.Tier `json:"tier"`
-	UserId   int         `json:"user_id"`
-	Password string      `json:"password"`
+	Email string      `json:"email"`
+	Tier  models.Tier `json:"tier"`
+
+	Password string `json:"password"`
 }
 
 func CreateJwtToken(userAuth UserAuth) (string, error) {
@@ -58,7 +57,7 @@ func CreateJwtToken(userAuth UserAuth) (string, error) {
 	// claims["password"] = userAuth.Password
 
 	claims["tier"] = userAuth.Tier
-	claims["user_id"] = strconv.Itoa(userAuth.UserId)
+	// claims["user_id"] = strconv.Itoa(userAuth.UserId)
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
