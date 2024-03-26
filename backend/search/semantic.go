@@ -75,3 +75,4 @@ func main() {
 
 	log.Printf("The similarity score between the query and the target is %f", similarity)
 }
+

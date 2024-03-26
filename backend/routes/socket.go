@@ -3,7 +3,7 @@ package routes
 import (
 	"log"
 	"net/http"
-
+	"opensoft_2024/models"
 	// "github.com/gin-gonic/gin"
 	"encoding/json"
 	"fmt"
@@ -14,18 +14,6 @@ import (
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
-}
-
-type SockDataType string
-
-const (
-	Search SockDataType = "search"
-	Click  SockDataType = "click"
-)
-
-type SockData struct {
-	Type SockDataType `json:"type"`
-	Msg  string       `json:"msg"`
 }
 
 func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
