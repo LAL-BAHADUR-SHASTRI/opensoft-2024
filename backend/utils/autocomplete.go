@@ -118,7 +118,7 @@ package utils
 
 import (
     "context"
-    "fmt"
+    // "fmt"
     //"log"
 
     "go.mongodb.org/mongo-driver/bson"
@@ -156,7 +156,7 @@ import (
 //     }
 // }
 
-func AutocompleteSearch(collection *mongo.Collection, searchTerm string) error {
+func AutocompleteSearch(collection *mongo.Collection, searchTerm string) ([]string, error) {
     searchStage := bson.D{
         {"$search", bson.D{
             {"text", bson.D{
@@ -169,7 +169,7 @@ func AutocompleteSearch(collection *mongo.Collection, searchTerm string) error {
     return runSearch(collection, searchStage, searchTerm)
 }
 
-func FuzzySearch(collection *mongo.Collection, searchTerm string) error {
+func FuzzySearch(collection *mongo.Collection, searchTerm string) ([]string, error) {
     searchStage := bson.D{
         {"$search", bson.D{
             {"text", bson.D{
@@ -186,27 +186,30 @@ func FuzzySearch(collection *mongo.Collection, searchTerm string) error {
     return runSearch(collection, searchStage, searchTerm)
 }
 
-func runSearch(collection *mongo.Collection, searchStage bson.D, searchTerm string) error {
+func runSearch(collection *mongo.Collection, searchStage bson.D, searchTerm string) ([]string, error) {
     limitStage := bson.D{{"$limit", 10}}
     projectStage := bson.D{{"$project", bson.D{{"title", 1}, {"_id", 0}}}}
 
     cursor, err := collection.Aggregate(context.TODO(), mongo.Pipeline{searchStage, limitStage, projectStage})
     if err != nil {
-        return err
+        return nil, err
     }
     defer cursor.Close(context.Background())
 
-    var results []bson.D
-    if err := cursor.All(context.TODO(), &results); err != nil {
-        return err
-    }
-
-    fmt.Printf("Search results for '%s':\n", searchTerm)
-    for _, result := range results {
+    var titles []string
+    for cursor.Next(context.Background()) {
+        var result bson.D
+        if err := cursor.Decode(&result); err != nil {
+            return nil, err
+        }
         if title, ok := result.Map()["title"]; ok {
-            fmt.Println(title)
+            titles = append(titles, title.(string))
         }
     }
 
-    return nil
+    if err := cursor.Err(); err != nil {
+        return nil, err
+    }
+
+    return titles, nil
 }

@@ -60,8 +60,26 @@ func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 		case Search:
 			fmt.Println("Received search message:", sockData.Msg)
 
-			utils.AutocompleteSearch(movieCollection, sockData.Msg)
-			utils.FuzzySearch(movieCollection,sockData.Msg)
+			autocompleteResults, err := utils.AutocompleteSearch(movieCollection, sockData.Msg)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Println("Autocomplete Search Results:")
+			for _, title := range autocompleteResults {
+				fmt.Println(title)
+			}
+
+			// Perform fuzzy search
+			fuzzyResults, err := utils.FuzzySearch(movieCollection, sockData.Msg)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Println("\nFuzzy Search Results:")
+			for _, title := range fuzzyResults {
+				fmt.Println(title)
+			}
 			// Perform search action
 		case Click:
 			fmt.Println("Received click message:", sockData.Msg)
