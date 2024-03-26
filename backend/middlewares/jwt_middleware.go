@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func JwtMiddleware(c *gin.Context) {
@@ -49,11 +50,12 @@ type UserAuth struct {
 	Password string `json:"password"`
 }
 
-func CreateJwtToken(userAuth UserAuth) (string, error) {
+func CreateJwtToken(userAuth UserAuth, id primitive.ObjectID) (string, error) {
 	claims := jwt.MapClaims{}
 
 	claims["authorized"] = true
-	claims["user_email"] = userAuth.Email
+	// claims["user_email"] = userAuth.Email
+	claims["user_id"] = id
 	// claims["password"] = userAuth.Password
 
 	claims["tier"] = userAuth.Tier
