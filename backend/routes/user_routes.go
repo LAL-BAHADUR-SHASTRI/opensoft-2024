@@ -2,8 +2,8 @@ package routes
 
 import (
 	"context"
-	"log"
-
+	"net/http"
+	"opensoft_2024/database"
 	"opensoft_2024/middlewares"
 	"opensoft_2024/models"
 	"opensoft_2024/utils"
@@ -13,135 +13,150 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type UserServiceRouter struct {
-	Coll *mongo.Collection
-	Ctx  context.Context
-}
+var userCollection *mongo.Collection = database.OpenCollection(database.Client, "users")
 
-func (router UserServiceRouter) Router(r *gin.Engine) {
-
+func UserServiceRouter(r *gin.Engine) {
 	user := r.Group("/user")
 	{
-		user.POST("/sign_in", router.sign_in)
-		user.GET("/", router.GetUsers)
-
-		user.POST("/sign_up", router.CreateUser)
+		user.DELETE("/", DeleteAllUsers)
+		user.POST("/sign_in", sign_in)
+		user.GET("/", GetUsers)
+		user.POST("/sign_up", CreateUser)
 		user.Use(middlewares.JwtMiddleware)
-		user.PUT("/", router.UpdateUser)
-
-		user.GET("/with_token", router.GetUserWithToken)
-
+		user.PUT("/", UpdateUser)
+		user.GET("/with_token", GetUserWithToken)
 	}
 }
 
-func (router *UserServiceRouter) GetUsers(c *gin.Context) {
-
-	// var users []models.User
-
-	cursor, err := router.Coll.Find(router.Ctx, bson.D{})
-	// check for errors in the finding
+func GetUsers(c *gin.Context) {
+	cursor, err := userCollection.Find(database.Ctx, bson.D{})
 	if err != nil {
-		panic(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve users"})
+		return
 	}
 
-	// convert the cursor result to bson
 	var results []bson.M
-	// check for errors in the conversion
 	if err = cursor.All(context.TODO(), &results); err != nil {
-		panic(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode users"})
+		return
 	}
 
-	c.JSON(200, results)
+	c.JSON(http.StatusOK, results)
 }
 
-func (router *UserServiceRouter) GetUserWithToken(c *gin.Context) {
-
+func GetUserWithToken(c *gin.Context) {
 	_user := c.MustGet("user").(map[string]interface{})
 
 	var user models.User
 
 	filter := bson.D{{"email", _user["user_email"]}}
-	// var result bson.M
-	err := router.Coll.FindOne(context.TODO(), filter).Decode(&user)
-	log.Println(user)
-
+	err := userCollection.FindOne(context.TODO(), filter).Decode(&user)
 	if err != nil {
-		c.JSON(500, gin.H{"error": "error fetching user"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user"})
 		return
 	}
 
-	c.JSON(200, user)
-
+	c.JSON(http.StatusOK, user)
 }
 
-func (router *UserServiceRouter) sign_in(c *gin.Context) {
+func sign_in(c *gin.Context) {
 	var userAuth middlewares.UserAuth
 	var user models.User
-	c.BindJSON(&userAuth)
-
-	// hash the password
-	userAuth.Password = utils.HashPassword(userAuth.Password)
-
-	filter := bson.D{{"email", userAuth.Email}}
-	err := router.Coll.FindOne(context.TODO(), filter).Decode(&user)
-	if err != nil {
-		c.JSON(404, gin.H{"error": "user not found"})
-		return
-	} else if user.Password != userAuth.Password {
-		c.JSON(401, gin.H{"error": "invalid password"})
+	if err := c.BindJSON(&userAuth); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON format"})
 		return
 	}
 
-	//if the user exists, create a jwt token and send it to the user
-	// userAuth.UserId = int(user.ID)
+	if err := utils.ValidateEmail(userAuth.Email); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Find the user by email
+	filter := bson.D{{"email", userAuth.Email}}
+	err := userCollection.FindOne(context.TODO(), filter).Decode(&user)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	// Compare the hashed password with the provided password
+	if err := utils.CheckPasswordHash(userAuth.Password, user.Password); err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
+		return
+	}
+
+	// Generate JWT token for the user
 	token, err := middlewares.CreateJwtToken(userAuth, user.ID)
 	if err != nil {
-		c.JSON(500, gin.H{"error": "error signing in"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error signing in"})
 		return
 	}
-	c.JSON(200, gin.H{"token": token})
-
+	c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
-func (router *UserServiceRouter) CreateUser(c *gin.Context) {
+func CreateUser(c *gin.Context) {
 	var user models.User
-	c.BindJSON(&user)
-	// hash the password
-	user.Password = utils.HashPassword(user.Password)
+	if err := c.BindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON format"})
+		return
+	}
 
-	log.Println(user.Password)
-	_, err := router.Coll.InsertOne(router.Ctx, bson.D{
+	if err := utils.ValidateEmail(user.Email); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Hash the password before storing
+	hashedPassword, err := utils.HashPassword(user.Password)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error hashing password"})
+		return
+	}
+	user.Password = hashedPassword
+
+	// Insert the user into the database
+	_, err = userCollection.InsertOne(database.Ctx, bson.D{
 		{"email", user.Email},
 		{"password", user.Password},
-		{"tier", int(user.Tier)}, // Store Tier as an integer
+		{"tier", int(user.Tier)},
 	})
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating user"})
 		return
 	}
 
-	c.JSON(200, user)
+	c.JSON(http.StatusOK, user)
 }
 
-func (router *UserServiceRouter) UpdateUser(c *gin.Context) {
+func UpdateUser(c *gin.Context) {
 	var user models.User
-	c.BindJSON(&user)
-
-	_, err := router.Coll.UpdateOne(router.Ctx, bson.D{{"email", user.Email}}, bson.D{
-		{"$set", bson.D{
-			{"password", user.Password},
-
-			{"tier", int(user.Tier)},
-		},
-		},
-	},
-	)
-
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+	if err := c.BindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON format"})
 		return
 	}
 
-	c.JSON(200, user)
+	_, err := userCollection.UpdateOne(database.Ctx, bson.D{{"email", user.Email}}, bson.D{
+		{"$set", bson.D{
+			{"password", user.Password},
+			{"tier", int(user.Tier)},
+		}},
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
+	c.JSON(http.StatusOK, user)
+}
+
+func DeleteAllUsers(c *gin.Context) {
+	// Delete all documents from the user collection
+	_, err := userCollection.DeleteMany(context.TODO(), bson.D{})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete users"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "All users deleted successfully"})
 }
