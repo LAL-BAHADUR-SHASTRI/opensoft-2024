@@ -3,6 +3,7 @@ import './App.css'
 import Main from './components/Main'
 import Nav from './components/Navbar'
 import { useState } from 'react';
+import { ContWatch, GenreCard } from './components/mov_thumbn'
 // import { Button } from './components/ui/button'
 // import useWindowDimensions from './hooks/useWindowDimensions'
 
@@ -20,6 +21,8 @@ function App() {
         setActive={setActive}
         setTyping={setTyping}/>
       <Main />
+      <ContWatch />
+      <GenreCard />
     </div>
   )
 }
