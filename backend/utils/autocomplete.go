@@ -2,7 +2,7 @@ package utils
 
 import (
 	"context"
-	"log"
+	"sort"
 
 	openai "github.com/sashabaranov/go-openai"
 	"go.mongodb.org/mongo-driver/bson"
@@ -72,67 +72,7 @@ func runSearch(collection *mongo.Collection, searchStage bson.D, searchTerm stri
     return titles, nil
 }
 
-// func SemanticSearch(collection *mongo.Collection, userQuery string) ([]string, error) {
-// 	client := getOpenAIClient()
 
-// 	// Generate an embedding for the user query
-// 	queryReq := openai.EmbeddingRequest{
-// 		Input: []string{userQuery},
-// 		Model: openai.AdaEmbeddingV2,
-// 	}
-// 	queryResponse, err := client.CreateEmbeddings(context.Background(), queryReq)
-// 	if err != nil {
-// 		log.Fatal("Error creating query embedding:", err)
-// 		return nil, err
-// 	}
-
-// 	// Assuming queryResponse.Data[0].Embedding contains the embedding vector
-// 	queryEmbedding := queryResponse.Data[0].Embedding
-
-// 	// Construct the MongoDB aggregation pipeline using $search with the vector operator
-// 	searchStage := bson.D{
-// 		{"$search", bson.D{
-// 			{"vector", bson.D{
-// 				{"query", bson.D{{"vector", queryEmbedding}}},
-// 				{"path", "plot_embedding"},
-// 				{"numCandidates", 100},
-// 				{"limit", 5},
-// 				{"score", bson.M{"boost": bson.M{"value": 1}}},
-// 			}},
-// 		}},
-// 	}
-
-// 	// Execute the search
-// 	cursor, err := collection.Aggregate(context.Background(), mongo.Pipeline{searchStage})
-// 	if err != nil {
-// 		log.Fatal("Error executing search:", err)
-// 		return nil, err
-// 	}
-// 	defer cursor.Close(context.Background())
-
-// 	// Process the search results
-// 	var results []string
-// 	for cursor.Next(context.Background()) {
-// 		var doc bson.M
-// 		err := cursor.Decode(&doc)
-// 		if err != nil {
-// 			log.Fatal("Error decoding document:", err)
-// 			return nil, err
-// 		}
-
-// 		// Assuming the document contains a "title" field that you want to return
-// 		if title, ok := doc["title"].(string); ok {
-// 			results = append(results, title)
-// 		}
-// 	}
-
-// 	if err := cursor.Err(); err != nil {
-// 		log.Fatal("Error with cursor:", err)
-// 		return nil, err
-// 	}
-
-// 	return results, nil
-// }
 
 func SemanticSearch(collection *mongo.Collection, userQuery string) ([]string, error) {
 	client := getOpenAIClient()
@@ -196,3 +136,115 @@ func SemanticSearch(collection *mongo.Collection, userQuery string) ([]string, e
 
 	return sortedTitles, nil
 }
+
+// func SemanticSearch(collection *mongo.Collection, userQuery string) ([]string, error) {
+// 	client := getOpenAIClient()
+
+// 	// Generate an embedding for the user query
+// 	queryReq := openai.EmbeddingRequest{
+// 		Input: []string{userQuery},
+// 		Model: openai.AdaEmbeddingV2,
+// 	}
+// 	queryResponse, err := client.CreateEmbeddings(context.Background(), queryReq)
+// 	if err != nil {
+// 		log.Fatal("Error creating query embedding:", err)
+// 		return nil, err
+// 	}
+
+// 	// Assuming queryResponse.Data[0].Embedding contains the embedding vector
+// 	queryEmbedding := queryResponse.Data[0].Embedding
+
+// 	// Construct the MongoDB aggregation pipeline using $search with the vector operator
+// 	searchStage := bson.D{
+// 		{"$search", bson.D{
+// 			{"vector", bson.D{
+// 				{"query", bson.D{{"vector", queryEmbedding}}},
+// 				{"path", "plot_embedding"},
+// 				{"numCandidates", 100},
+// 				{"limit", 5},
+// 				{"score", bson.M{"boost": bson.M{"value": 1}}},
+// 			}},
+// 		}},
+// 	}
+
+// 	// Execute the search
+// 	cursor, err := collection.Aggregate(context.Background(), mongo.Pipeline{searchStage})
+// 	if err != nil {
+// 		log.Fatal("Error executing search:", err)
+// 		return nil, err
+// 	}
+// 	defer cursor.Close(context.Background())
+
+// 	// Process the search results
+// 	var results []string
+// 	for cursor.Next(context.Background()) {
+// 		var doc bson.M
+// 		err := cursor.Decode(&doc)
+// 		if err != nil {
+// 			log.Fatal("Error decoding document:", err)
+// 			return nil, err
+// 		}
+
+// 		// Assuming the document contains a "title" field that you want to return
+// 		if title, ok := doc["title"].(string); ok {
+// 			results = append(results, title)
+// 		}
+// 	}
+
+// 	if err := cursor.Err(); err != nil {
+// 		log.Fatal("Error with cursor:", err)
+// 		return nil, err
+// 	}
+
+// 	return results, nil
+// }
+
+// // func generateEmbedding(text string) ([]float32, error) {
+// // 	client := getOpenAIClient()
+// // 	response, err := client.CreateEmbeddings(context.Background(), openai.EmbeddingRequest{
+// // 		Model: "text-embedding-ada-002",
+// // 		Input: text,
+// // 	})
+// // 	if err != nil {
+// // 		return nil, err
+// // 	}
+// // 	// Adjust this line according to the actual structure of the response
+// // 	embedding, ok := response.Data[0]["embedding"].([]float32)
+// // 	if !ok {
+// // 		return nil, fmt.Errorf("embedding format is incorrect or missing in the response")
+// // 	}
+
+// // 	return embedding, nil
+// // }
+
+// // func SemanticSearch(collection *mongo.Collection, userQuery string) ([]bson.M, error) {
+// // 	// Generate embeddings for the user query
+// // 	queryEmbedding, err := generateEmbedding(userQuery)
+// // 	if err != nil {
+// // 		return nil, fmt.Errorf("error generating query embedding: %w", err)
+// // 	}
+
+// // 	// Perform the search using MongoDB's $vectorSearch
+// // 	pipeline := mongo.Pipeline{
+// // 		{"$vectorSearch", bson.M{
+// // 			"queryVector": queryEmbedding,
+// // 			"path":        "plot_embedding",
+// // 			"numCandidates": 100,
+// // 			"limit":         4,
+// // 			"index":         "PlotSemanticSearch",
+// // 		}},
+// // 	}
+
+// // 	cursor, err := collection.Aggregate(context.Background(), pipeline)
+// // 	if err != nil {
+// // 		return nil, fmt.Errorf("error executing search: %w", err)
+// // 	}
+// // 	defer cursor.Close(context.Background())
+
+// // 	var results []bson.M
+// // 	if err = cursor.All(context.Background(), &results); err != nil {
+// // 		return nil, fmt.Errorf("error fetching search results: %w", err)
+// // 	}
+
+// // 	return results, nil
+// // }
