@@ -126,7 +126,7 @@ func SemanticSearch(collection *mongo.Collection, query string) ([]bson.M, error
 	if err != nil {
 		return nil, err
 	}
-    fmt.Println(embedding)
+    // fmt.Println(embedding)
     fmt.Println(len(embedding))
 	// Prepare the $vectorSearch aggregation stage
 	vectorSearchStage := bson.D{{
@@ -141,16 +141,28 @@ func SemanticSearch(collection *mongo.Collection, query string) ([]bson.M, error
 
 	// Execute the aggregation pipeline
 	cursor, err := collection.Aggregate(context.Background(), mongo.Pipeline{vectorSearchStage})
+    fmt.Println(cursor)
+    fmt.Println("Hello!")
 	if err != nil {
 		return nil, fmt.Errorf("error executing vector search: %w", err)
 	}
 	defer cursor.Close(context.Background())
 
-	var results []bson.M
-	if err = cursor.All(context.Background(), &results); err != nil {
-		return nil, fmt.Errorf("error fetching search results: %w", err)
-	}
+    var results []bson.M
+    for cursor.Next(context.Background()) {
+        var doc bson.M
+        if err := cursor.Decode(&doc); err != nil {
+            return nil, fmt.Errorf("error decoding document: %w", err)
+        }
+        results = append(results, doc)
+    }
 
+    if err := cursor.Err(); err != nil {
+        return nil, fmt.Errorf("error with cursor: %w", err)
+    }
+
+    fmt.Println(results)
+    fmt.Println("Hello!")
 	return results, nil
 }
 
