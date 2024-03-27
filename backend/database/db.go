@@ -14,7 +14,7 @@ func InitDB() (*mongo.Client, context.Context) {
 	// Use the SetServerAPIOptions() method to set the version of the Stable API on the client
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 
-	opts := options.Client().ApplyURI("mongodb+srv://laleet:vyqnif-dyndoX-9gewzy@cluster0.en2pw1s.mongodb.net/?retryWrites=true&w=majority").SetServerAPIOptions(serverAPI)
+	opts := options.Client().ApplyURI("mongodb+srv://pegasus7d:pegasus7d@cluster0.whplxzw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").SetServerAPIOptions(serverAPI)
 
 	// Create a new client and connect to the server
 	ctx := context.TODO()
