@@ -62,24 +62,53 @@ func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 
 			autocompleteResults, err := utils.AutocompleteSearch(movieCollection, sockData.Msg)
 			if err != nil {
-				log.Fatal(err)
+				log.Println("Error with autocomplete search:", err)
+				continue // Using continue to avoid breaking the WebSocket connection on error
 			}
 
-			fmt.Println("Autocomplete Search Results:")
-			for _, title := range autocompleteResults {
-				fmt.Println(title)
-			}
+			// fmt.Println("Autocomplete Search Results:")
+			// for _, title := range autocompleteResults {
+			// 	fmt.Println(title)
+			// }
 
 			// Perform fuzzy search
 			fuzzyResults, err := utils.FuzzySearch(movieCollection, sockData.Msg)
 			if err != nil {
-				log.Fatal(err)
+				log.Println("Error with fuzzy search:", err)
+				continue // Using continue to avoid breaking the WebSocket connection on error
 			}
 
-			fmt.Println("\nFuzzy Search Results:")
-			for _, title := range fuzzyResults {
-				fmt.Println(title)
+			semanticResults, err := utils.SemanticSearch(movieCollection, sockData.Msg)
+			if err != nil {
+				log.Println("Error with semantic search:", err)
+				continue
 			}
+
+			
+			results := map[string]interface{}{
+				"autocomplete": autocompleteResults,
+				"fuzzy":        fuzzyResults,
+				"semantic": semanticResults,
+			}
+			jsonResults, err := json.Marshal(results)
+			if err != nil {
+				log.Println("Error marshalling results to JSON:", err)
+				continue
+			}
+
+
+			if err = conn.WriteMessage(websocket.TextMessage, jsonResults); err != nil {
+				log.Println("Error writing JSON response:", err)
+				continue
+			}
+
+			// fmt.Println("\nFuzzy Search Results:")
+			// for _, title := range fuzzyResults {
+			// 	fmt.Println(title)
+			// }
+
+
+			
 			// Perform search action
 		case Click:
 			fmt.Println("Received click message:", sockData.Msg)

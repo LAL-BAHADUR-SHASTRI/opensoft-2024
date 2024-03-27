@@ -1,160 +1,18 @@
-// package main
-
-// import (
-//     "context"
-//     "fmt"
-//     "log"
-
-//     "go.mongodb.org/mongo-driver/bson" // Import bson package
-//     "go.mongodb.org/mongo-driver/mongo"
-//     "go.mongodb.org/mongo-driver/mongo/options"
-// )
-
-// func main() {
-//     serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-//   opts := options.Client().ApplyURI("mongodb+srv://pegasus7d:pegasus7d@cluster0.whplxzw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").SetServerAPIOptions(serverAPI)
-//   // Create a new client and connect to the server
-//   client, err := mongo.Connect(context.TODO(), opts)
-//   if err != nil {
-//     panic(err)
-//   }
-//   defer func() {
-//     if err = client.Disconnect(context.TODO()); err != nil {
-//       panic(err)
-//     }
-//   }()
-
-//     // Call the function to list all movies
-//     // if err := listAllMovies(client); err != nil {
-//     //     log.Fatal(err)
-//     // }
-
-
-//     // Set namespace
-// 	collection := client.Database("sample_mflix").Collection("movies")
-
-// 	// Get search term from the user
-// 	fmt.Print("Enter search term: ")
-// 	var searchTerm string
-// 	fmt.Scanln(&searchTerm)
-
-// 	// Search and print the movie titles
-// 	if err := searchAndPrintTitles(collection, searchTerm,"default"); err != nil {
-// 		log.Fatal(err)
-// 	}
-// }
-
-// // func listAllMovies(client *mongo.Client) error {
-// //     collection := client.Database("sample_mflix").Collection("movies")
-
-// //     // Define an empty filter to retrieve all documents
-// //     filter := bson.M{}
-
-// //     // Run the find operation to get all documents in the collection
-// //     cursor, err := collection.Find(context.TODO(), filter)
-// //     if err != nil {
-// //         return fmt.Errorf("error executing find query: %v", err)
-// //     }
-
-// //     // Iterate through the cursor and print each document
-// //     defer cursor.Close(context.TODO())
-// //     for cursor.Next(context.TODO()) {
-// //         var movie bson.M
-// //         if err := cursor.Decode(&movie); err != nil {
-// //             return fmt.Errorf("error decoding document: %v", err)
-// //         }
-// //         fmt.Println(movie)
-// //     }
-
-// //     // Check for cursor errors
-// //     if err := cursor.Err(); err != nil {
-// //         return fmt.Errorf("cursor error: %v", err)
-// //     }
-
-// //     return nil
-// // }
-
-
-// func searchAndPrintTitles(collection *mongo.Collection, searchTerm, indexName string) error {
-// 	// Define the search stage using the specific index
-	
-
-//     searchStage := bson.D{
-// 		{"$search", bson.D{
-// 			{"text", bson.D{
-// 				{"query", "inter"},
-// 				{"path", bson.A{"title", "plot"}}, // Search both "title" and "plot" fields
-// 			}},
-// 		}},
-// 	}
-    
-// 	limitStage := bson.D{{"$limit", 10}}
-// 	projectStage := bson.D{{"$project",  bson.D{{"score", bson.D{{"$meta", "searchScore"}}}, {"title", 1}, {"_id", 0}, {"highlight",  bson.D{{"$meta", "searchHighlights"}}}}}}  
-
-
-
-
-
-    
-// 	// run pipeline
-// 	cursor, err := collection.Aggregate(context.TODO(), mongo.Pipeline{searchStage, limitStage, projectStage})
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	// print results
-// 	var results []bson.D
-// 	if err = cursor.All(context.TODO(), &results); err != nil {
-// 		panic(err)
-// 	}
-// 	for _, result := range results {
-// 		fmt.Println(result)
-// 	}
-//     return nil
-// }
-
-
 package utils
 
 import (
-    "context"
-    // "fmt"
-    //"log"
+	"context"
+	"log"
 
-    "go.mongodb.org/mongo-driver/bson"
-    "go.mongodb.org/mongo-driver/mongo"
-    //"go.mongodb.org/mongo-driver/mongo/options"
+	openai "github.com/sashabaranov/go-openai"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// func main() {
-//     serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-//     opts := options.Client().ApplyURI("mongodb+srv://pegasus7d:pegasus7d@cluster0.whplxzw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").SetServerAPIOptions(serverAPI)
-//     client, err := mongo.Connect(context.TODO(), opts)
-//     if err != nil {
-//         log.Fatal(err)
-//     }
-//     defer func() {
-//         if err := client.Disconnect(context.TODO()); err != nil {
-//             log.Fatal(err)
-//         }
-//     }()
+func getOpenAIClient() *openai.Client {
+	return openai.NewClient("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")
+}
 
-//     collection := client.Database("sample_mflix").Collection("movies")
-
-//     // Perform a text search with a fixed value
-//     textSearchTerm := "Matrix"
-//     fmt.Println("Performing text search for:", textSearchTerm)
-//     if err := searchAndPrintTitles(collection, textSearchTerm); err != nil {
-//         log.Fatal(err)
-//     }
-
-//     // Perform a fuzzy search with a fixed value
-//     fuzzySearchTerm := "Jurasik" // Intentionally misspelled to demonstrate fuzzy search
-//     fmt.Println("Performing fuzzy search for:", fuzzySearchTerm)
-//     if err := fuzzySearch(collection, fuzzySearchTerm); err != nil {
-//         log.Fatal(err)
-//     }
-// }
 
 func AutocompleteSearch(collection *mongo.Collection, searchTerm string) ([]string, error) {
     searchStage := bson.D{
@@ -212,4 +70,129 @@ func runSearch(collection *mongo.Collection, searchStage bson.D, searchTerm stri
     }
 
     return titles, nil
+}
+
+// func SemanticSearch(collection *mongo.Collection, userQuery string) ([]string, error) {
+// 	client := getOpenAIClient()
+
+// 	// Generate an embedding for the user query
+// 	queryReq := openai.EmbeddingRequest{
+// 		Input: []string{userQuery},
+// 		Model: openai.AdaEmbeddingV2,
+// 	}
+// 	queryResponse, err := client.CreateEmbeddings(context.Background(), queryReq)
+// 	if err != nil {
+// 		log.Fatal("Error creating query embedding:", err)
+// 		return nil, err
+// 	}
+
+// 	// Assuming queryResponse.Data[0].Embedding contains the embedding vector
+// 	queryEmbedding := queryResponse.Data[0].Embedding
+
+// 	// Construct the MongoDB aggregation pipeline using $search with the vector operator
+// 	searchStage := bson.D{
+// 		{"$search", bson.D{
+// 			{"vector", bson.D{
+// 				{"query", bson.D{{"vector", queryEmbedding}}},
+// 				{"path", "plot_embedding"},
+// 				{"numCandidates", 100},
+// 				{"limit", 5},
+// 				{"score", bson.M{"boost": bson.M{"value": 1}}},
+// 			}},
+// 		}},
+// 	}
+
+// 	// Execute the search
+// 	cursor, err := collection.Aggregate(context.Background(), mongo.Pipeline{searchStage})
+// 	if err != nil {
+// 		log.Fatal("Error executing search:", err)
+// 		return nil, err
+// 	}
+// 	defer cursor.Close(context.Background())
+
+// 	// Process the search results
+// 	var results []string
+// 	for cursor.Next(context.Background()) {
+// 		var doc bson.M
+// 		err := cursor.Decode(&doc)
+// 		if err != nil {
+// 			log.Fatal("Error decoding document:", err)
+// 			return nil, err
+// 		}
+
+// 		// Assuming the document contains a "title" field that you want to return
+// 		if title, ok := doc["title"].(string); ok {
+// 			results = append(results, title)
+// 		}
+// 	}
+
+// 	if err := cursor.Err(); err != nil {
+// 		log.Fatal("Error with cursor:", err)
+// 		return nil, err
+// 	}
+
+// 	return results, nil
+// }
+
+func SemanticSearch(collection *mongo.Collection, userQuery string) ([]string, error) {
+	client := getOpenAIClient()
+
+	// Generate embeddings for the user query
+	queryReq := openai.EmbeddingRequest{
+		Input: []string{userQuery},
+		Model: openai.AdaEmbeddingV2,
+	}
+	queryResponse, err := client.CreateEmbeddings(context.Background(), queryReq)
+	if err != nil {
+		return nil, err
+	}
+
+	// Perform text search to get initial set of documents
+	initialResults, err := FuzzySearch(collection, userQuery)
+	if err != nil {
+		return nil, err
+	}
+
+	// Generate embeddings for the documents returned from the initial search
+	targetReq := openai.EmbeddingRequest{
+		Input: initialResults,
+		Model: openai.AdaEmbeddingV2,
+	}
+	targetResponse, err := client.CreateEmbeddings(context.Background(), targetReq)
+	if err != nil {
+		return nil, err
+	}
+
+	// Compute similarity scores between user query and each document
+	queryEmbedding := queryResponse.Data[0]
+	var scoredResults []struct {
+		Title     string
+		Similarity float64
+	}
+	for i, embedding := range targetResponse.Data {
+		similarity, err := queryEmbedding.DotProduct(&embedding)
+		if err != nil {
+			return nil, err
+		}
+		scoredResults = append(scoredResults, struct {
+			Title     string
+			Similarity float64
+		}{
+			Title:     initialResults[i],
+			Similarity: float64(similarity),
+		})
+	}
+
+	// Sort results by similarity score
+	sort.Slice(scoredResults, func(i, j int) bool {
+		return scoredResults[i].Similarity > scoredResults[j].Similarity
+	})
+
+	// Extract and return sorted titles
+	var sortedTitles []string
+	for _, result := range scoredResults {
+		sortedTitles = append(sortedTitles, result.Title)
+	}
+
+	return sortedTitles, nil
 }

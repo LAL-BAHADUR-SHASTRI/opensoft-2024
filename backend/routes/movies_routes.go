@@ -106,7 +106,7 @@ func MySocketHandler(c *gin.Context) {
 		case Search:
 			{
 				// define pipeline
-				searchStage := bson.D{{"$search", bson.D{{"text", bson.D{{"path", "title"}, {"query", sockData.Msg}, {"tokenOrder", "any"}}}}}}
+				searchStage := bson.D{{"$search", bson.D{{"text", bson.D{{"path", "title"}, {"query", sockData.Msg}}}}}}
 				limitStage := bson.D{{"$limit", 5}}
 				projectStage := bson.D{{"$project", bson.D{{"title", 1}, {"plot", 1}, {"_id", 0}}}}
 				// specify the amount of time the operation can run on the server
