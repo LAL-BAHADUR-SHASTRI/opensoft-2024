@@ -1,31 +1,28 @@
 import Stylesheet from "reactjs-stylesheet";
-import CarouselCard from "../carousel";
-import { useState } from "react";
+import { useState,useRef } from "react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import './index.css'
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+
+// import required modules
+import { EffectCoverflow, Pagination } from "swiper/modules";
+
+
+import Carousel from "../carousel";
 import { COLORS } from "@/constants/themes";
 
-const Carousel = (data) => {
-  
-  const [index, setindex] = useState(2);
-  
-  return (
-    <div style={styles.container}>
-      <LuChevronLeft size={'7%'} style={{...styles.arrows, left: '1%'}}/> 
-      <CarouselCard cls={"left1"}   />
-      <CarouselCard cls={"left2"}   />
-      <CarouselCard cls={"front"}   />
-      <CarouselCard cls={"right2"}  />
-      <CarouselCard cls={"right1"}  />
-      <LuChevronRight size={'7%'} style={{...styles.arrows, right: '1%'}}/>
-    </div>
-  )
-}
 
 const Main = () => {
   return (
-  <div style={styles.container}>
+    <div style={styles.container}>
       <Carousel />
-  </div>
+    </div>
   )
 }
 
@@ -34,8 +31,10 @@ export default Main;
 const styles = Stylesheet.create({
   container: {
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+
   },
   arrows : {
     position: "absolute",

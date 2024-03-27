@@ -18,7 +18,6 @@
   height: var(--nav-height);
   align-items: center;
   justify-content: space-between;
-  padding-right: 2rem;
 }
 
 .logo {
@@ -26,14 +25,19 @@
   margin-left: 20px;
 }
 
+.menuButtons {
+  display: flex;
+  flex-direction: row;
+}
+
 .menuButton {
-  font-size: 20px;
+  font-size: 16px;
   color: var(--offwhite);
   padding: 0.5rem;
+  padding-bottom: 0.2rem;
 }
 
 .menuButton:hover {
-  padding: 0.52rem;
   background-color: rgba(200, 200, 200, 0.1);
   border-radius: 0.5rem 0.5rem 0 0;
 }
@@ -43,6 +47,7 @@
   background-color: rgba(20, 20, 20, 1);
   color: white;
   width: 100%;
+  transition: 0.57s all ease-in;
 }
 .searchbox:focus-visible {
   outline: none;
@@ -63,7 +68,18 @@
 .signin {
   color: var(--yellow);
   align-items: center;
-  padding: 0.3rem;
+  padding-top: 0.3rem;
+  padding-bottom: 0.1rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  border-radius: 1rem;
   justify-content: center;
   margin-right: 10px;
+  font-size: 18px;
 }
+
+.selected-bottom-bar {
+  border: 1.5px solid var(--yellow);
+  border-radius: 8px;
+}
+

@@ -1,11 +1,15 @@
 import "./index.css"
 import logo from '../../assets/logo.svg'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { LuSearch } from "react-icons/lu";
 import Stylesheet from "reactjs-stylesheet";
 import { COLORS } from "@/constants/themes";
+import { motion } from "framer-motion";
+import { FaCircleUser } from "react-icons/fa6";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 //<--buttons-->
+
 
 const NavButtons = () => {
   const [selected, setSelected] = useState('Home')
@@ -19,13 +23,19 @@ const NavButtons = () => {
   return (
     <div className="menuButtons" >
       {buttons.map((item,index) => (
-        <text 
+        <ul
           key={index}
-          style={item == selected ? styles.selectedStyle : {}}
-          onClick={() => handlePress(item)}
-          className="menuButton" >
-          {item}
-        </text>
+        >
+          <li>
+          <p 
+            style={item == selected ? styles.selectedStyle : {}}
+            onClick={() => handlePress(item)}
+            className="menuButton" >
+            {item}
+          </p>
+          {item == selected && <motion.div layoutId="selected" className="selected-bottom-bar"/> }
+          </li>
+        </ul>
       ))}
     </div>
   )
@@ -33,24 +43,38 @@ const NavButtons = () => {
 
 //<--search-->
 
-const Search = ({isActive, setActive}) => {  // yar isko animate bhi karna hai .... baad me karunga
+const Search = ({isActive, setActive,isTyping, setTyping}) => {  // yar isko animate bhi karna hai .... baad me karunga
+  
+  const [search, setsearch] = useState('');
+
+  useEffect(() => {
+    if(search.length > 0) setTyping(true); else setTyping(false);
+    console.log(search)
+  },[search])
+  
   return isActive ?(
     <>
-      <div style={styles.searchContainer}/>
-      <div style={{...styles.searchContainer, right: '25%' , position: "absolute", minWidth: '55%'}} >
+      <div />
+      <motion.div 
+        onClick={() => setActive(true)}
+        animate={{scaleX: [1,1.1,1]}}
+        transition={{duration: 0.1}}
+        style={{...styles.searchContainer, right: '26%' , position: "absolute", minWidth: '55%',zIndex: 10}} >
         <LuSearch 
-          size={28}
-          color="rgba(153, 153, 153, 1)"
+          size={20}
+          color={COLORS.offwhite}
         />
-        <input onChange={() => console.log('hi')} placeholder="Search for Movies, Series and more..." className="dark:text-input searchbox "/>
-      </div>
+        <input name="search" onChange={(data) => setsearch(data.target.value)} placeholder="Search for Movies, Series and more..." className="dark:text-input searchbox "/>
+      </motion.div>
     </>
   ) :(
-      <div onClick={() => setActive(!isActive)} style={styles.searchContainer}>
+      <motion.div
+        layout
+        onClick={() => setActive(!isActive)} style={styles.searchContainer}>
         <LuSearch 
-          color="rgba(153, 153, 153, 1)"
+          color={COLORS.offwhite}
         />
-      </div>
+      </motion.div>
     )
 }
 
@@ -58,12 +82,14 @@ const Search = ({isActive, setActive}) => {  // yar isko animate bhi karna hai .
 const UserData = ({isLoggedin}) => {
   if(isLoggedin){
     return (
-    <></>
+      <div style={{display: 'flex', flexDirection: "row", paddingRight: 30}}>
+        <FaCircleUser size={32} style={{color: COLORS.yellow}} />
+      </div>
     )
   }
   else {
     return (
-      <div style={{display: 'flex', flexDirection: "row"}}>
+      <div style={{display: 'flex', flexDirection: "row", paddingRight: 30}}>
         <div className="signin" >Sign in</div>
         <div className="signup" >Sign up</div>
       </div>
@@ -73,17 +99,18 @@ const UserData = ({isLoggedin}) => {
 
 //<--main-->
 
-const Nav = () => {
+const Nav = ({isActive,setActive,setTyping,isTyping}) => {
 
-  const [isActive, setActive] = useState(false)
+
+
   const isLoggedin = false;
   
   return (
     <nav className="navbar">
       <img className="logo" src={logo} /> {/*logo*/}
-      <div style={{display: 'flex',flex: 1, flexDirection:'row', alignItems: 'center', justifyContent: 'space-evenly'}}>
+      <div style={styles.buttonContainer}>
         <NavButtons />
-        <Search isActive={isActive} setActive={setActive}/>
+        <Search isActive={isActive} setActive={setActive} isTyping={isTyping} setTyping={setTyping}/>
       </div>
       <div />
       <UserData isLoggedin={isLoggedin}/>
@@ -97,21 +124,26 @@ export default Nav;
 
 const styles = Stylesheet.create({
   selectedStyle : {
-    borderBottomWidth: 3,
     color: COLORS.white,
-    borderBottomColor: 'rgba(240, 171, 0, 1)', 
   },
  searchContainer : {
     display: 'flex',
     zIndex: 10,
     flexDirection: 'row',
-    padding: 10,
+    padding: 8,
     margin: 12,
     backgroundColor: 'rgba(20,20,20,1)',
     borderWidth: 1,
     borderColor: 'rgba(50,50,50,1)',
     borderRadius: 20,
-    alignItems: 'center'
+    alignItems: 'center',
   },
+  buttonContainer :{
+    display: 'flex',
+    flex: 1, 
+    flexDirection:'row', 
+    alignItems: 'center', 
+    justifyContent: 'space-evenly'
+  }, 
 })
 
