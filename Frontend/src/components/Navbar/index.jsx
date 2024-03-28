@@ -1,13 +1,14 @@
 import "./index.css"
 import logo from '../../assets/logo.svg'
-import { useEffect, useState } from "react"
+//import { useEffect, useState } from "react"
 import { LuSearch } from "react-icons/lu";
 import Stylesheet from "reactjs-stylesheet";
 import { COLORS } from "@/constants/themes";
 import { motion } from "framer-motion";
 import { FaCircleUser } from "react-icons/fa6";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
-
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+import React, { useState, useCallback, useEffect } from 'react';
 //<--buttons-->
 
 
@@ -20,6 +21,7 @@ const NavButtons = () => {
     setSelected(goto);
   }
 
+   
   return (
     <div className="menuButtons" >
       {buttons.map((item,index) => (
@@ -46,12 +48,45 @@ const NavButtons = () => {
 const Search = ({isActive, setActive,isTyping, setTyping}) => {  // yar isko animate bhi karna hai .... baad me karunga
   
   const [search, setsearch] = useState('');
+  var socket = null;
+    const [socketUrl, setSocketUrl] = useState('ws://10.145.59.41:8080/ws');
+  const [messageHistory, setMessageHistory] = useState([]);
+
+  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+
+  useEffect(() => {
+    if (lastMessage !== null) {
+      setMessageHistory((prev) => prev.concat(lastMessage));
+    }
+  }, [lastMessage]);
+
+
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: 'Connecting',
+    [ReadyState.OPEN]: 'Open',
+    [ReadyState.CLOSING]: 'Closing',
+    [ReadyState.CLOSED]: 'Closed',
+    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+  }[readyState];
+
+
 
   useEffect(() => {
     if(search.length > 0) setTyping(true); else setTyping(false);
     console.log(search)
+    sendMessage(
+     JSON.stringify({type: "search", msg: search})
+      );
   },[search])
   
+  const handleEnter = (e) => {
+    if(e.key === 'Enter'){
+      sendMessage(
+        JSON.stringify({type: "click", msg: search})
+         );
+    }
+  }
+
   return isActive ?(
     <>
       <div />
@@ -64,7 +99,7 @@ const Search = ({isActive, setActive,isTyping, setTyping}) => {  // yar isko ani
           size={20}
           color={COLORS.offwhite}
         />
-        <input name="search" onChange={(data) => setsearch(data.target.value)} placeholder="Search for Movies, Series and more..." className="dark:text-input searchbox "/>
+        <input name="search" onChange={(data) => setsearch(data.target.value)} placeholder="Search for Movies, Series and more..." className="dark:text-input searchbox " onKeyDown={handleEnter}/>
       </motion.div>
     </>
   ) :(
