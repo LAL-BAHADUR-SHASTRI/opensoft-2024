@@ -1,3 +1,4 @@
 import ContWatch from "./ContWatch";
 import GenreCard from "./GenreCard";
-export {ContWatch, GenreCard};
+import MovieCard from "./MovieCard";
+export {ContWatch, GenreCard, MovieCard};
