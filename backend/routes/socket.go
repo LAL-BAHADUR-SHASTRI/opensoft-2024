@@ -13,7 +13,7 @@ import (
 	"github.com/gorilla/websocket"
 	"go.mongodb.org/mongo-driver/mongo"
 )
-var movieCollection *mongo.Collection = database.OpenCollection(database.Client, "movies")
+var movieCollection *mongo.Collection = database.OpenCollection(database.Client, "embedded_movies")
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
