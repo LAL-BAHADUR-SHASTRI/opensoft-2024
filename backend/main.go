@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"opensoft_2024/database"
+	"opensoft_2024/middlewares"
 	"opensoft_2024/routes"
 
 	"github.com/gin-gonic/gin"
@@ -22,11 +23,11 @@ func setupRouter() *gin.Engine {
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
 	})
-
+	r.Use(middlewares.CORSMiddleware())
 	client, ctx := database.InitDB()
 	userColl := client.Database("sample_mflix").Collection("users")
 	movieColl := client.Database("sample_mflix").Collection("movies")
-	
+
 	routes.UserServiceRouter{
 		Coll: userColl,
 		Ctx:  ctx,
@@ -36,7 +37,6 @@ func setupRouter() *gin.Engine {
 		Coll: movieColl,
 		Ctx:  ctx,
 	}.Router(r)
-	
 
 	r.GET("/ws", func(c *gin.Context) {
 		routes.ServeWebSocket(c.Writer, c.Request)
