@@ -81,12 +81,11 @@
     background: #404040;
 }
 
+
 /* MovieCard */
 
 .MovieCard_ {
     margin: 10px;
-    width: 285px;
-    height: 374px;
     gap: 0px;
     border-radius: 10px;
     display: flex;
@@ -94,6 +93,16 @@
     flex-direction: column;
     transition: all 0.5s ease;
     overflow: hidden;
+}
+
+.portrait {
+    width: 285px;
+    height: 374px;
+}
+
+.landscape {
+    width: 390px;
+    height: 200px;
 }
 
 .mov_img {
@@ -119,10 +128,18 @@
 .play_b {
     display: flex;
     position: absolute;
-    height: 8.56%;
+    height: 32px;
+    width: 32px;
+    margin: 12px;
+    margin-right: 19px;
+    /* height: 8.56%;
     aspect-ratio: 1/1;
     margin: 4.21%;
-    margin-right: 6.67%;
+    margin-right: 6.67%; */
+}
+
+.play_b:hover {
+    cursor:pointer;
 }
 
 .b {
@@ -197,7 +214,7 @@
     letter-spacing: 0.01em;
 }
 
-.duration_ {
+.dur_ep {
     height: 25px;
     color: #F0AB00;
 }
@@ -219,6 +236,7 @@
     line-height: 24.85px;
     text-align: left;
 }
+
 
 /* GenreCard */
 

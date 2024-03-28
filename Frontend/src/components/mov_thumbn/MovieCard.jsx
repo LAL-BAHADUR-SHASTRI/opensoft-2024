@@ -1,4 +1,4 @@
-import { Img2url } from "@/constants/themes";
+import { Imgurl, Img2url } from "@/constants/themes";
 import "./index.css"
 import '../carousel/index.css'
 import { FaCirclePlay, FaRegCirclePlay } from "react-icons/fa6";
@@ -16,15 +16,18 @@ const MovieCard = (props) => {
         title: 'Avengers : Endgame',
         duration_hh: '2',
         duration_mm: '30',
+        // series: false,
+        series: true,
+        episodes: '8'
     }
   return(
     <div
-        className="MovieCard_"
+        className={`MovieCard_ ${data.series ? 'landscape' : 'portrait'}`}
         onMouseEnter={() => sethovering(true)}
         onMouseLeave={() => sethovering(false)}
     >
         <img
-            src={data?.obj?.img || Img2url} 
+            src={data?.obj?.img || data.series ? Imgurl : Img2url} 
             className="mov_img"
         />
         <div 
@@ -41,8 +44,8 @@ const MovieCard = (props) => {
                     <p className="title_" >
                         {data.title}
                     </p>
-                    <p className="duration_" >
-                        {data.duration_hh}h {data.duration_mm}min
+                    <p className="dur_ep" >
+                        {data.series ? `${data.episodes} episodes` : `${data.duration_hh}h ${data.duration_mm}min`}
                     </p>
                     <div className="row_">
                         {data?.tags.map((el) =>
