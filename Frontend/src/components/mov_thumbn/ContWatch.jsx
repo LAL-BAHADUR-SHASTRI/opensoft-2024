@@ -6,7 +6,8 @@ const ContWatch = (props) => {
     const prog_bar = {
         height: '100%',
         width: `${props?.watchLen || 30}%`,
-        background: '#F0AB00'
+        background: '#F0AB00',
+    borderBottomLeftRadius: 10
       }
   return(
     <div className="ContWatch_">

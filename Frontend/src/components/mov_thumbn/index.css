@@ -1,16 +1,13 @@
 /* ContWatch */
 
 .ContWatch_ {
-    margin: 10px;
-    width: 391px;
+    margin: 0 10px;
     height: 199px;
-    left: 24px;
+    left: 4px;
     gap: 0px;
     border-radius: 10px;
-    opacity: 0px;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     position: relative;
 }
 
@@ -18,7 +15,7 @@
     width: 391px;
     height: 194px;
     overflow: hidden;
-    position: relative;
+    border-radius: 10px 10px 0px 0px;
 }
 
 .img_{
@@ -79,6 +76,7 @@
     gap: 0px;
     opacity: 0px;
     background: #404040;
+    border-radius: 0px 0px 10px 0px;
 }
 
 /* MovieCard */
@@ -95,14 +93,17 @@
     gap: 0px;
     border-radius: 10px;
     border: 2px solid #1D175A;
-    opacity: 0px;
     margin: 10px;
     height: 284px;
     width: 284px;
     display: flex;
     flex-direction: row;
-    overflow: hidden;
     position: relative;
+  overflow: hidden;
+}
+
+.GenreCard_ :not(.genre_txt, .genre_txt_o) {
+  filter: blur(0.5px);
 }
 
 .genre_txt_o {

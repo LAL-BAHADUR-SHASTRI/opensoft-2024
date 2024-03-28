@@ -2,10 +2,7 @@ import Stylesheet from "reactjs-stylesheet";
 import { useState,useRef } from "react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import { Swiper, SwiperSlide } from "swiper/react";
-import './index.css'
 import { FaPlay,FaPlus } from "react-icons/fa";
-
-import imdb from '../../assets/imdb.svg'
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -13,7 +10,10 @@ import "swiper/css/pagination";
 // import required modules
 import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 
+import './index.css'
+import imdb from '../../assets/imdb.svg'
 import { COLORS } from "@/constants/themes";
+
 
 const Carousel = (props) => {
 
@@ -33,7 +33,6 @@ const Carousel = (props) => {
     <>
       <div style={styles.container} >
         <LuChevronLeft onClick={{}} className="swiper-button-prev" size={'7%'} style={{...styles.arrows, left: '1%'}}/> 
-
         <Swiper
           effect={"coverflow"}
           centeredSlides={true}
@@ -91,14 +90,11 @@ const Carousel = (props) => {
             </SwiperSlide>
           ))}
         </Swiper>
-      </div>
       <LuChevronRight 
         onClick={{}}
         className="swiper-button-next"
         size={'7%'} 
         style={{...styles.arrows, right: '1%'}}/> 
-      <div>
-        hwllot
       </div>
     </>
   )
@@ -112,7 +108,6 @@ const styles = Stylesheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-
   },
   arrows : {
     position: "absolute",

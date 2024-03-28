@@ -1,27 +1,29 @@
 import Stylesheet from "reactjs-stylesheet";
-import { useState,useRef } from "react";
-import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
-import { Swiper, SwiperSlide } from "swiper/react";
 
+import { ContWatch, GenreCard } from '../mov_thumbn'
 import './index.css'
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
-
-// import required modules
-import { EffectCoverflow, Pagination } from "swiper/modules";
-
-
 import Carousel from "../carousel";
-import { COLORS } from "@/constants/themes";
-
 
 const Main = () => {
   return (
     <div style={styles.container}>
       <Carousel />
+      <h2 style={styles.heading}>Continue Watching</h2>
+      <div className="scroller" style={styles.scroller} >
+        <ContWatch />
+        <ContWatch />
+        <ContWatch />
+      </div>
+      <h2 style={styles.heading}>Top Genres</h2>
+      <div className="scroller" style={styles.scroller} >
+          <GenreCard />
+          <GenreCard />
+          <GenreCard />
+          <GenreCard />
+          <GenreCard />
+          <GenreCard />
+      </div>
+      <div style={{height: 100}}/>
     </div>
   )
 }
@@ -32,13 +34,19 @@ const styles = Stylesheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
     justifyContent: 'center',
-
   },
-  arrows : {
-    position: "absolute",
-    zIndex: 99,
-    color: COLORS.offwhite
+  heading: {
+    margin: 20, 
+    color: 'white',
+    fontWeight: 'bold', 
+    fontSize: 32,
+    width: "fit-content",
+    
+  },
+  scroller: {
+    display: 'flex',
+    flexDirection: 'row',
+    overflow: 'scroll',
   }
 })
