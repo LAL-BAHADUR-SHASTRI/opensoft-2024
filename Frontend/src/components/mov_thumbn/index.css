@@ -103,6 +103,43 @@
     z-index: 0;
 }
 
+.play_layer {
+    display: flex;
+    position: absolute;
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    opacity: 0%;
+    background: rgba(0, 0, 0, 0);
+    transition: all 0.5s ease;
+}
+
+.play_b {
+    display: flex;
+    position: absolute;
+    height: 8.56%;
+    aspect-ratio: 1/1;
+    margin: 4.21%;
+    margin-right: 6.67%;
+}
+
+.b {
+    position: absolute;
+    width: 99%;
+    height: 98%;
+    color: #F0AB00;
+}
+
+.b1 {
+    opacity: 100%;
+}
+
+.b2 {
+    opacity: 0%;
+}
+
 .scroll_d {
     display: flex;
     position: absolute;
@@ -134,10 +171,6 @@
     font-weight: 600;
     line-height: 24.85px;
     text-align: left;
-}
-
-.scroll_d:hover {
-    transform: translateY(-50%);
 }
 
 .row_ {

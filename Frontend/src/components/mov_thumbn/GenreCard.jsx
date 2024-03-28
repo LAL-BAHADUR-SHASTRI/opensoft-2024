@@ -63,5 +63,4 @@ const styles = Stylesheet.create({
     trans1: {
         transform: 'translateY(-38%)'
     }
-
 })
