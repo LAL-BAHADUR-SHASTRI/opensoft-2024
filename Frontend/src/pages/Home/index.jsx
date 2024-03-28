@@ -1,10 +1,10 @@
 import Stylesheet from "reactjs-stylesheet";
 
-import { ContWatch, GenreCard } from '../mov_thumbn'
 import './index.css'
-import Carousel from "../carousel";
+import Carousel from "@/components/carousel";
+import { ContWatch, GenreCard } from "@/components/mov_thumbn";
 
-const Main = () => {
+const HomePage = () => {
   return (
     <div style={styles.container}>
       <Carousel />
@@ -28,7 +28,7 @@ const Main = () => {
   )
 }
 
-export default Main;
+export default HomePage;
 
 const styles = Stylesheet.create({
   container: {

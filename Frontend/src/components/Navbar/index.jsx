@@ -1,12 +1,13 @@
 import "./index.css"
 import logo from '../../assets/logo.svg'
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { LuSearch } from "react-icons/lu";
 import Stylesheet from "reactjs-stylesheet";
 import { COLORS } from "@/constants/themes";
 import { motion } from "framer-motion";
 import { FaCircleUser } from "react-icons/fa6";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
+import { document } from "postcss";
 
 //<--buttons-->
 
@@ -43,34 +44,40 @@ const NavButtons = () => {
 
 //<--search-->
 
-const Search = ({isActive, setActive,isTyping, setTyping}) => {  // yar isko animate bhi karna hai .... baad me karunga
+const Search = () => {  // yar isko animate bhi karna hai .... baad me karunga
   
   const [search, setsearch] = useState('');
+  const [isTyping, setTyping] = useState(false);
+  const [isActive, setActive] = useState(false);
 
   useEffect(() => {
     if(search.length > 0) setTyping(true); else setTyping(false);
     console.log(search)
-  },[search])
+  },[search]);
+  
+  const searchinput = useCallback((inputel) => {
+    if(inputel) {
+      inputel.focus();
+    }
+  },[])
   
   return isActive ?(
     <>
       <div />
+      {isActive && <div style={styles.backShadow} onClick={() => {setActive(false);setTyping(false) }} />}
       <motion.div 
-        onClick={() => setActive(true)}
-        animate={{scaleX: [1,1.1,1]}}
-        transition={{duration: 0.1}}
         style={{...styles.searchContainer, right: '26%' , position: "absolute", minWidth: '55%',zIndex: 10}} >
-        <LuSearch 
+        <motion.span><LuSearch 
           size={20}
           color={COLORS.offwhite}
         />
-        <input name="search" onChange={(data) => setsearch(data.target.value)} placeholder="Search for Movies, Series and more..." className="dark:text-input searchbox "/>
+        </motion.span>
+        <input ref={searchinput} name="search" onChange={(data) => setsearch(data.target.value)} placeholder="Search for Movies, Series and more..." className="dark:text-input searchbox "/>
       </motion.div>
     </>
   ) :(
       <motion.div
-        layout
-        onClick={() => setActive(!isActive)} style={styles.searchContainer}>
+        onClick={() => {setActive(!isActive); }} style={styles.searchContainer}>
         <LuSearch 
           color={COLORS.offwhite}
         />
@@ -99,7 +106,7 @@ const UserData = ({isLoggedin}) => {
 
 //<--main-->
 
-const Nav = ({isActive,setActive,setTyping,isTyping}) => {
+const Nav = () => {
 
 
 
@@ -110,7 +117,7 @@ const Nav = ({isActive,setActive,setTyping,isTyping}) => {
       <img className="logo" src={logo} /> {/*logo*/}
       <div style={styles.buttonContainer}>
         <NavButtons />
-        <Search isActive={isActive} setActive={setActive} isTyping={isTyping} setTyping={setTyping}/>
+        <Search />
       </div>
       <div />
       <UserData isLoggedin={isLoggedin}/>
@@ -145,5 +152,14 @@ const styles = Stylesheet.create({
     alignItems: 'center', 
     justifyContent: 'space-evenly'
   }, 
+  backShadow:  {
+    position: 'fixed',
+    width: '100vw',
+    height: '100vh',
+    bottom: 0,
+    left: 0,
+    zIndex: 10,
+    background: 'linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.6),rgba(0,0,0,0.8))'
+  }
 })
 

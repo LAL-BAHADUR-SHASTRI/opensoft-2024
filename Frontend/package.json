@@ -22,6 +22,7 @@
     "swiper": "^11.0.7",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
+    "video.js": "^8.10.0",
     "vite-plugin-svgr": "^4.2.0"
   },
   "devDependencies": {

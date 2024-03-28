@@ -108,6 +108,7 @@ const styles = Stylesheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    minHeight: '30%'
   },
   arrows : {
     position: "absolute",
