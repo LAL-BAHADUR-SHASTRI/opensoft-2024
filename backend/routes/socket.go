@@ -13,10 +13,14 @@ import (
 	"github.com/gorilla/websocket"
 	"go.mongodb.org/mongo-driver/mongo"
 )
+
 var movieCollection *mongo.Collection = database.OpenCollection(database.Client, "movies")
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
 }
 
 type SockDataType string
@@ -84,18 +88,16 @@ func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 
-			
 			results := map[string]interface{}{
 				"autocomplete": autocompleteResults,
 				"fuzzy":        fuzzyResults,
-				"semantic": semanticResults,
+				"semantic":     semanticResults,
 			}
 			jsonResults, err := json.Marshal(results)
 			if err != nil {
 				log.Println("Error marshalling results to JSON:", err)
 				continue
 			}
-
 
 			if err = conn.WriteMessage(websocket.TextMessage, jsonResults); err != nil {
 				log.Println("Error writing JSON response:", err)
@@ -107,8 +109,6 @@ func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 			// 	fmt.Println(title)
 			// }
 
-
-			
 			// Perform search action
 		case Click:
 			fmt.Println("Received click message:", sockData.Msg)
