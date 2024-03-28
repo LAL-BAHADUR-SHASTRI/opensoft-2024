@@ -24,8 +24,16 @@ import (
 func MovieServiceRouter(r *gin.Engine) {
 	movie := r.Group("/movie")
 	{
-		movie.GET("/:id", getMovieByID)
+		movie.GET("/id/:id", getMovieByID)
 		movie.GET("/", getMovies)
+		movie.GET("/topimdb", getTopImdbMovies)
+		movie.GET("/genre/:genre", getMoviesByGenre)
+		movie.GET("/language/:language", getMoviesByLanguage)
+		movie.GET("/country/:country", getMoviesByCountry)
+		movie.GET("/latest", getLatestMovies)
+		movie.GET("/genres", getListofGenres)
+		movie.GET("/languages", getListofLanguages)
+		movie.GET("/countries", getListofCountries)
 		movie.GET("/socket", MySocketHandler)
 	}
 }
@@ -74,6 +82,139 @@ func getMovieByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, result)
+}
+
+func getTopImdbMovies(c *gin.Context) {
+	// removing movies with blank imdb rating
+	matchStage := bson.D{{"$match", bson.D{{"imdb.rating", bson.D{{"$ne", ""}}}}}}
+	sortStage := bson.D{{"$sort", bson.D{{"imdb.rating", -1}}}}
+	limitStage := bson.D{{"$limit", 100}}
+	cursor, err := movieCollection.Aggregate(database.Ctx, mongo.Pipeline{matchStage, sortStage, limitStage})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve movies"})
+		return
+	}
+	defer cursor.Close(context.TODO())
+
+	var results []bson.M
+	if err := cursor.All(context.TODO(), &results); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode movies"})
+		return
+	}
+
+	c.JSON(http.StatusOK, results)
+}
+
+func getMoviesByGenre(c *gin.Context) {
+	genre := c.Param("genre")
+
+	// Find the movies by genre
+	cursor, err := movieCollection.Find(database.Ctx, bson.D{{"genres", genre}}, options.Find().SetLimit(100))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve movies"})
+		return
+	}
+	defer cursor.Close(context.TODO())
+
+	var results []bson.M
+	if err := cursor.All(context.TODO(), &results); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode movies"})
+		return
+	}
+
+	c.JSON(http.StatusOK, results)
+}
+
+func getMoviesByLanguage(c *gin.Context) {
+	language := c.Param("language")
+
+	// Find the movies by language
+	cursor, err := movieCollection.Find(database.Ctx, bson.D{{"languages", language}}, options.Find().SetLimit(100))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve movies"})
+		return
+	}
+	defer cursor.Close(context.TODO())
+
+	var results []bson.M
+	if err := cursor.All(context.TODO(), &results); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode movies"})
+		return
+	}
+
+	c.JSON(http.StatusOK, results)
+}
+
+func getMoviesByCountry(c *gin.Context) {
+	country := c.Param("country")
+
+	// Find the movies by country
+	cursor, err := movieCollection.Find(database.Ctx, bson.D{{"countries", country}}, options.Find().SetLimit(100))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve movies"})
+		return
+	}
+	defer cursor.Close(context.TODO())
+
+	var results []bson.M
+	if err := cursor.All(context.TODO(), &results); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode movies"})
+		return
+	}
+
+	c.JSON(http.StatusOK, results)
+}
+
+func getLatestMovies(c *gin.Context) {
+	// Find the movies
+	cursor, err := movieCollection.Find(database.Ctx, bson.D{}, options.Find().SetSort(bson.D{{"released", -1}}).SetLimit(1000))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve movies"})
+		return
+	}
+	defer cursor.Close(context.TODO())
+
+	var results []bson.M
+	if err := cursor.All(context.TODO(), &results); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode movies"})
+		return
+	}
+
+	c.JSON(http.StatusOK, results)
+}
+
+func getListofGenres(c *gin.Context) {
+	// Find the movies
+	cursor, err := movieCollection.Distinct(database.Ctx, "genres", bson.D{})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve genres"})
+		return
+	}
+
+	c.JSON(http.StatusOK, cursor)
+}
+
+func getListofLanguages(c *gin.Context) {
+	// Find the movies
+	cursor, err := movieCollection.Distinct(database.Ctx, "languages", bson.D{})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve languages"})
+		return
+	}
+
+	c.JSON(http.StatusOK, cursor)
+}
+
+func getListofCountries(c *gin.Context) {
+	// Find the movies
+	cursor, err := movieCollection.Distinct(database.Ctx, "countries", bson.D{})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve countries"})
+		return
+	}
+
+	c.JSON(http.StatusOK, cursor)
 }
 
 // MySocketHandler handles the WebSocket connection

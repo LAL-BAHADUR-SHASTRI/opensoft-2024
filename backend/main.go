@@ -1,8 +1,8 @@
 package main
 
 import (
-	"opensoft_2024/routes"
 	"github.com/gin-gonic/gin"
+	"opensoft_2024/routes"
 )
 
 func setupRouter() *gin.Engine {
@@ -23,5 +23,6 @@ func main() {
 	r := setupRouter()
 
 	// Listen and Server in 0.0.0.0:8080
+	// export PORT=8080
 	r.Run(":8080")
 }

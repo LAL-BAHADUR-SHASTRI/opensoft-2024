@@ -25,6 +25,7 @@ func UserServiceRouter(r *gin.Engine) {
 		user.Use(middlewares.JwtMiddleware)
 		user.PUT("/", UpdateUser)
 		user.GET("/with_token", GetUserWithToken)
+		// user.POST("/bookmark/:id", AddBookmark)
 	}
 }
 

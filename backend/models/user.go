@@ -18,4 +18,5 @@ type User struct {
 	Email    string             `json:"email" validate:"email, required"`
 	Password string             `json:"password" validate:"required"`
 	Tier     Tier               `json:"tier"`
+	BookMarks []primitive.ObjectID `json:"bookmarks"`
 }
