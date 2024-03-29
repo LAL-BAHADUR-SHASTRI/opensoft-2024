@@ -19,8 +19,8 @@ function SignIn() {
     <div className="flex items-center justify-center min-h-screen bg-signin backdrop-blur-md">
       <div className="my-8 w-1/3 max-w-sm p-4 bg-black rounded-lg opacity-85 shadow sm:p-6 md:p-8 backdrop-blur-lg">
         <div className="flex flex-col gap-4 px-4">
-          <div className=" w-auto mx-auto py-4">
-            <img src="logo.svg" />
+          <div className=" mx-auto py-4">
+            <img className="w-24" src="logo.svg" />
           </div>
           <form
             className="text-left flex flex-col gap-6 "
