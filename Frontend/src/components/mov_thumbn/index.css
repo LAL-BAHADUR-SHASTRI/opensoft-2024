@@ -4,7 +4,6 @@
     margin: 10px;
     width: 391px;
     height: 199px;
-    left: 24px;
     gap: 0px;
     border-radius: 10px;
     opacity: 0px;
@@ -22,7 +21,9 @@
 }
 
 .img_{
-    transition: all 0.3s;
+    height: 100%;
+    width: 100%;
+    transition: all 0.5s;
 }
 
 .img_:hover {
@@ -127,7 +128,7 @@
 
 .play_b {
     display: flex;
-    position: absolute;
+    position: relative;
     height: 32px;
     width: 32px;
     margin: 12px;
@@ -147,14 +148,6 @@
     width: 99%;
     height: 98%;
     color: #F0AB00;
-}
-
-.b1 {
-    opacity: 100%;
-}
-
-.b2 {
-    opacity: 0%;
 }
 
 .scroll_d {
@@ -284,4 +277,69 @@
 
 .genre_txt_o:hover {
     transform: scale(1.12);
+}
+
+
+/* TrailerCard */
+
+.TrailerCard_ {
+    margin: 10px;
+    width: 343.84px;
+    height: 175px;
+    gap: 0px;
+    border-radius: 8.79px;
+    border: 1.76px solid #1D175A;    
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+.trCim {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s;
+}
+
+.dur_pl {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.ti_dur {
+    display: flex;
+    position: relative;
+    /* width: 59.02px; */
+    height: 22px;
+    margin-bottom: 10px;
+    margin-left: 12px;
+    padding: 0px 5.28px 0px 5.28px;
+    gap: 6.16px;
+    border-radius: 2.64px;
+    background: #181818;
+    border: 0.44px solid #262626;
+    align-items: center;
+    justify-content: center;
+}
+
+.ti {
+    height: 15px;
+    gap: 0px;
+    color: #FFFFFF;
+}
+
+.dur {
+    height: 22px;
+    font-family: Manrope;
+    font-size: 14.07px;
+    font-weight: 500;
+    line-height: 21.85px;
+    text-align: left;
+    color: #FFFFFF;
 }

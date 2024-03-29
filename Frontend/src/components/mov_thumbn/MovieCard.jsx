@@ -9,15 +9,15 @@ import imdb from '../../assets/imdb.svg'
 
 const MovieCard = (props) => {
     const [hovering, sethovering] = useState(false)
-    const [hovering2, sethovering2] = useState(false)
+    const [hoverply, sethoverply] = useState(false)
     let data = {
         rating: '8.8/10',
         tags: ['Action','Adventure','Fiction'],
         title: 'Avengers : Endgame',
         duration_hh: '2',
         duration_mm: '30',
-        // series: false,
-        series: true,
+        series: false,
+        // series: true,
         episodes: '8'
     }
   return(
@@ -57,20 +57,20 @@ const MovieCard = (props) => {
         </div>
         <div
             className="play_layer" 
-            style={hovering ? styles.layer_trans1 : {}}
+            style={hovering ? styles.op_max : {}}
         >
             <div 
                 className="play_b"
-                onMouseEnter={() => sethovering2(true)}
-                onMouseLeave={() => sethovering2(false)}
+                onMouseEnter={() => sethoverply(true)}
+                onMouseLeave={() => sethoverply(false)}
             >
                 <FaRegCirclePlay 
-                    className="b b1" 
-                    style={hovering2 ? styles.layer_trans2 : {}}
+                    className="b" 
+                    style={hoverply ? styles.op_min : styles.op_max}
                 />
                 <FaCirclePlay 
-                    className="b b2" 
-                    style={hovering2 ? styles.layer_trans1 : {}}
+                    className="b" 
+                    style={hoverply ? styles.op_max : styles.op_min}
                 />
             </div>
         </div>
@@ -84,10 +84,10 @@ const styles = Stylesheet.create({
     scroll_trans: {
         transform: 'translateY(-50%)'
     },
-    layer_trans1: {
+    op_max: {
         opacity: '100%'
     },
-    layer_trans2: {
+    op_min: {
         opacity: '0%'
     }
 })

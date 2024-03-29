@@ -3,7 +3,7 @@ import './App.css'
 import Main from './components/Main'
 import Nav from './components/Navbar'
 import { useState } from 'react';
-import { ContWatch, GenreCard, MovieCard } from './components/mov_thumbn'
+import { ContWatch, GenreCard, MovieCard, TrailerCard } from './components/mov_thumbn'
 // import { Button } from './components/ui/button'
 // import useWindowDimensions from './hooks/useWindowDimensions'
 
@@ -23,6 +23,7 @@ function App() {
       <Main />
       <ContWatch />
       <MovieCard />
+      <TrailerCard />
       <GenreCard />
     </div>
   )
