@@ -48,9 +48,11 @@ func FuzzySearch(collection *mongo.Collection, searchTerm string) ([]string, err
 	return runSearch(collection, searchStage, searchTerm)
 }
 
+var projectOpts = bson.D{{"title", 1}, {"imdb.rating", 1}, {"_id", 1}, {"poster", 1}, {"runtime", 1}}
+
 func runSearch(collection *mongo.Collection, searchStage bson.D, searchTerm string) ([]string, error) {
 	limitStage := bson.D{{"$limit", 10}}
-	projectStage := bson.D{{"$project", bson.D{{"title", 1}, {"_id", 0}}}}
+	projectStage := bson.D{{"$project", projectOpts}}
 
 	cursor, err := collection.Aggregate(context.TODO(), mongo.Pipeline{searchStage, limitStage, projectStage})
 	if err != nil {
@@ -135,7 +137,7 @@ func SemanticSearch(collection *mongo.Collection, query string) ([]bson.M, error
 		},
 	}}
 	// Execute the aggregation pipeline
-	pipeline := mongo.Pipeline{vectorSearchStage}
+	pipeline := mongo.Pipeline{vectorSearchStage, bson.D{{"$project", projectOpts}}}
 	cursor, err := collection.Aggregate(context.Background(), pipeline)
 	if err != nil {
 		return nil, err
