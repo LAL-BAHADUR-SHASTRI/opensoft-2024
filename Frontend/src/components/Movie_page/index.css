@@ -64,6 +64,27 @@
     text-align: left;
 }
 
+.star-rating {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.logo_ {
+    height: 25px;
+}
+
+.rtxt_ {
+    font-family: Manrope;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 23.81px;
+    text-align: left;
+    color: #FFFFFF;
+    height: 24px;
+}
+
 .star {
     display: flex;
     flex-direction: row;

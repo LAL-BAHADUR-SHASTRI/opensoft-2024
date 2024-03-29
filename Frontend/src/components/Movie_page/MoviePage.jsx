@@ -1,6 +1,7 @@
 import { FaRegStar, FaStar, FaStarHalfAlt, FaStarHalf } from "react-icons/fa"
 import "./index.css"
 import imdb from '../../assets/imdb.svg'
+import flixify from '../../assets/logo.svg'
 
 const Headline = ({heading}) => {
   return(
@@ -35,14 +36,39 @@ const Stars = ({data}) => { // Only accepts rounded off data out of 10
     const stars = [];
     for (let i = 1; i < 11; i+=2) {
       if (i < data) {
-        stars.push(<FaStar size={24} color="#F0AB00" />);
+        stars.push(<FaStar key={i} size={24} color="#F0AB00" />);
       } else if (i === data) {
-        stars.push(<FaStarHalfAlt size={24} color="#F0AB00" />);
+        stars.push(<FaStarHalfAlt key={i} size={24} color="#F0AB00" />);
       } else {
-        stars.push(<FaRegStar size={24} color="#F0AB00"/>);
+        stars.push(<FaRegStar key={i} size={24} color="#F0AB00"/>);
       }
     }
     return <div className="star">{stars}</div>;
+}
+
+const Rating = ({data}) => {
+    let logo_ = imdb
+    let maxr = '/10'
+    let x = data.val
+    if (data.logo === 'flixify') {
+        logo_ = flixify
+        maxr = '/5'
+        x *= 2
+    }
+    return (
+        <div className="star-rating">
+            <img src={logo_} className="logo_" />
+            <Stars data={Math.round(x)} />
+            <p className="rtxt_">{data.val}{maxr}</p>
+        </div>
+    )
+}
+
+function transformRatingObject(ratingObject) {
+    return Object.entries(ratingObject).map(([platform, rating]) => ({
+        logo: platform,
+        val: rating
+    }));
 }
 
 const ArrangeComp = ({dat_arr, Component, dir}) => {
@@ -71,6 +97,7 @@ const MoviePage = (props) => {
         <Headline heading='Director' />
         <TextComp data={data.director} />
         <ArrangeComp dir="row" dat_arr={data.lang} Component={LangGen} />
+        <ArrangeComp dir="column" dat_arr={transformRatingObject(data.rating)} Component={Rating} />
     </div>
   )
 }
