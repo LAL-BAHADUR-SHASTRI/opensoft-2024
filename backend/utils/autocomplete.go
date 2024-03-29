@@ -3,7 +3,7 @@ package utils
 import (
 	"context"
 	"encoding/json"
-	"fmt"
+	// "fmt"
 
 	openai "github.com/sashabaranov/go-openai"
 	"go.mongodb.org/mongo-driver/bson"
@@ -53,8 +53,8 @@ func SemanticSearch(collection *mongo.Collection, searchTerm string) ([]string, 
         return nil, err
     }
 
-    fmt.Println("Generated embedding:", embedding)
-    fmt.Println("Embedding length:", len(embedding))
+    // fmt.Println("Generated embedding:", embedding)
+    // fmt.Println("Embedding length:", len(embedding))
 
 	searchStage := bson.D{
 		{"$vectorSearch", bson.D{

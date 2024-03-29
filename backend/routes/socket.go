@@ -13,7 +13,8 @@ import (
 	"github.com/gorilla/websocket"
 	"go.mongodb.org/mongo-driver/mongo"
 )
-var movieCollection *mongo.Collection = database.OpenCollection(database.Client, "embedded_movies")
+var embedded_movieCollection *mongo.Collection = database.OpenCollection(database.Client, "embedded_movies")
+var movieCollection *mongo.Collection = database.OpenCollection(database.Client, "movies")
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
@@ -78,7 +79,7 @@ func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 				continue // Using continue to avoid breaking the WebSocket connection on error
 			}
 
-			semanticResults, err := utils.SemanticSearch(movieCollection, sockData.Msg)
+			semanticResults, err := utils.SemanticSearch(embedded_movieCollection, sockData.Msg)
 			if err != nil {
 				log.Println("Error with semantic search:", err)
 				continue
