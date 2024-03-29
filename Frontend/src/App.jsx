@@ -11,17 +11,17 @@ import Footer from './components/Footer';
 import Intro from './pages/Intro';
 import Purchase from './pages/Purchase';
 import Success from './components/Success';
+import SignUp from './components/Signup';
 // import useWindowDimensions from './hooks/useWindowDimensions'
 
 function App() {
-  const [ActiveTab, setActiveTab] = useState(0);
   return (
     <Router>
-      <Nav onTabChange={setActiveTab}/>
       <Routes>
-        <Route path="/" element={<Intro ActiveTab={ActiveTab} />} />
+        <Route path="/" element={<Intro/>} />
         <Route path="/movie/:id" element={<MoviePage />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/purchase" element={<Purchase />} />
         <Route path="/:id/success" element={<Success />} />
         <Route path="*" element={<ErrorPage text="404 Page Not Found :(" />} />

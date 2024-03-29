@@ -82,7 +82,7 @@
   outline: none;
 }
 
-input {
+.inputnev {
   font-size: inherit;
   width: 20rem;
   overflow-wrap: break-word;
