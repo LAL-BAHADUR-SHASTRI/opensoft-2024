@@ -17,6 +17,7 @@
 .heading {
     width: 100%;
     overflow: hidden;
+    margin-bottom: 10px;
 }
 
 .txt_ {
@@ -69,9 +70,11 @@
     flex-direction: row;
     justify-content: left;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .logo_ {
+    width: 52px;
     height: 25px;
 }
 
@@ -91,4 +94,38 @@
     justify-content: center;
     margin-left: 22px;
     margin-right: 22px;
+}
+
+.topbar {
+    display: flex;
+    position: relative;
+    height: 70px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.movtitle {
+    display: flex;
+    position: relative;
+    font-family: Manrope;
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 60px;
+    text-align: left;
+    height: 100%;
+    color: #FFFFFF;
+}
+
+.watchlist_button {
+    display: flex;
+    position: relative;
+    width: 145.97px;
+    height: 36.23px;
+    gap: 0px;
+    color: #F0AB00;
+    border-radius: 34.16px;
+    border: 1.55px solid #F0AB00;
+    align-items: center;
+    justify-content: space-evenly;
 }

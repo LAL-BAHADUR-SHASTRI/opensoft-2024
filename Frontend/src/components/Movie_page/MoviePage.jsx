@@ -1,11 +1,11 @@
-import { FaRegStar, FaStar, FaStarHalfAlt, FaStarHalf } from "react-icons/fa"
+import { FaRegStar, FaStar, FaStarHalfAlt, FaStarHalf, FaPlus } from "react-icons/fa"
 import "./index.css"
 import imdb from '../../assets/imdb.svg'
 import flixify from '../../assets/logo.svg'
 
 const Headline = ({heading}) => {
   return(
-    <div className="row_ heading">
+    <div className="row heading">
         <div className="htxt_">{heading}</div>
         <div className="line_"></div>
     </div>
@@ -32,7 +32,7 @@ const LangGen = ({data}) => {
     )
 }
 
-const Stars = ({data}) => { // Only accepts rounded off data out of 10
+const Stars = ({data}) => {
     const stars = [];
     for (let i = 1; i < 11; i+=2) {
       if (i < data) {
@@ -83,6 +83,7 @@ const ArrangeComp = ({dat_arr, Component, dir}) => {
 
 const MoviePage = (props) => {
     let data = {
+        title: "Avengers: Endgame",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         director: ['Anthony Russo', 'Joe Russo'],
         cast: [],
@@ -94,6 +95,13 @@ const MoviePage = (props) => {
     }
   return(
     <div className="MoviePage_">
+        <div className="topbar">
+            <div className="movtitle">{data.title}</div>
+            <div className="watchlist_button">
+                <FaPlus />
+                <div>Watchlist</div>
+            </div>
+        </div>
         <Headline heading='Director' />
         <TextComp data={data.director} />
         <ArrangeComp dir="row" dat_arr={data.lang} Component={LangGen} />
