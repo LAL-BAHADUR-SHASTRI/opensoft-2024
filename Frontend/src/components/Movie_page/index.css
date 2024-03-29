@@ -4,7 +4,6 @@
     flex-direction: row;
     justify-content: left;
     align-items: center;
-    
 }
 
 .column {
@@ -63,4 +62,12 @@
     font-weight: 400;
     line-height: 24px;
     text-align: left;
+}
+
+.star {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 22px;
+    margin-right: 22px;
 }
