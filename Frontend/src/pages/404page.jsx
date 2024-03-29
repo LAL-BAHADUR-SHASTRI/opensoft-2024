@@ -8,9 +8,11 @@ const ErrorPage = ({text}) => {
       backgroundPosition: "center",
       minHeight: "96vh",
     }}>
-      <span className="loading-text text-pink-300 font-semibold text-xl">
+        <div className='animate-bounce'>
+      <span className="mt-10 loading-text text-pink-300 font-semibold text-xl">
         {text}  
       </span>
+      </div>
     </div>
   );
 };

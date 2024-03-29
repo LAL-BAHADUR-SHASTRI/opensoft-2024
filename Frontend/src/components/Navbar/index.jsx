@@ -12,12 +12,13 @@ import { document } from "postcss";
 //<--buttons-->
 
 
-const NavButtons = () => {
-  const [selected, setSelected] = useState('Home')
+const NavButtons = ({onTabChange}) => {
+  const [selected, setSelected] = useState(0)
 
-  const buttons = ['Home','Movies','Series','Watchlist'];
+  const buttons = ['Home','Movies','Watchlist','About'];
 
   const handlePress = (goto) => {
+    onTabChange(goto);
     setSelected(goto);
   }
 
@@ -30,11 +31,11 @@ const NavButtons = () => {
           <li>
           <p 
             style={item == selected ? styles.selectedStyle : {}}
-            onClick={() => handlePress(item)}
+            onClick={() => handlePress(index)}
             className="menuButton" >
             {item}
           </p>
-          {item == selected && <motion.div layoutId="selected" className="selected-bottom-bar"/> }
+          {item == buttons[selected] && <motion.div layoutId="selected" className="selected-bottom-bar"/> }
           </li>
         </ul>
       ))}
@@ -106,7 +107,7 @@ const UserData = ({isLoggedin}) => {
 
 //<--main-->
 
-const Nav = () => {
+const Nav = ({onTabChange}) => {
 
 
 
@@ -116,7 +117,7 @@ const Nav = () => {
     <nav className="navbar">
       <img className="logo" src={logo} /> {/*logo*/}
       <div style={styles.buttonContainer}>
-        <NavButtons />
+        <NavButtons onTabChange={onTabChange}/>
         <Search />
       </div>
       <div />
