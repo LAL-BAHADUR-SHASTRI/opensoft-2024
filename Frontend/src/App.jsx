@@ -14,12 +14,10 @@ import SignUp from './components/Signup';
 // import useWindowDimensions from './hooks/useWindowDimensions'
 
 function App() {
-  const [ActiveTab, setActiveTab] = useState(0);
   return (
     <Router>
-      <Nav onTabChange={setActiveTab}/>
       <Routes>
-        <Route path="/" element={<Intro ActiveTab={ActiveTab} />} />
+        <Route path="/" element={<Intro/>} />
         <Route path="/movie/:id" element={<MoviePage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />

@@ -140,12 +140,14 @@ const Search = () => {  // yar isko animate bhi karna hai .... baad me karunga
         value={prefix}
         onChange={onChange}
         onKeyDown={handleKeyDown}
-        className="dark:text-input searchbox "
+        className="dark:text-input searchbox inputnev "
+
       />
       <input
         type="text"
         name="search-bar"
         id="search-bar2"
+        className="inputnev"
         value={suggestion}
       />
       </motion.div>
