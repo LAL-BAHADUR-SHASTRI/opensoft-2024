@@ -22,16 +22,16 @@ const TextComp = ({data}) => {
 }
 
 const LangGen = ({data}) => {
-    return(
+    return (
         <div className="lg_">
             {data}
         </div>
     )
 }
 
-const RowComp = ({dat_arr, Component}) => {
+const ArrangeComp = ({dat_arr, Component, dir}) => {
     return (
-        <div className="row_">
+        <div className={dir}>
             {dat_arr.map((item, index) => (
             <Component key={index} data={item} />
         ))}
@@ -54,7 +54,7 @@ const MoviePage = (props) => {
     <div className="MoviePage_">
         <Headline heading='Director' />
         <TextComp data={data.director} />
-        <RowComp dat_arr={data.lang} Component={LangGen} />
+        <ArrangeComp dir="row" dat_arr={data.lang} Component={LangGen} />
     </div>
   )
 }

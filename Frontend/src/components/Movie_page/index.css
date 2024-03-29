@@ -1,9 +1,18 @@
-.row_ {
+.row {
     display: flex;
     width: 90%;
     flex-direction: row;
     justify-content: left;
     align-items: center;
+    
+}
+
+.column {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: left;
+    align-items: flex-start;
 }
 
 .heading {
@@ -40,7 +49,6 @@
 .lg_ {
     display: flex;
     justify-content: center;
-    font-size: 10px;
     align-items: center;
     background: #181818;
     margin-right: 10px;
