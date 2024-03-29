@@ -17,14 +17,7 @@ func getOpenAIClient() *openai.Client {
 
 // AutocompleteSearch performs a MongoDB text search on the 'title' field.
 func AutocompleteSearch(collection *mongo.Collection, searchTerm string) ([]string, error) {
-	searchStage := bson.D{
-		{"$search", bson.D{
-			{"text", bson.D{
-				{"query", searchTerm},
-				{"path", bson.A{"title"}},
-			}},
-		}},
-	}
+	searchStage := bson.D{{"$search", bson.D{{"autocomplete", bson.D{{"query", searchTerm}, {"path", "title"}}}}}}
 
 	return runSearch(collection, searchStage)
 }
