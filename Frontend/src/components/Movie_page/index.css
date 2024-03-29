@@ -6,6 +6,11 @@
     align-items: center;
 }
 
+.heading {
+    width: 100%;
+    overflow: hidden;
+}
+
 .txt_ {
     font-family: Manrope;
     font-size: 18px;
@@ -13,6 +18,23 @@
     line-height: 23.81px;
     text-align: left;
     color: #FFFFFF
+}
+
+.htxt_ {
+    font-family: Manrope;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: left;
+    color: #F0AB00;
+    margin-right: 8px;
+    z-index: 1;
+}
+
+.line_ {
+    width: 100%;
+    height: 0px;
+    border: 1px solid #333333;
 }
 
 .tag_ {

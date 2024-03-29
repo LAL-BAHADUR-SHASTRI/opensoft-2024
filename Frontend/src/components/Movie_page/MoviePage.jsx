@@ -1,5 +1,14 @@
 import "./index.css"
 
+const Headline = ({heading}) => {
+  return(
+    <div className="row_ heading">
+        <div className="htxt_">{heading}</div>
+        <div className="line_"></div>
+    </div>
+  )
+}
+
 const TextComp = ({data}) => {
   return(
     <div className="row_">
@@ -25,6 +34,7 @@ const MoviePage = (props) => {
     }
   return(
     <div className="MoviePage_">
+        <Headline heading='Director' />
         <TextComp data={data.director} />
     </div>
   )
