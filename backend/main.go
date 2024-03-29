@@ -2,8 +2,13 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"opensoft_2024/routes"
 )
+
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
 
 func setupRouter() *gin.Engine {
 
