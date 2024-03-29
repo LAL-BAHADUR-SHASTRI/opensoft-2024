@@ -2,7 +2,6 @@ import { Imgurl, Img2url } from "@/constants/themes";
 import "./index.css"
 import Stylesheet from "reactjs-stylesheet";
 import { useState } from "react";
-import {motion} from 'framer-motion'
 
 const Roll = (subprops) => {
     let varStyle = subprops.dir ? styles.initdir0 : styles.initdir1;

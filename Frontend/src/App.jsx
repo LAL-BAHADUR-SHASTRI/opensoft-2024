@@ -4,6 +4,7 @@ import Main from './components/Main'
 import Nav from './components/Navbar'
 import { useState } from 'react';
 import { ContWatch, GenreCard, MovieCard, TrailerCard } from './components/mov_thumbn'
+import { MoviePage } from './components/Movie_page';
 // import { Button } from './components/ui/button'
 // import useWindowDimensions from './hooks/useWindowDimensions'
 
@@ -25,6 +26,7 @@ function App() {
       <MovieCard />
       <TrailerCard />
       <GenreCard />
+      <MoviePage />
     </div>
   )
 }
