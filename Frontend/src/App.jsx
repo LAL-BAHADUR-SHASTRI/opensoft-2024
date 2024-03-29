@@ -10,6 +10,7 @@ import SignIn from './components/Signin';
 import Footer from './components/Footer';
 import Intro from './pages/Intro';
 import Purchase from './pages/Purchase';
+import SignUp from './components/Signup';
 // import useWindowDimensions from './hooks/useWindowDimensions'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<Intro />} />
         <Route path="/movie/:id" element={<MoviePage />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/purchase" element={<Purchase />} />
         <Route path="*" element={<ErrorPage text="404 Page Not Found :(" />} />
       </Routes>

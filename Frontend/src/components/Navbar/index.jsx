@@ -103,7 +103,9 @@ const UserData = ({isLoggedin}) => {
     return (
       <div style={{display: 'flex', flexDirection: "row", paddingRight: 30}}>
         <Link to='/signin'><div className="signin" >Sign in</div></Link>
+        <Link to='/signup'>
         <div className="signup" >Sign up</div>
+        </Link>
       </div>
     )
   }
