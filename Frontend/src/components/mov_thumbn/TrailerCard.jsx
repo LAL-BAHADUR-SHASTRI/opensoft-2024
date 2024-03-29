@@ -5,6 +5,8 @@ import Stylesheet from "reactjs-stylesheet";
 import { useState } from "react";
 import { LuClock3 } from "react-icons/lu";
 
+// Replace data with props.data
+// Or replace props with {data} -> preferred
 const TrailerCard = (props) => {
     let data = {
         mm: '2',

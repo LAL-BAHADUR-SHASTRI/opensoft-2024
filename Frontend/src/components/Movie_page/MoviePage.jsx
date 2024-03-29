@@ -29,6 +29,16 @@ const LangGen = ({data}) => {
     )
 }
 
+const RowComp = ({dat_arr, Component}) => {
+    return (
+        <div className="row_">
+            {dat_arr.map((item, index) => (
+            <Component key={index} data={item} />
+        ))}
+        </div>
+    )
+}
+
 const MoviePage = (props) => {
     let data = {
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -44,11 +54,7 @@ const MoviePage = (props) => {
     <div className="MoviePage_">
         <Headline heading='Director' />
         <TextComp data={data.director} />
-        <div className="row_">
-            {data.lang.map((str, index) => (
-            <LangGen key={index} data={str} />
-        ))}
-        </div>
+        <RowComp dat_arr={data.lang} Component={LangGen} />
     </div>
   )
 }
