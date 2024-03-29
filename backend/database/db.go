@@ -39,3 +39,4 @@ func OpenCollection(client *mongo.Client, collectionName string)*mongo.Collectio
 	var collection *mongo.Collection =client.Database("sample_mflix").Collection(collectionName)
 	return collection
 }
+
