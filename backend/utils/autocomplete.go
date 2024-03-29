@@ -5,18 +5,16 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"opensoft_2024/database"
-
 	openai "github.com/sashabaranov/go-openai"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var movieCollection *mongo.Collection = database.OpenCollection(database.Client, "embedded_movies")
-
+// getOpenAIClient returns a new client for OpenAI's API using the provided secret key.
 func getOpenAIClient() *openai.Client {
 	return openai.NewClient("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")
 }
+
 
 func AutocompleteSearch(collection *mongo.Collection, searchTerm string) ([]string, error) {
 	searchStage := bson.D{
@@ -28,9 +26,10 @@ func AutocompleteSearch(collection *mongo.Collection, searchTerm string) ([]stri
 		}},
 	}
 
-	return runSearch(collection, searchStage, searchTerm)
+    return runSearch(collection, searchStage, searchTerm)
 }
 
+// FuzzySearch performs a MongoDB fuzzy text search on the 'title' field.
 func FuzzySearch(collection *mongo.Collection, searchTerm string) ([]string, error) {
 	searchStage := bson.D{
 		{"$search", bson.D{
@@ -45,18 +44,18 @@ func FuzzySearch(collection *mongo.Collection, searchTerm string) ([]string, err
 		}},
 	}
 
-	return runSearch(collection, searchStage, searchTerm)
+    return runSearch(collection, searchStage, searchTerm)
 }
 
 func runSearch(collection *mongo.Collection, searchStage bson.D, searchTerm string) ([]string, error) {
-	limitStage := bson.D{{"$limit", 10}}
-	projectStage := bson.D{{"$project", bson.D{{"title", 1}, {"_id", 0}}}}
+    limitStage := bson.D{{"$limit", 10}}
+    projectStage := bson.D{{"$project", bson.D{{"title", 1}, {"_id", 0}}}}
 
-	cursor, err := collection.Aggregate(context.TODO(), mongo.Pipeline{searchStage, limitStage, projectStage})
-	if err != nil {
-		return nil, err
-	}
-	defer cursor.Close(context.Background())
+    cursor, err := collection.Aggregate(context.TODO(), mongo.Pipeline{searchStage, limitStage, projectStage})
+    if err != nil {
+        return nil, err
+    }
+    defer cursor.Close(context.Background())
 
 	var titles []string
 	for cursor.Next(context.Background()) {
@@ -76,27 +75,24 @@ func runSearch(collection *mongo.Collection, searchStage bson.D, searchTerm stri
 	return titles, nil
 }
 
+
+
 func generateEmbedding(text string) ([]float32, error) {
 	client := getOpenAIClient()
 	response, err := client.CreateEmbeddings(context.Background(), openai.EmbeddingRequest{
 		Model: "text-embedding-ada-002",
+
 		Input: text,
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	// Convert the response to JSON to inspect its structure
 	responseBytes, err := json.Marshal(response)
 	if err != nil {
 		return nil, err
 	}
 
-	// Output the JSON for inspection
-	// You can print or log the JSON response for debugging purposes
-	// fmt.Println(string(responseBytes))
-
-	// Unmarshal the JSON back to a struct to access the embedding
 	var jsonResponse struct {
 		Embeddings []struct {
 			Embedding []float32 `json:"embedding"`
@@ -112,9 +108,10 @@ func generateEmbedding(text string) ([]float32, error) {
 	}
 
 	embedding := jsonResponse.Embeddings[0].Embedding
-
 	return embedding, nil
 }
+
+
 
 // SemanticSearch performs a semantic search in the MongoDB collection using the generated embedding.
 func SemanticSearch(collection *mongo.Collection, query string) ([]bson.M, error) {
@@ -122,8 +119,8 @@ func SemanticSearch(collection *mongo.Collection, query string) ([]bson.M, error
 	if err != nil {
 		return nil, err
 	}
-	// fmt.Println(embedding)
-	fmt.Println(len(embedding))
+    // fmt.Println(embedding)
+    fmt.Println(len(embedding))
 	// Prepare the $vectorSearch aggregation stage
 	vectorSearchStage := bson.D{{
 		"$vectorSearch", bson.D{
@@ -134,22 +131,34 @@ func SemanticSearch(collection *mongo.Collection, query string) ([]bson.M, error
 			{"index", "PlotSemanticSearch"},
 		},
 	}}
+
 	// Execute the aggregation pipeline
-	pipeline := mongo.Pipeline{vectorSearchStage}
-	cursor, err := collection.Aggregate(context.Background(), pipeline)
+	cursor, err := collection.Aggregate(context.Background(), mongo.Pipeline{vectorSearchStage})
+    fmt.Println(cursor)
+    fmt.Println("Hello!")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error executing vector search: %w", err)
 	}
 	defer cursor.Close(context.Background())
 
-	// Decode the results
-	var results []bson.M
-	if err := cursor.All(context.Background(), &results); err != nil {
-		return nil, err
-	}
+    var results []bson.M
+    for cursor.Next(context.Background()) {
+        var doc bson.M
+        if err := cursor.Decode(&doc); err != nil {
+            return nil, fmt.Errorf("error decoding document: %w", err)
+        }
+        results = append(results, doc)
+    }
 
+    if err := cursor.Err(); err != nil {
+        return nil, fmt.Errorf("error with cursor: %w", err)
+    }
+
+    fmt.Println(results)
+    fmt.Println("Hello!")
 	return results, nil
 }
+
 
 // func SemanticSearch(collection *mongo.Collection, userQuery string) ([]string, error) {
 // 	client := getOpenAIClient()
