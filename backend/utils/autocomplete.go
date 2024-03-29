@@ -41,24 +41,24 @@ func FuzzySearch(collection *mongo.Collection, searchTerm string) ([]string, err
 }
 
 func SemanticSearch(collection *mongo.Collection, searchTerm string) ([]string, error) {
-    embedding, err := generateEmbedding(searchTerm)
-    if err != nil {
-        return nil, err
-    }
+	embedding, err := generateEmbedding(searchTerm)
+	if err != nil {
+		return nil, err
+	}
 
-    // fmt.Println("Generated embedding:", embedding)
-    // fmt.Println("Embedding length:", len(embedding))
+	// fmt.Println("Generated embedding:", embedding)
+	// fmt.Println("Embedding length:", len(embedding))
 
 	searchStage := bson.D{
 		{"$vectorSearch", bson.D{
 			{"queryVector", embedding},
 			{"path", "plot_embedding"},
-			{"numCandidates",100},
+			{"numCandidates", 100},
 			{"limit", 100},
-			{"index","PlotSemanticSeach"},
+			{"index", "PlotSemanticSeach"},
 		}},
 	}
-    return runSearch(collection, searchStage)
+	return runSearch(collection, searchStage)
 }
 
 // runSearch executes the MongoDB aggregation pipeline and returns the search results.
