@@ -16,6 +16,7 @@ func setupRouter() *gin.Engine {
 
 	routes.UserServiceRouter(r)
 	routes.MovieServiceRouter(r)
+	routes.PaymentServiceRouter(r)
 
 	r.GET("/ws", func(c *gin.Context) {
 		routes.ServeWebSocket(c.Writer, c.Request)

@@ -13,6 +13,8 @@ const (
 	Tier3 Tier = 3
 )
 
+
+
 type User struct {
 	ID       primitive.ObjectID `bson:"_id"`
 	Email    string             `json:"email" validate:"email, required"`
