@@ -19,6 +19,9 @@ var movieCollection *mongo.Collection = database.OpenCollection(database.Client,
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
 }
 
 type SockDataType string
@@ -80,9 +83,17 @@ func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 				continue // Using continue to avoid breaking the WebSocket connection on error
 			}
 
+			semanticResults, err := utils.SemanticSearch(movieCollection, sockData.Msg)
+			if err != nil {
+				log.Println("Error with semantic search:", err)
+				continue
+			}
+
+			
 			results := map[string]interface{}{
 				"autocomplete": autocompleteResults,
 				"fuzzy":        fuzzyResults,
+				"semantic": semanticResults,
 			}
 			jsonResults, err := json.Marshal(results)
 			if err != nil {

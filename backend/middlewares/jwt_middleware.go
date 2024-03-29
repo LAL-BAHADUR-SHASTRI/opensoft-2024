@@ -3,6 +3,7 @@ package middlewares
 import (
 	"opensoft_2024/models"
 	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -17,8 +18,9 @@ func JwtMiddleware(c *gin.Context) {
 		return
 
 	}
+
 	//validate the token
-	claims, err := ValidateJwtToken(token)
+	claims, err := ValidateJwtToken(removeBearer(token))
 	if err != nil {
 
 		c.JSON(401, gin.H{"error": "Invalid token"})
@@ -31,12 +33,24 @@ func JwtMiddleware(c *gin.Context) {
 	c.Next()
 }
 
+func removeBearer(token string) string {
+
+	if len(token) > 7 && token[:7] == "Bearer " {
+		return token[7:]
+	}
+	return token
+}
+
+// update to validate time in the below function
 func ValidateJwtToken(token string) (map[string]interface{}, error) {
 	claims := jwt.MapClaims{}
 	_, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte("secret"), nil
 	})
 	if err != nil {
+		return nil, err
+	}
+	if claims["exp"].(float64) < float64(time.Now().Unix()) {
 		return nil, err
 	}
 	return claims, nil
@@ -67,5 +81,5 @@ func CreateJwtToken(userAuth UserAuth, id primitive.ObjectID) (string, error) {
 		return "", err
 	}
 
-	return tokenString, nil
+	return "Bearer " + tokenString, nil
 }
