@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
+
+import _ from 'videojs-contrib-quality-levels';
+import 'videojs-max-quality-selector'
+
+const SpeedControl = ({ onChange }) => {
+  return (
+    <select
+      onChange={(e) => onChange(parseFloat(e.target.value))}
+      defaultValue="1"
+    >
+      <option value="0.5">0.5x</option>
+      <option value="0.75">0.75x</option>
+      <option value="1">Normal</option>
+      <option value="1.25">1.25x</option>
+      <option value="1.5">1.5x</option>
+      <option value="2">2x</option>
+    </select>
+  );
+};
 
 export const VideoJS = (props) => {
   const videoRef = React.useRef(null);
@@ -32,9 +51,25 @@ export const VideoJS = (props) => {
     }
   }, [options, videoRef]);
 
+  // let player = videojs('my-video')
+  // console.log(player)
+
+  // useEffect(() => {
+  //   if (player) {
+  //     consle.log(player.qualityLevels())
+  //     player.hlsQualitySelector({ displayCurrentQuality: true });
+  //   }
+  // }, [player]);
+
   // Dispose the Video.js player when the functional component unmounts
   React.useEffect(() => {
     const player = playerRef.current;
+
+    console.log('hi')
+    let qualityLevels = player.qualityLevels();
+    videojs.log(qualityLevels)
+
+    player.maxQualitySelector();
 
     return () => {
       if (player && !player.isDisposed()) {
@@ -44,9 +79,17 @@ export const VideoJS = (props) => {
     };
   }, [playerRef]);
 
+
   return (
     <div data-vjs-player>
-      <div ref={videoRef} />
+      <div id='my-video' ref={videoRef} />
+      <div
+        style={{
+          marginTop: "20px",
+        }}
+      >
+        {/* <SpeedControl onChange={(value) => setPlaybackRate(value)} /> */}
+      </div>
     </div>
   );
 }

@@ -10,6 +10,7 @@
 }
 
 .navbar {
+  top: 0;
   display: flex;
   flex-direction: row;
   background: var(--dark-shadow);

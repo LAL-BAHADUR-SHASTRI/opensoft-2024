@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { FaCircleUser } from "react-icons/fa6";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { document } from "postcss";
+import { Link, Navigate } from "react-router-dom";
 
 //<--buttons-->
 
@@ -67,6 +68,9 @@ const Search = () => {  // yar isko animate bhi karna hai .... baad me karunga
       <div />
       {isActive && <div style={styles.backShadow} onClick={() => {setActive(false);setTyping(false) }} />}
       <motion.div 
+        onClick={() => setActive(true)}
+        animate={{scaleX: [1,1.1,1]}}
+        transition={{duration: 0.3}}
         style={{...styles.searchContainer, right: '26%' , position: "absolute", minWidth: '55%',zIndex: 10}} >
         <motion.span><LuSearch 
           size={20}
@@ -98,7 +102,7 @@ const UserData = ({isLoggedin}) => {
   else {
     return (
       <div style={{display: 'flex', flexDirection: "row", paddingRight: 30}}>
-        <div className="signin" >Sign in</div>
+        <Link to='/signin'><div className="signin" >Sign in</div></Link>
         <div className="signup" >Sign up</div>
       </div>
     )

@@ -3,6 +3,7 @@ import VideoJS from "@/components/videojs";
 import { useRef } from "react";
 import videojs from "video.js";
 
+
 const Player = () => {
   
   const playerRef = useRef(null);
@@ -11,14 +12,24 @@ const Player = () => {
     autoplay: false,
     controls: true,
     resposive: true,
+    controlBar: {
+      skipButtons: {
+        forward: 10,
+        backward: 10,
+      },
+    },   
     fluid: true,
+    playbackRates: [0.25,0.5,0.75,1.25,1.5,1.75,2],
+    plugins: {
+    },
     sources: [
       {
-        src: "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8", 
-        type: "application/x-mpegURL" ,
+        src: "https://vz-b4f1e97e-483.b-cdn.net/65c65840-de66-4c27-afd0-a3b5a904b768/playlist.m3u8", 
+       type: "application/x-mpegURL" ,
       },
     ]
   }
+    
 
   const handlePlayerReady = (player) => {
     playerRef.current = player;
@@ -32,6 +43,7 @@ const Player = () => {
       videojs.log('player will dispose');
     });
   };
+
 
   return (
   <div style={styles.player}>

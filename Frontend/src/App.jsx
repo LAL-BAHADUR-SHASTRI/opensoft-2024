@@ -16,7 +16,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Intro />} />
-        <Route path="/movie" element={<MoviePage />} />
+        <Route path="/movie/:id" element={<MoviePage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="*" element={<ErrorPage text="404 Page Not Found :(" />} />
       </Routes>

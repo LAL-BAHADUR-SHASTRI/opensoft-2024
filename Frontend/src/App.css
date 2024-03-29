@@ -6,6 +6,26 @@
   background:  linear-gradient(110deg, rgba(2,0,0,1) 10%, rgba(2,0,0,0.9) 50%,  rgba(29,23,90,1), rgba(29,23,90,1));
 }
 
+.vjs-menu-content {
+  width: 4rem !important;
+  max-height: 21em;
+}
+
+.vjs-menu-content::-webkit-scrollbar {
+  display: none;
+}
+
+.video-js .vjs-control {
+}
+
+.vjs-menu-button {
+  min-width: 3.5rem;
+}
+
+.vjs-menu-item {
+  min-height: 2rem;
+}
+
 /* .logo { */
 /*   height: 6em; */
 /*   padding: 1.5em; */
