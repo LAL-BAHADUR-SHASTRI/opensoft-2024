@@ -15,7 +15,7 @@ func getOpenAIClient() *openai.Client {
 	return openai.NewClient("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")
 }
 
-
+// AutocompleteSearch performs a MongoDB text search on the 'title' field.
 func AutocompleteSearch(collection *mongo.Collection, searchTerm string) ([]string, error) {
 	searchStage := bson.D{
 		{"$search", bson.D{
@@ -26,7 +26,7 @@ func AutocompleteSearch(collection *mongo.Collection, searchTerm string) ([]stri
 		}},
 	}
 
-    return runSearch(collection, searchStage, searchTerm)
+	return runSearch(collection, searchStage)
 }
 
 // FuzzySearch performs a MongoDB fuzzy text search on the 'title' field.
@@ -44,18 +44,39 @@ func FuzzySearch(collection *mongo.Collection, searchTerm string) ([]string, err
 		}},
 	}
 
-    return runSearch(collection, searchStage, searchTerm)
+	return runSearch(collection, searchStage)
 }
 
-func runSearch(collection *mongo.Collection, searchStage bson.D, searchTerm string) ([]string, error) {
-    limitStage := bson.D{{"$limit", 10}}
-    projectStage := bson.D{{"$project", bson.D{{"title", 1}, {"_id", 0}}}}
-
-    cursor, err := collection.Aggregate(context.TODO(), mongo.Pipeline{searchStage, limitStage, projectStage})
+func SemanticSearch(collection *mongo.Collection, searchTerm string) ([]string, error) {
+    embedding, err := generateEmbedding(searchTerm)
     if err != nil {
         return nil, err
     }
-    defer cursor.Close(context.Background())
+
+    fmt.Println("Generated embedding:", embedding)
+    fmt.Println("Embedding length:", len(embedding))
+
+	searchStage := bson.D{
+		{"$vectorSearch", bson.D{
+			{"queryVector", embedding},
+			{"path", "plot_embedding"},
+			{"numCandidates",100},
+			{"limit", 100},
+			{"index","PlotSemanticSeach"},
+		}},
+	}
+    return runSearch(collection, searchStage)
+}
+
+// runSearch executes the MongoDB aggregation pipeline and returns the search results.
+func runSearch(collection *mongo.Collection, searchStage bson.D) ([]string, error) {
+	projectStage := bson.D{{"$project", bson.D{{"title", 1}, {"_id", 0}}}}
+
+	cursor, err := collection.Aggregate(context.TODO(), mongo.Pipeline{searchStage, projectStage})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.Background())
 
 	var titles []string
 	for cursor.Next(context.Background()) {
@@ -75,8 +96,7 @@ func runSearch(collection *mongo.Collection, searchStage bson.D, searchTerm stri
 	return titles, nil
 }
 
-
-
+// generateEmbedding generates the embedding of the given text using OpenAI's API.
 func generateEmbedding(text string) ([]float32, error) {
 	client := getOpenAIClient()
 	response, err := client.CreateEmbeddings(context.Background(), openai.EmbeddingRequest{
@@ -110,115 +130,3 @@ func generateEmbedding(text string) ([]float32, error) {
 	embedding := jsonResponse.Embeddings[0].Embedding
 	return embedding, nil
 }
-
-
-
-// SemanticSearch performs a semantic search in the MongoDB collection using the generated embedding.
-func SemanticSearch(collection *mongo.Collection, query string) ([]bson.M, error) {
-	embedding, err := generateEmbedding(query)
-	if err != nil {
-		return nil, err
-	}
-    // fmt.Println(embedding)
-    fmt.Println(len(embedding))
-	// Prepare the $vectorSearch aggregation stage
-	vectorSearchStage := bson.D{{
-		"$vectorSearch", bson.D{
-			{"queryVector", embedding},
-			{"path", "plot_embedding"},
-			{"numCandidates", 100},
-			{"limit", 4},
-			{"index", "PlotSemanticSearch"},
-		},
-	}}
-
-	// Execute the aggregation pipeline
-	cursor, err := collection.Aggregate(context.Background(), mongo.Pipeline{vectorSearchStage})
-    fmt.Println(cursor)
-    fmt.Println("Hello!")
-	if err != nil {
-		return nil, fmt.Errorf("error executing vector search: %w", err)
-	}
-	defer cursor.Close(context.Background())
-
-    var results []bson.M
-    for cursor.Next(context.Background()) {
-        var doc bson.M
-        if err := cursor.Decode(&doc); err != nil {
-            return nil, fmt.Errorf("error decoding document: %w", err)
-        }
-        results = append(results, doc)
-    }
-
-    if err := cursor.Err(); err != nil {
-        return nil, fmt.Errorf("error with cursor: %w", err)
-    }
-
-    fmt.Println(results)
-    fmt.Println("Hello!")
-	return results, nil
-}
-
-
-// func SemanticSearch(collection *mongo.Collection, userQuery string) ([]string, error) {
-// 	client := getOpenAIClient()
-
-// 	// Generate embeddings for the user query
-// 	queryReq := openai.EmbeddingRequest{
-// 		Input: []string{userQuery},
-// 		Model: openai.AdaEmbeddingV2,
-// 	}
-// 	queryResponse, err := client.CreateEmbeddings(context.Background(), queryReq)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	// Perform text search to get initial set of documents
-// 	initialResults, err := FuzzySearch(collection, userQuery)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	// Generate embeddings for the documents returned from the initial search
-// 	targetReq := openai.EmbeddingRequest{
-// 		Input: initialResults,
-// 		Model: openai.AdaEmbeddingV2,
-// 	}
-// 	targetResponse, err := client.CreateEmbeddings(context.Background(), targetReq)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	// Compute similarity scores between user query and each document
-// 	queryEmbedding := queryResponse.Data[0]
-// 	var scoredResults []struct {
-// 		Title     string
-// 		Similarity float64
-// 	}
-// 	for i, embedding := range targetResponse.Data {
-// 		similarity, err := queryEmbedding.DotProduct(&embedding)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		scoredResults = append(scoredResults, struct {
-// 			Title     string
-// 			Similarity float64
-// 		}{
-// 			Title:     initialResults[i],
-// 			Similarity: float64(similarity),
-// 		})
-// 	}
-
-// 	// Sort results by similarity score
-// 	sort.Slice(scoredResults, func(i, j int) bool {
-// 		return scoredResults[i].Similarity > scoredResults[j].Similarity
-// 	})
-
-// 	// Extract and return sorted titles
-// 	var sortedTitles []string
-// 	for _, result := range scoredResults {
-// 		sortedTitles = append(sortedTitles, result.Title)
-// 	}
-
-// 	return sortedTitles, nil
-// }
