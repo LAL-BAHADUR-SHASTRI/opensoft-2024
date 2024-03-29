@@ -10,6 +10,7 @@ import SignIn from './components/Signin';
 import Footer from './components/Footer';
 import Intro from './pages/Intro';
 import Purchase from './pages/Purchase';
+import Success from './components/Success';
 // import useWindowDimensions from './hooks/useWindowDimensions'
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/movie/:id" element={<MoviePage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/purchase" element={<Purchase />} />
+        <Route path="/:id/success" element={<Success />} />
         <Route path="*" element={<ErrorPage text="404 Page Not Found :(" />} />
       </Routes>
       <Footer />
@@ -32,6 +34,6 @@ export default App;
 
 const styles=Stylesheet.create({
   mainContainer: {
-    flex: 1,
+    display: 'flex'
   },
 })
