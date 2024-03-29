@@ -2,6 +2,7 @@ import Stylesheet from "reactjs-stylesheet";
 import VideoJS from "@/components/videojs";
 import { useRef } from "react";
 import videojs from "video.js";
+import Nav from "@/components/Navbar";
 
 
 const Player = () => {
@@ -65,12 +66,14 @@ export default MoviePage;
 
 
 const styles = Stylesheet.create({
-  player: {
-    width: '90vw',
-    minheight: 'calc(70*(1vw + 1vh)/3)',
-    margin: 'auto'
-  },
   container: {
     flex: 1,
-  }
+  },
+  player: {
+    width: '75vw',
+    minheight: 'calc(70*(1vw + 1vh)/4)',
+    maxWidth: '90vw',
+    margin: 'auto',
+    marginTop: 10
+  },
 })

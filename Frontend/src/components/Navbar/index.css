@@ -10,7 +10,6 @@
 }
 
 .navbar {
-  top: 0;
   display: flex;
   flex-direction: row;
   background: var(--dark-shadow);
@@ -41,16 +40,6 @@
   border-radius: 0.5rem 0.5rem 0 0;
 }
 
-.searchbox {
-  margin-left: 1rem;
-  background-color: rgba(20, 20, 20, 1);
-  color: white;
-  width: 100%;
-  transition: 0.57s all ease-in;
-}
-.searchbox:focus-visible {
-  outline: none;
-}
 
 .signup {
   align-items: center;
@@ -82,3 +71,36 @@
   border-radius: 8px;
 }
 
+
+.searchbox {
+  z-index: 2;
+  margin-left: 1rem;
+  color: white;
+  transition: 0.57s all ease-in;
+}
+.searchbox:focus-visible {
+  outline: none;
+}
+
+input {
+  font-size: inherit;
+  width: 20rem;
+  overflow-wrap: break-word;
+  position: absolute;
+  word-wrap: break-word;
+  background-color: transparent;
+  left: 15px
+}
+
+#search-bar2 {
+  z-index: 1;
+  color: gray;
+  cursor: none;
+  margin-left: 1rem;
+  left: 15px
+}
+
+
+textarea:focus, input:focus {
+    outline: none;
+}
