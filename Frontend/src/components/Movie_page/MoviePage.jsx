@@ -21,6 +21,14 @@ const TextComp = ({data}) => {
   )
 }
 
+const LangGen = ({data}) => {
+    return(
+        <div className="lg_">
+            {data}
+        </div>
+    )
+}
+
 const MoviePage = (props) => {
     let data = {
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -28,7 +36,7 @@ const MoviePage = (props) => {
         cast: [],
         trailer: [],
         release: 2023,
-        lang: [],
+        lang: ['Hindi', 'English', 'Bengali'],
         genre: [],
         rating: {imdb: 9.5, flixify: 4.2}
     }
@@ -36,6 +44,11 @@ const MoviePage = (props) => {
     <div className="MoviePage_">
         <Headline heading='Director' />
         <TextComp data={data.director} />
+        <div className="row_">
+            {data.lang.map((str, index) => (
+            <LangGen key={index} data={str} />
+        ))}
+        </div>
     </div>
   )
 }
