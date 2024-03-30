@@ -82,7 +82,8 @@ export default MovieList;
 const styles = Stylesheet.create({
   container: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    minHeight:'100vh'
   },
   selectbar: {
     display: 'flex',
