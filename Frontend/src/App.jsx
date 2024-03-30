@@ -15,6 +15,7 @@ import SignUp from './components/Signup';
 import About from './pages/About';
 import { LineChart } from 'lucide-react';
 import { ToastContainer } from 'react-toastify';
+import userStore from './stores/user_store';
 // import useWindowDimensions from './hooks/useWindowDimensions'
 
 function App() {    
@@ -47,13 +48,13 @@ function App() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    console.log('Success:', data);
-
+   console.log('Success:', data);
+    userStore.setState({email: data.email, bookmarks: data.bookmarks, id: data.id, tier: data.tier})
+    
   }
    
   useEffect(() => {
-    // const [userToken, setUserToken] = useState(localStorage.getItem('accessToken'))
-    // const userToken = localStorage.getItem('accessToken')
+  
     
    getUserWithJwt()
   }, []);
