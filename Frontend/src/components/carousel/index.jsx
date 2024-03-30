@@ -64,7 +64,7 @@ const Carousel = (props) => {
                   <div style={styles.row}>
                     <img src={imdb} className="imdb-logo" />
                     <p className="rating">{item?.imdb.rating || data.rating}</p>
-                    {(item?.tags || data.tags).map((el) =>
+                    {(item?.genres || data.tags).map((el) =>
                       <p className="tags">{el}</p>
                     )}
                   </div>
@@ -73,7 +73,7 @@ const Carousel = (props) => {
                   </p>
                   <p className="movie-duration" >
                     {(() => {
-                      let val =  item?.runtime || data.duration;
+                      let val =  item?.runtime || data.runtime;
                       let dur = '';
                       if (val > 60) {
                         dur += Math.round((val/60)-0.5).toString();
@@ -85,7 +85,7 @@ const Carousel = (props) => {
                       })()}
                   </p>
                   <p className="movie-description" >
-                    {item?.desc?.length > 100 ? item?.desc.slice(0,100)+'...' : item?.desc || data.desc}
+                    {item?.plot?.length > 100 ? item?.plot.slice(0,100)+'...' : item?.plot || data.desc}
                   </p>
                   <div style={styles.row}>
                     <p className="play-now">

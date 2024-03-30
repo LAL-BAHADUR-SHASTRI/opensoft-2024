@@ -14,7 +14,7 @@ const HomePage = () => {
   
   
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BHOST}/movie/`)
+    fetch(`${import.meta.env.VITE_BHOST}/movie/topimdb`)
     .then(response => response.json())
     .then(data => {
         setCarData(data);
