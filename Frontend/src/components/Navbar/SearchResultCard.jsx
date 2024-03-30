@@ -6,12 +6,11 @@ import {useNavigate} from 'react-router-dom';
 
 const SearchResultCard = ({data, hideShadow}) => {
   const navigate = useNavigate();
-  console.log(data)
   data = {
-    name : data,
+    name : data?.title,
     release: 2001,
-    duration: '2:30',
-    id: 1
+    duration: data?.duration,
+    id: data['_id']
   }
   return (
     <div onClick={() => console.log('click')} className="searchResultCard" style={styles.container}>
