@@ -1,4 +1,6 @@
 import React, {useState} from "react";
+import { Link } from "react-router-dom";
+
 function SignUp() {
     const [formData, setFormData] = useState({ email: "", createpass: "",confirmpass:"" });
 
@@ -20,7 +22,7 @@ function SignUp() {
         <div className="my-8 w-full max-w-lg p-4   rounded-lg shadow-lg shadow-blue-900 sm:p-6 md:p-8 backdrop-blur-lg">
           <form className="space-y-8 m-6" action="#">
             <div className="flex justify-center">
-              <img alt="Logo" src="logo.png" className="h-8 w-auto bg-logo" />
+              <img alt="Logo" src="logo.svg" className="h-8 w-auto" />
             </div>
             <div>
               <label
@@ -99,7 +101,7 @@ function SignUp() {
                 href="#"
                 className="text-g-700 hover:underline"
               >
-                <span className="text-gold">Signin</span>
+                <Link to="/signin"><span className="text-gold">Signin</span></Link>
               </a>
             </div>
           </form>

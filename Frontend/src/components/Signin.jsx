@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -106,9 +107,11 @@ function SignIn() {
             <button
               className="text-g-700 hover:underline dark:text-blue-500"
             >
+              <Link to="/signup">
               <span className="text-gold">
               Signup
               </span>
+              </Link>
             </button>
           </div>
         </form>
