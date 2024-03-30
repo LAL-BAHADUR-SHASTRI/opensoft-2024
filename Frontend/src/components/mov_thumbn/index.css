@@ -2,6 +2,7 @@
 
 .ContWatch_ {
     margin: 0 10px;
+    width: 391px;
     height: 199px;
     left: 4px;
     gap: 0px;
@@ -12,7 +13,6 @@
 }
 
 .divimg {
-    width: 391px;
     height: 194px;
     overflow: hidden;
     border-radius: 10px 10px 0px 0px;
@@ -22,6 +22,8 @@
     height: 100%;
     width: 100%;
     transition: all 0.5s;
+
+  object-fit: cover;
 }
 
 .img_:hover {
@@ -246,7 +248,7 @@
     display: flex;
     flex-direction: row;
     position: relative;
-  overflow: hidden;
+    overflow: hidden;
 }
 
 .GenreCard_ :not(.genre_txt, .genre_txt_o) {

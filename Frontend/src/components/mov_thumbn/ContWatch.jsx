@@ -1,11 +1,13 @@
 import { Imgurl } from "@/constants/themes";
 import "./index.css"
 import { FaPlay } from "react-icons/fa6";
+import { genRand } from "@/lib/utils";
 
 const ContWatch = (props) => {
     const prog_bar = {
         height: '100%',
-        width: `${props?.data?.watchLen || 30}%`,
+        width: `${genRand(0,100)}%`,
+        // width: `${props?.data?.watchLen || 30}%`,
         background: '#F0AB00',
         borderBottomLeftRadius: 10
       }
