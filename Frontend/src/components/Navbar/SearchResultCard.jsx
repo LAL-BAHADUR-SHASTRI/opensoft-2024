@@ -17,7 +17,7 @@ const SearchResultCard = ({data, hideShadow}) => {
     <div onClick={() => console.log('click')} className="searchResultCard" style={styles.container}>
       <img style={styles.banner} src={data.img || Imgurl} />
       <div style={styles.details} >
-        <p style={styles.name}>{data.name}</p>
+        <p style={styles.name}>{data.name.length > 15 ? data.name.slice(0,15)+'...' : data.name }</p>
         <p style={styles.subtext}>
           <p style={{paddingRight: 10, borderRightWidth: 1, borderRightColor: COLORS.offwhite }} >
             {data.release} 

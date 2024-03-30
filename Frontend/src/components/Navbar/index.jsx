@@ -96,8 +96,10 @@ const Search = () => {
       
         let fuzzy =JSON.parse(lastMessage?.data).fuzzy;
         fuzzy = fuzzy ? fuzzy : [];
+        fuzzy = autoComp.slice(0,3).concat(fuzzy.slice(0,4));
         if(fuzzy.length > 0){
-          setFuzzy(autoComp.slice(0,3).concat(fuzzy.slice(0,4)))
+          fuzzy = fuzzy.filter((item,index) => fuzzy.indexOf(item) == index);
+          setFuzzy(fuzzy)
         }
       }
       console.log('suggest',newtrie.suggest(prefix))
