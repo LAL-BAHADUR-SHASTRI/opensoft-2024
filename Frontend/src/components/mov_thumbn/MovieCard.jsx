@@ -20,6 +20,7 @@ const MovieCard = (props) => {
         episodes: '8'
     }
   return(
+    <div>
     <div
         className={`MovieCard_ ${data.series ? 'landscape' : 'portrait'}`}
         onMouseEnter={() => sethovering(true)}
@@ -78,6 +79,7 @@ const MovieCard = (props) => {
                 />
             </div>
         </div>
+    </div>
     </div>
   )
 }
