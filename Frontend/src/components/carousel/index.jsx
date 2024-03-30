@@ -32,7 +32,7 @@ const Carousel = (props) => {
   return (
     <>
       <div style={styles.container} >
-        <LuChevronLeft onClick={{}} className="swiper-button-prev" size={'7%'} style={{...styles.arrows, left: '1%'}}/> 
+        <LuChevronLeft onClick={{}} className="swiper-button-prev" size={'7vh'} style={{...styles.arrows, left: '1%'}}/> 
         <Swiper
           effect={"coverflow"}
           centeredSlides={true}
@@ -93,7 +93,7 @@ const Carousel = (props) => {
       <LuChevronRight 
         onClick={{}}
         className="swiper-button-next"
-        size={'7%'} 
+        size={'7vh'} 
         style={{...styles.arrows, right: '1%'}}/> 
       </div>
     </>

@@ -1,3 +1,4 @@
+import { MovieCard } from "@/components/mov_thumbn";
 import { Select, SelectContent,SelectGroup,SelectLabel, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import React, { useState } from "react";
 import Stylesheet from "reactjs-stylesheet";
@@ -50,6 +51,11 @@ const MovieList = () => {
   return (
     <div style={styles.container}>
       <SelectBar />
+      <div style={styles.movieBox}>
+        {Array.from({length: 15}).map((item,index) => (
+          <MovieCard />
+        ))}
+      </div>
     </div>
   );
 }
@@ -59,6 +65,7 @@ export default MovieList;
 const styles = Stylesheet.create({
   container: {
     display: 'flex',
+    flexDirection: 'column'
   },
   selectbar: {
     display: 'flex',
@@ -70,5 +77,11 @@ const styles = Stylesheet.create({
   },
   filter : {
     paddingLeft: 30
+  },
+  movieBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    margin: 10
   }
 })

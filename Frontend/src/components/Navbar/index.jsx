@@ -190,7 +190,7 @@ const Search = () => {  // yar isko animate bhi karna hai .... baad me karunga
 
 //<--User-->
 const UserData = ({isLoggedin}) => {
-  if(!isLoggedin){
+  if(isLoggedin){
     return (
       <div style={{display: 'flex', flexDirection: "row", paddingRight: 30}}>
         <DropdownMenu>
