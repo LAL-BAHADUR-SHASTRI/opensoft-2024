@@ -24,6 +24,7 @@ function App() {
     { year: 2023, number: 35 },
     // Add more data entries as needed
   ];
+  
   return (
     <Router>
       <Routes>
