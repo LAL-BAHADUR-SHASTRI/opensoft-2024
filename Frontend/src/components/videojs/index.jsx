@@ -69,7 +69,11 @@ export const VideoJS = (props) => {
     let qualityLevels = player.qualityLevels();
     videojs.log(qualityLevels)
 
-    player.maxQualitySelector();
+
+    player.maxQualitySelector({
+      'maxHeight': 720,
+      'minHeight': 360,
+    });
 
     return () => {
       if (player && !player.isDisposed()) {
