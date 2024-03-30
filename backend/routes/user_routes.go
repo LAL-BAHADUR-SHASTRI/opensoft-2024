@@ -13,6 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var userCollection *mongo.Collection = database.OpenCollection(database.Client, "users")
@@ -28,7 +29,47 @@ func UserServiceRouter(r *gin.Engine) {
 		user.PUT("/", UpdateUser)
 		user.GET("/with_token", GetUserWithToken)
 		user.POST("/bookmark", AddBookmark)
+		user.GET("/watchlist", GetWatchlist)
 	}
+}
+
+func GetWatchlist(c *gin.Context) {
+	_user := c.MustGet("user").(map[string]interface{})
+
+	var user models.User
+
+	log.Println(_user["user_id"])
+
+	objID, err := primitive.ObjectIDFromHex(_user["user_id"].(string)) // Type assertion added
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid movie ID format"})
+		return
+	}
+
+	filter := bson.M{"_id": objID}
+	err = userCollection.FindOne(database.Ctx, filter).Decode(&user) // Variable name changed to avoid redeclaration
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user"})
+		return
+	}
+	log.Println(user.BookMarks)
+	var results []bson.M
+	projectOpts := bson.D{{"title", 1}, {"imdb.rating", 1}, {"_id", 1}, {"poster", 1}, {"runtime", 1}}
+	movieCollection := database.OpenCollection(database.Client, "movies")
+	for _, movieID := range user.BookMarks {
+		var movie bson.M
+		filter := bson.M{"_id": movieID}
+		err := movieCollection.FindOne(database.Ctx, filter,
+			options.FindOne().SetProjection(projectOpts),
+		).Decode(&movie)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch movie"})
+			return
+		}
+		results = append(results, movie)
+	}
+
+	c.JSON(http.StatusOK, results)
 }
 
 type Bookmark struct {
