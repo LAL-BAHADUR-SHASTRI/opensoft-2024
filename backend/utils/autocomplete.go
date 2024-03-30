@@ -3,6 +3,7 @@ package utils
 import (
 	"context"
 	"encoding/json"
+
 	// "fmt"
 
 	openai "github.com/sashabaranov/go-openai"
@@ -61,9 +62,11 @@ func SemanticSearch(collection *mongo.Collection, searchTerm string) ([]string, 
 	return runSearch(collection, searchStage)
 }
 
+var projectOpts = bson.D{{"title", 1}, {"imdb.rating", 1}, {"_id", 1}, {"poster", 1}, {"runtime", 1}}
+
 // runSearch executes the MongoDB aggregation pipeline and returns the search results.
 func runSearch(collection *mongo.Collection, searchStage bson.D) ([]string, error) {
-	projectStage := bson.D{{"$project", bson.D{{"title", 1}, {"_id", 0}}}}
+	projectStage := bson.D{{"$project", projectOpts}}
 
 	cursor, err := collection.Aggregate(context.TODO(), mongo.Pipeline{searchStage, projectStage})
 	if err != nil {

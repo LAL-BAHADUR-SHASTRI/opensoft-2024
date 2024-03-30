@@ -2,6 +2,7 @@ package routes
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"opensoft_2024/database"
 	"opensoft_2024/middlewares"
@@ -10,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -25,8 +27,45 @@ func UserServiceRouter(r *gin.Engine) {
 		user.Use(middlewares.JwtMiddleware)
 		user.PUT("/", UpdateUser)
 		user.GET("/with_token", GetUserWithToken)
-		// user.POST("/bookmark/:id", AddBookmark)
+		user.POST("/bookmark", AddBookmark)
 	}
+}
+
+type Bookmark struct {
+	UserId  string `json:"user_id"`
+	MovieId string `json:"movie_id"`
+}
+
+func AddBookmark(c *gin.Context) {
+	var bookmark Bookmark
+	if err := c.BindJSON(&bookmark); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON format"})
+		return
+	}
+	userID, _ := primitive.ObjectIDFromHex(bookmark.UserId) // Type assertion added
+	// Find the user by email
+	filter := bson.M{"_id": userID}
+	var user models.User
+	err := userCollection.FindOne(context.TODO(), filter).Decode(&user)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	movieID, _ := primitive.ObjectIDFromHex(bookmark.MovieId) // Type assertion added
+
+	// Insert the user into the database
+	_, err = userCollection.UpdateOne(database.Ctx, bson.M{"_id": userID}, bson.M{
+		"$push": bson.M{
+			"bookmarks": movieID,
+		},
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Bookmark added successfully"})
 }
 
 func GetUsers(c *gin.Context) {
@@ -50,8 +89,16 @@ func GetUserWithToken(c *gin.Context) {
 
 	var user models.User
 
-	filter := bson.M{"email": _user["user_email"]}
-	err := userCollection.FindOne(context.TODO(), filter).Decode(&user)
+	log.Println(_user["user_id"])
+
+	objID, err := primitive.ObjectIDFromHex(_user["user_id"].(string)) // Type assertion added
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid movie ID format"})
+		return
+	}
+
+	filter := bson.M{"_id": objID}
+	err = userCollection.FindOne(database.Ctx, filter).Decode(&user) // Variable name changed to avoid redeclaration
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user"})
 		return
@@ -127,7 +174,26 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	var userAuth middlewares.UserAuth
+	userAuth.Email = user.Email
+
+	filter := bson.M{"email": userAuth.Email}
+	err = userCollection.FindOne(context.TODO(), filter).Decode(&user)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	userAuth.Password = user.Password
+	userAuth.Tier = user.Tier
+
+	token, err := middlewares.CreateJwtToken(userAuth, user.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error signing in"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"token": token, "user": user})
+
 }
 
 func UpdateUser(c *gin.Context) {
