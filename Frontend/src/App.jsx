@@ -17,6 +17,7 @@ import { LineChart } from 'lucide-react';
 // import useWindowDimensions from './hooks/useWindowDimensions'
 
 function App() {
+  const [ActiveTab, setActiveTab] = useState(0);
   const data=[
     { year: "Hello", number: 30 },
     { year: 2021, number: 40 },
@@ -24,23 +25,56 @@ function App() {
     { year: 2023, number: 35 },
     // Add more data entries as needed
   ];
-  
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Intro/>} />
-        <Route path="/movie/:id" element={<MoviePage />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/purchase" element={<Purchase />} />
-        <Route path="/about" element={<About/>}/>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/signin" element={
+            <>
+              <Nav simpleNav={true} onTabChange={setActiveTab}/>
+              <SignIn />
+            </>
+          } />
+          <Route path="/signup" element={
+            <>
+              <Nav simpleNav={true} onTabChange={setActiveTab}/>
+              <SignUp />
+            </>
+          } />
+          <Route path="*" element={<ErrorPage text="404 Page Not Found :(" />} />
+          <Route path="/" element={
+            <>
+              <Nav onTabChange={setActiveTab}/>
+              <Intro ActiveTab={ActiveTab} />
+            </>
+          } />
+          <Route path="/movie/:id" element={
+            <>
+              <Nav onTabChange={setActiveTab}/>
+              <MoviePage />
+            </>
+          } />
+          <Route path="/:id/success" element={
+            <>
+              <Nav simpleNav={true} onTabChange={setActiveTab}/>
+              <Success />
+            </>
+          } />
+          <Route path="/purchase" element={
+            <>
+              <Nav simpleNav={true} onTabChange={setActiveTab}/>
+              <Purchase />
+            </>
+          } />
+                  <Route path="/about" element={<About/>}/>
         <Route path="/linechart" element={
             <LineChart data={data} type="Year"/>
         } />
-        <Route path="*" element={<ErrorPage text="404 Page Not Found :(" />} />
-      </Routes>
-      <Footer />
-    </Router>
+        </Routes>
+        <Footer />
+      </Router>
+    </>
   )
 }
 export default App;

@@ -190,7 +190,7 @@ const Search = () => {  // yar isko animate bhi karna hai .... baad me karunga
 
 //<--User-->
 const UserData = ({isLoggedin}) => {
-  if(!isLoggedin){
+  if(isLoggedin){
     return (
       <div style={{display: 'flex', flexDirection: "row", paddingRight: 30}}>
         <DropdownMenu>
@@ -222,7 +222,7 @@ const UserData = ({isLoggedin}) => {
 
 //<--main-->
 
-const Nav = ({onTabChange}) => {
+const Nav = ({onTabChange, simpleNav = false}) => {
 
   const [selected, setSelected] = useState(0)
   const navigate = useNavigate();
@@ -232,10 +232,10 @@ const Nav = ({onTabChange}) => {
   return (
     <nav className="navbar">
       <img onClick={() => { navigate('/'); onTabChange(0); setSelected(0); }} className="logo" src={logo} /> {/*logo*/}
-      <div style={styles.buttonContainer}>
+      {!simpleNav && <div style={styles.buttonContainer}>
         <NavButtons onTabChange={onTabChange} selected={selected} setSelected={setSelected} />
         <Search />
-      </div>
+      </div>}
       <UserData isLoggedin={isLoggedin}/>
     </nav>
   )
@@ -290,4 +290,3 @@ const styles = Stylesheet.create({
     zIndex: 2
   }
 })
-
