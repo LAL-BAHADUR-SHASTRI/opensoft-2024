@@ -266,7 +266,7 @@ const Nav = ({onTabChange, simpleNav = false}) => {
   const [selected, setSelected] = useState(0)
   const navigate = useNavigate();
 
-  const isLoggedin = userStore.getState().id != "" ? true : false;
+  const isLoggedin = userStore()
   
   return (
     <nav className="navbar">
