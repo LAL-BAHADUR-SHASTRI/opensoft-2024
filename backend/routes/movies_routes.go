@@ -216,8 +216,27 @@ func getListofGenres(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve genres"})
 		return
 	}
+	// also return 4 posters for each genre while checking non empty fields
+	var genrePosters []bson.M
+	for _, genre := range cursor {
+		filter := bson.D{{"genres", genre}, {"poster", bson.D{{"$ne", ""}}}}
+		opts := options.Find().SetProjection(bson.D{{"poster", 1}}).SetLimit(4)
+		cursor, err := movieCollection.Find(database.Ctx, filter, opts)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve genres"})
+			return
+		}
+		defer cursor.Close(context.Background())
 
-	c.JSON(http.StatusOK, cursor)
+		var results []bson.M
+		if err := cursor.All(context.TODO(), &results); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode movies"})
+			return
+		}
+
+		genrePosters = append(genrePosters, bson.M{"genre": genre, "posters": results})
+	}
+	c.JSON(http.StatusOK, genrePosters)
 }
 
 func getListofLanguages(c *gin.Context) {
