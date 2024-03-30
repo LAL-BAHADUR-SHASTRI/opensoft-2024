@@ -6,13 +6,19 @@ import (
 	"opensoft_2024/routes"
 )
 
-func enableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+func main() {
+	r := setupRouter()
+
+	// Listen and Server in 0.0.0.0:8080
+	// export PORT=8080
+	r.Run(":8080")
 }
 
 func setupRouter() *gin.Engine {
-
 	r := gin.New()
+
+	// Middleware for CORS
+	r.Use(corsMiddleware())
 
 	routes.UserServiceRouter(r)
 	routes.MovieServiceRouter(r)
@@ -25,10 +31,16 @@ func setupRouter() *gin.Engine {
 	return r
 }
 
-func main() {
-	r := setupRouter()
-
-	// Listen and Server in 0.0.0.0:8080
-	// export PORT=8080
-	r.Run(":8080")
+// corsMiddleware sets up CORS headers
+func corsMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization")
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(http.StatusOK)
+			return
+		}
+		c.Next()
+	}
 }
