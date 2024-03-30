@@ -71,11 +71,18 @@ const Rating = ({data}) => {
     )
 }
 
-function transformRatingObject(ratingObject) {
-    return Object.entries(ratingObject).map(([platform, rating]) => ({
-        logo: platform,
-        val: rating
-    }));
+function genFlixifyrt(x) {
+    let t = Math.min(x, 10-x)/2;
+    let k = Math.round((x - t + Math.random()*2*t)*5);
+    return k/10;
+}
+
+function transformRatingObject(x) {
+    let res = [
+        {logo:"imdb", val:x},
+        {logo:"flixify", val:genFlixifyrt(x)}
+    ]
+    return res;
 }
 
 const HeadnTxt = ({heading, data}) => {
@@ -96,7 +103,7 @@ const MoviePage_ = (props) => {
         release: 2023,
         lang: ['Hindi', 'English', 'Bengali', 'Telugu', 'Tamil'],
         genre: ['Action', 'Adventure', 'Fiction', 'Superhero', 'Thriller'],
-        rating: {imdb: 9, flixify: 3.6},
+        imdb: {rating: 9},
         trailers : [
             {
                 thum: Imgurl,
@@ -115,7 +122,7 @@ const MoviePage_ = (props) => {
   return(
     <div className="MoviePage_">
         <div className="topbar">
-            <div className="movtitle">{data.title}</div>
+            <div className="movtitle">{(props?.data?.title || data.title)}</div>
             <div className="watchlist_button">
                 <FaPlus />
                 <div>Watchlist</div>
@@ -123,20 +130,20 @@ const MoviePage_ = (props) => {
         </div>
         <div className="central">
             <div className="content">
-                <HeadnTxt heading='Description' data={[data.description]} />
-                <HeadnTxt heading='Director' data={data.director} />
-                <HeadnTxt heading='Cast' data={data.cast} />
+                <HeadnTxt heading='Description' data={[props?.data?.fullplot || data.description]} />
+                <HeadnTxt heading='Director' data={props?.data?.directors || data.director} />
+                <HeadnTxt heading='Cast' data={props?.data?.cast || data.cast} />
                 <Headline heading='Trailers' />
                 <ArrangeComp dir="row" dat_arr={data.trailers} Component={TrailerCard} />
             </div>
             <div className="content rightc">
-                <HeadnTxt heading='Release_Year' data={[data.release]} />
+                <HeadnTxt heading='Release_Year' data={[props?.data?.year || data.release]} />
                 <Headline heading='Language' />
-                <ArrangeComp dir="row" dat_arr={data.lang} Component={LangGen} />
+                <ArrangeComp dir="row" dat_arr={props?.data?.languages || data.lang} Component={LangGen} />
                 <Headline heading='Genres' />
-                <ArrangeComp dir="row" dat_arr={data.genre} Component={LangGen} />
+                <ArrangeComp dir="row" dat_arr={props?.data?.genres || data.genre} Component={LangGen} />
                 <Headline heading='Ratings' />
-                <ArrangeComp dir="column" dat_arr={transformRatingObject(data.rating)} Component={Rating} />
+                <ArrangeComp dir="column" dat_arr={transformRatingObject(props?.data?.imdb?.rating || data.imdb.rating)} Component={Rating} />
             </div>
         </div>
     </div>

@@ -1,6 +1,9 @@
 import Stylesheet from "reactjs-stylesheet";
 import VideoJS from "@/components/videojs";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  useParams
+} from "react-router"
 import videojs from "video.js";
 import Nav from "@/components/Navbar";
 import { MoviePage_ } from "@/components/Movie_page";
@@ -56,11 +59,38 @@ const Player = () => {
   )
 }
 
-const MoviePage = () => {
+const MoviePage = (props) => {
+
+  const [data, setData] = useState([]);
+  const params = useParams()
+
+  const movie_id = params.id;
+  console.log("movie id :" , movie_id);
+
+  let url = `${import.meta.env.VITE_BHOST}/movie/id/${movie_id}`;
+  // if (movie_id) {
+  //   url += `id/${props.id}`;
+  // }
+  // else {
+  //   url += '1'
+  // }
+  useEffect(() => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        setData(data);
+        console.log('Success fetching Single Movie Data:', data);
+      })
+      .catch(error => {
+        console.error('Error fetching Single Movie Data:', error);
+        Toast.error('Error Fetching Single Movie Data');
+      });
+  }, []);
+
   return (
   <div style={styles.container}>
     <Player />
-    <MoviePage_ />
+    <MoviePage_ data={data} />
     <div style={{height : 10}} />
   </div>
   )
