@@ -5,6 +5,7 @@ import { COLORS } from "@/constants/themes";
 import { motion } from "framer-motion";
 import { FaCircleUser } from "react-icons/fa6";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import useWebSocket, { ReadyState } from "react-use-websocket";
 
 import "./index.css"
 import logo from '../../assets/logo.svg'
@@ -59,19 +60,40 @@ const NavButtons = ({selected,setSelected,onTabChange}) => {
 
 //<--search-->
 
-const Search = () => {  // yar isko animate bhi karna hai .... baad me karunga
+const Search = () => {  
+
   
-  const [search, setsearch] = useState('');
   const [isTyping, setTyping] = useState(false);
   const [isActive, setActive] = useState(false);
   const [prefix,setPrefix] = useState("");
   const [suggestion, setSuggestion ] = useState("");
+  const [socketUrl, setSocketUrl] = useState('') 
+  const [messageHistory, setMessageHistory] = useState([]);
+
+  const {sendMessage, lastMessage, readyState} = useWebSocket(socketUrl);
+
+  useEffect(() => {
+    if(lastMessage != null){
+      setMessageHistory((prev) => prev.concat(lastMessage));
+    }
+  },[lastMessage]);
+
+  const connectionStatus = {
+    [ReadyState.CONNECTING] : 'Connection',
+    [ReadyState.OPEN] : 'Open',
+    [ReadyState.CLOSING] : 'Closing',
+    [ReadyState.CLOSED] : 'Closed',
+    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+  }[readyState];
 
   const dictionary = {
     words: ['hello','helium','world','car','carpet','test','this','that','those','working','is']
   }
+  
+  let socket = null;
 
-  var myTrie = new Trie();
+
+  let myTrie = new Trie();
 
   (async()=>{
     // const dictionary = await getWords();
@@ -107,14 +129,23 @@ const Search = () => {  // yar isko animate bhi karna hai .... baad me karunga
 
   const handleKeyDown = (e) => {
     if (e.keyCode === 39 || e.keyCode === 9) {
+      e.preventDefault();
       setPrefix(suggestion);
+    }
+    if(e.key === 'Enter'){
+      sendMessage(
+        JSON.stringify({type: "click", msg: prefix})
+         );
     }
   };
 
   useEffect(() => {
-    if(search.length > 0) setTyping(true); else setTyping(false);
-    console.log(search)
-  },[search]);
+    if(prefix.length > 0) setTyping(true); else setTyping(false);
+    console.log(prefix) ;
+    sendMessage(
+     JSON.stringify({type: "search", msg: prefix})
+      );
+  },[prefix]);
   
   const searchinput = useCallback((inputel) => {
     if(inputel) {
@@ -283,7 +314,7 @@ const styles = Stylesheet.create({
     top: 5,
     width: '49%',
     backgroundColor: COLORS.lightBlack,
-    border: '1px solid red',
+    border: '1px solid gray',
     marginLeft: '20%',
     marginRight: '29%',
     padding: '2%',

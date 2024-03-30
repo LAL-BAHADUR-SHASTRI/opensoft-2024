@@ -34,6 +34,7 @@
   color: var(--offwhite);
   padding: 0.5rem;
   padding-bottom: 0.2rem;
+  cursor: pointer;
 }
 
 .menuButton:hover {
@@ -78,6 +79,7 @@
   margin-left: 1rem;
   color: white;
   transition: 0.57s all ease-in;
+  width: 90%;
 }
 .searchbox:focus-visible {
   outline: none;
@@ -85,7 +87,6 @@
 
 .inputnev {
   font-size: inherit;
-  width: 20rem;
   overflow-wrap: break-word;
   position: absolute;
   word-wrap: break-word;
@@ -98,7 +99,8 @@
   color: gray;
   cursor: none;
   margin-left: 1rem;
-  left: 15px
+  left: 15px;
+  width: 90%;
 }
 
 
