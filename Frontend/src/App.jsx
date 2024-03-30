@@ -10,6 +10,7 @@ import SignIn from './components/Signin';
 import Footer from './components/Footer';
 import Intro from './pages/Intro';
 import Purchase from './pages/Purchase';
+import Success from './components/Success';
 import SignUp from './components/Signup';
 import About from './pages/About';
 import { LineChart } from 'lucide-react';
@@ -45,6 +46,6 @@ export default App;
 
 const styles=Stylesheet.create({
   mainContainer: {
-    flex: 1,
+    display: 'flex'
   },
 })

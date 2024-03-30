@@ -15,8 +15,6 @@
   display: none;
 }
 
-.video-js .vjs-control {
-}
 
 .vjs-menu-button {
   min-width: 3.5rem;
@@ -25,6 +23,12 @@
 .vjs-menu-item {
   min-height: 2rem;
 }
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+
 
 /* .logo { */
 /*   height: 6em; */
@@ -61,3 +65,4 @@
 /* .read-the-docs { */
 /*   color: #888; */
 /* } */
+

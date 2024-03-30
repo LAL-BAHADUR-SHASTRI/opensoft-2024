@@ -67,7 +67,7 @@ export default MoviePage;
 
 const styles = Stylesheet.create({
   container: {
-    flex: 1,
+    display: 'flex',
   },
   player: {
     width: '75vw',

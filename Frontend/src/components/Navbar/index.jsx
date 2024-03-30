@@ -1,6 +1,6 @@
 import Stylesheet from "reactjs-stylesheet";
 import { useCallback, useEffect, jseRef, useState } from "react"
-import { LuSearch } from "react-icons/lu";
+import { LuCreditCard, LuLogOut, LuSearch, LuUser } from "react-icons/lu";
 import { COLORS } from "@/constants/themes";
 import { motion } from "framer-motion";
 import { FaCircleUser } from "react-icons/fa6";
@@ -11,11 +11,21 @@ import logo from '../../assets/logo.svg'
 import SearchResultCard from "./SearchResultCard";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import Trie from "./trie";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+
 //<--buttons-->
 
 
-const NavButtons = ({onTabChange}) => {
-  const [selected, setSelected] = useState(0)
+const NavButtons = ({selected,setSelected,onTabChange}) => {
 
   const buttons = ['Home','Movies','Watchlist','About'];
   const navigate = useNavigate();
@@ -111,14 +121,30 @@ const Search = () => {  // yar isko animate bhi karna hai .... baad me karunga
       inputel.focus();
     }
   },[])
+
+  const hideShadow = () => {
+    setActive(false);
+    setTyping(false); 
+  }
+
+  useEffect(() => {
+    isActive ? 
+      document.body.classList.add("stop-scrolling") 
+      : 
+      document.body.classList.remove("stop-scrolling");
+  },[isActive])
   
   return isActive ?(
     <>
       <div />
       {isActive && (
-        <div style={styles.backShadow} onClick={() => {setActive(false);setTyping(false) }} >
-          {/* {[Array.of(4)].map} */}
-          <SearchResultCard />
+        <div style={styles.backShadow} >
+          <div style={{width: '100%', height: '100%', zIndex: 1}} onClick={hideShadow} ></div>
+          <div  style={styles.searchResults} >
+          {Array.from({length: 5}).map((item,index) => (
+            <SearchResultCard />
+            ))}
+          </div>
         </div>
       )}
       <motion.div 
@@ -164,10 +190,21 @@ const Search = () => {  // yar isko animate bhi karna hai .... baad me karunga
 
 //<--User-->
 const UserData = ({isLoggedin}) => {
-  if(isLoggedin){
+  if(!isLoggedin){
     return (
       <div style={{display: 'flex', flexDirection: "row", paddingRight: 30}}>
-        <FaCircleUser size={32} style={{color: COLORS.yellow}} />
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <FaCircleUser size={32} style={{color: COLORS.yellow}} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className='dark:bg-gray-50' >
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className='hover:bg-gray-100' ><LuUser className="mr-2" /> Profile</DropdownMenuItem>
+            <DropdownMenuItem  className='hover:bg-gray-100' ><LuCreditCard  className="mr-2" />  Subscription</DropdownMenuItem>
+            <DropdownMenuItem  className='hover:bg-gray-100' ><LuLogOut className="mr-2" /> Log Out </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     )
   }
@@ -187,18 +224,18 @@ const UserData = ({isLoggedin}) => {
 
 const Nav = ({onTabChange}) => {
 
-
+  const [selected, setSelected] = useState(0)
+  const navigate = useNavigate();
 
   const isLoggedin = false;
   
   return (
     <nav className="navbar">
-      <img className="logo" src={logo} /> {/*logo*/}
+      <img onClick={() => { navigate('/'); onTabChange(0); setSelected(0); }} className="logo" src={logo} /> {/*logo*/}
       <div style={styles.buttonContainer}>
-        <NavButtons onTabChange={onTabChange}/>
+        <NavButtons onTabChange={onTabChange} selected={selected} setSelected={setSelected} />
         <Search />
       </div>
-      <div />
       <UserData isLoggedin={isLoggedin}/>
     </nav>
   )
@@ -218,7 +255,7 @@ const styles = Stylesheet.create({
     flexDirection: 'row',
     padding: 8,
     margin: 12,
-    backgroundColor: 'rgba(20,20,20,1)',
+    backgroundColor: COLORS.lightBlack,
     borderWidth: 1,
     borderColor: 'rgba(50,50,50,1)',
     borderRadius: 20,
@@ -232,13 +269,25 @@ const styles = Stylesheet.create({
     justifyContent: 'space-evenly'
   }, 
   backShadow:  {
-    position: 'fixed',
+    position: 'absolute',
     width: '100vw',
-    height: '100vh',
-    bottom: 0,
+    height: 'calc(100vh)',
+    bottom: -80,
     left: 0,
     zIndex: 10,
-    background: 'linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.6),rgba(0,0,0,0.8))'
+    background: 'linear-gradient(rgba(50,50,50,0.5),rgba(60,60,60,0.6),rgba(60,60,60,0.8))',
+  },
+  searchResults: {
+    position: 'absolute',
+    top: 5,
+    width: '49%',
+    backgroundColor: COLORS.lightBlack,
+    border: '1px solid red',
+    marginLeft: '20%',
+    marginRight: '29%',
+    padding: '2%',
+    borderRadius: 15,
+    zIndex: 2
   }
 })
 

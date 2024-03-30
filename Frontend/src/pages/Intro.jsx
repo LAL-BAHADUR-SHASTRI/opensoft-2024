@@ -5,11 +5,9 @@ import Nav from "@/components/Navbar";
 import About from "./About";
 import MovieList from "./Movielist";
 
-const Intro = () => {
-  const [ActiveTab, setActiveTab] = useState(0);
+const Intro = ({ActiveTab}) => {
   return (
     <div >
-      <Nav onTabChange={setActiveTab}/>
       {ActiveTab===0 && <HomePage/>}
       {ActiveTab===1 && <MovieList/>}
       {ActiveTab===2 && <Watchlist/>}

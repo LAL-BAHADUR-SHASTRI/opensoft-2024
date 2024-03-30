@@ -20,7 +20,8 @@
 
 .logo {
   align-self: center;
-  margin-left: 20px;
+  margin-left: 30px;
+  width: 110px;
 }
 
 .menuButtons {
@@ -103,4 +104,16 @@
 
 textarea:focus, input:focus {
     outline: none;
+}
+
+.searchResultCard:not(:last-child) {
+  border-bottom: 0.2px solid rgba(153, 153, 153, 0.5);
+}
+
+.searchResultCard:last-child {
+  margin-bottom: -10px;
+}
+
+.searchResultCard:first-child {
+  margin-top: -10px;
 }
