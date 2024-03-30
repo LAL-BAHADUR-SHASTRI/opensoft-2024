@@ -34,7 +34,9 @@ func MovieServiceRouter(r *gin.Engine) {
 		movie.GET("/genres", getListofGenres)
 		movie.GET("/languages", getListofLanguages)
 		movie.GET("/countries", getListofCountries)
+		movie.GET("/filter", getMoviesByFilter)
 		movie.GET("/socket", MySocketHandler)
+
 	}
 }
 
@@ -100,11 +102,12 @@ func getTopImdbMovies(c *gin.Context) {
 	projectStage := bson.D{{"$project", bson.D{{"title", 1}, {"imdb.rating", 1}, {"_id", 1}, {"poster", 1}, {"runtime", 1}}}}
 	cursor, err := movieCollection.Aggregate(database.Ctx, mongo.Pipeline{matchStage, sortStage, limitStage, projectStage})
 
+	// cursor, err := movieCollection.Aggregate(database.Ctx, mongo.Pipeline{matchStage, sortStage, limitStage, projectStage})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve movies"})
 		return
 	}
-	defer cursor.Close(context.TODO())
+	defer cursor.Close(context.Background())
 
 	var results []bson.M
 	if err := cursor.All(context.TODO(), &results); err != nil {
@@ -237,6 +240,41 @@ func getListofCountries(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, cursor)
+}
+
+// multiple filters for movies based on genre, language, country
+
+func getMoviesByFilter(c *gin.Context) {
+	genre := c.Query("genre")
+	language := c.Query("language")
+	country := c.Query("country")
+
+	// Find the movies by filters
+	filter := bson.D{}
+	if genre != "" {
+		filter = append(filter, bson.E{"genres", genre})
+	}
+	if language != "" {
+		filter = append(filter, bson.E{"languages", language})
+	}
+	if country != "" {
+		filter = append(filter, bson.E{"countries", country})
+	}
+
+	cursor, err := movieCollection.Find(database.Ctx, filter, options.Find().SetProjection(bson.D{{"title", 1}, {"imdb.rating", 1}, {"runtime", 1}, {"poster", 1}}).SetLimit(100))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve movies"})
+		return
+	}
+	defer cursor.Close(context.TODO())
+
+	var results []bson.M
+	if err := cursor.All(context.TODO(), &results); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode movies"})
+		return
+	}
+
+	c.JSON(http.StatusOK, results)
 }
 
 // MySocketHandler handles the WebSocket connection
