@@ -7,11 +7,11 @@ import { LuClock3 } from "react-icons/lu";
 
 // Replace data with props.data
 // Or replace props with {data} -> preferred
-const TrailerCard = (props) => {
-    let data = {
-        mm: '2',
-        ss: '30'
-    }
+const TrailerCard = ({data}) => {
+    // let data = {
+    //     mm: '2',
+    //     ss: '30'
+    // }
     const [hovering, sethovering] = useState(false)
     const [hoverply, sethoverply] = useState(false)
   return(
@@ -21,7 +21,7 @@ const TrailerCard = (props) => {
         onMouseLeave={() => sethovering(false)}
     >
         <img
-            src={data?.obj?.img || Imgurl}
+            src={data?.thum || Imgurl}
             className="trCim"
             style={hovering ? styles.scale : {}}
         />
