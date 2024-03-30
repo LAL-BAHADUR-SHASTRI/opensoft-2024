@@ -22,6 +22,10 @@ const TrailerCard = ({data}) => {
     >
         <img
             src={data?.thum || Imgurl}
+            onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = Imgurl;
+              }}
             className="trCim"
             style={hovering ? styles.scale : {}}
         />
