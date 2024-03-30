@@ -83,7 +83,7 @@
 .swiper-slide {
   background-position: center;
   background-size: cover;
-  width: 50%;
+  width: 50% !important;
 }
 
 .swiper-slide img {
