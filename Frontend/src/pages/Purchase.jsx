@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-function PlanCard({ name, description, price, duration, onClick,index }) {
+function PlanCard({ name, description, price, duration, index }) {
   return (
     <div className="relative max-w-sm p-8 bg-gray-900 border border-gray-700 rounded-lg shadow shadow-blue-900">
       {name === "Standard" ? (
@@ -17,13 +17,7 @@ function PlanCard({ name, description, price, duration, onClick,index }) {
       <h5 className="my-6 text-2xl tracking-tight text-white text-left">
         ₹{price} <span className="text-gray-500 text-sm">/{duration}</span>
       </h5>
-      <form style={{width: '100%'}} id={`paybutton${index}`} ></form>
-      {/* <button */}
-      {/*   type="submit" */}
-      {/*   className="w-full text-secondary-foreground bg-secondary focus:ring-2  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center" */}
-      {/*   onClick={onClick}> */}
-      {/*   Choose Plan */}
-      {/* </button> */}
+      <form style={{ width: "100%" }} id={`paybutton${index}`}></form>
     </div>
   );
 }
@@ -68,12 +62,12 @@ function Purchase() {
     },
   ];
 
-  function loadScript(src,id,index) {
+  function loadScript(src, id, index) {
     return new Promise((resolve) => {
       const script = document.createElement("script");
       script.src = src;
-      script.dataset.payment_button_id = id
-      script.async=true;
+      script.dataset.payment_button_id = id;
+      script.async = true;
       script.onload = () => {
         resolve(true);
       };
@@ -85,30 +79,41 @@ function Purchase() {
   }
 
   useEffect(() => {
-    let rzpPaymentForm = document.getElementById('paybutton1');
-    if (!rzpPaymentForm.hasChildNodes()){
-      loadScript('https://checkout.razorpay.com/v1/payment-button.js','pl_NsIdwKXOtpBqKV',1);
+    let rzpPaymentForm = document.getElementById("paybutton1");
+    if (!rzpPaymentForm.hasChildNodes()) {
+      loadScript(
+        "https://checkout.razorpay.com/v1/payment-button.js",
+        "pl_NsIdwKXOtpBqKV",
+        1
+      );
     }
-    rzpPaymentForm = document.getElementById('paybutton2');
-    if (!rzpPaymentForm.hasChildNodes()){
-      loadScript('https://checkout.razorpay.com/v1/payment-button.js','pl_NsJS8PZbpq0Fg9',2);
+    rzpPaymentForm = document.getElementById("paybutton2");
+    if (!rzpPaymentForm.hasChildNodes()) {
+      loadScript(
+        "https://checkout.razorpay.com/v1/payment-button.js",
+        "pl_NsJS8PZbpq0Fg9",
+        2
+      );
     }
-    rzpPaymentForm = document.getElementById('paybutton3');
-    if (!rzpPaymentForm.hasChildNodes()){
-      loadScript('https://checkout.razorpay.com/v1/payment-button.js','pl_NsJTwfYeOUot2C',3);
+    rzpPaymentForm = document.getElementById("paybutton3");
+    if (!rzpPaymentForm.hasChildNodes()) {
+      loadScript(
+        "https://checkout.razorpay.com/v1/payment-button.js",
+        "pl_NsJTwfYeOUot2C",
+        3
+      );
     }
-  }) 
+  });
 
-
-  const handlePay = () => {
-
-  }
+  const handlePay = () => {};
 
   return (
     <div className="bg-background px-8 py-2">
-      <div className=" w-full text-left text-sm ">
-        <div class="flex flex-row items-center justify-evenly gap-20 py-10">
-          <div className="w-30 h-30 bg-white">logo</div>
+      <div className=" w-full text-left text-sm bg-purchase bg-cover">
+        <div class="flex flex-row items-center justify-evenly gap-20 py-10 ">
+          <div>
+            <img className=" w-1/2 md:w-40  h-auto" src="./logo.svg" alt="" />
+          </div>
           <div>
             <h1 className="mt-4 text-4xl font-semi text-white">
               Upgrade your <span className=" text-secondary">viewing</span>{" "}
@@ -118,10 +123,6 @@ function Purchase() {
               Access to a wider selection of movies and shows, including most
               new releases and exclusive content
             </p>
-            <div>
-              Sample for
-              Sample formm
-            </div>
           </div>
         </div>
       </div>
@@ -133,7 +134,12 @@ function Purchase() {
         </p>
         <div className="flex flex-wrap gap-8 space-x-4 p-4 justify-evenly">
           {plans.map((plan, index) => (
-            <PlanCard key={index} index={index+1} {...plan} onClick={handlePay} />
+            <PlanCard
+              key={index}
+              index={index + 1}
+              {...plan}
+              onClick={handlePay}
+            />
           ))}
         </div>
 

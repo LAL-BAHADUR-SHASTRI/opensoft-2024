@@ -20,6 +20,7 @@ module.exports = {
       backgroundImage:() => ({
         "signin": "url('signin.png')",
         "logo": "url('logo.svg')",
+        "purchase":"url('purchase.png')",
       }),
       colors: {
         border: "hsl(var(--border))",
