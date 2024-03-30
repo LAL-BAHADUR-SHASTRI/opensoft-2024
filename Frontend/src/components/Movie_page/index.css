@@ -4,6 +4,7 @@
     flex-direction: row;
     justify-content: left;
     align-items: center;
+    margin-bottom: 50px;
 }
 
 .column {
@@ -12,12 +13,13 @@
     flex-direction: column;
     justify-content: left;
     align-items: flex-start;
+    margin-bottom: 50px;
 }
 
 .heading {
     width: 100%;
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .txt_ {
@@ -26,7 +28,12 @@
     font-weight: 400;
     line-height: 23.81px;
     text-align: left;
-    color: #FFFFFF
+    color: #FFFFFF;
+    display: flex;
+    width: 90%;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
 }
 
 .htxt_ {
@@ -99,10 +106,12 @@
 .topbar {
     display: flex;
     position: relative;
-    height: 70px;
+    /* height: 100px; */
     width: 100%;
     justify-content: space-between;
     align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 .central {
@@ -152,9 +161,14 @@
     position: relative;
     flex-direction: column;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 
 .rightc {
     width: 36.5%;
+}
+
+.MoviePage_ {
+    margin-left: 20px;
+    margin-right: 20px;
 }

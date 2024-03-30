@@ -285,7 +285,8 @@
 /* TrailerCard */
 
 .TrailerCard_ {
-    margin: 10px;
+    margin-right: 30px;
+    /* margin-left: 0px; */
     width: 343.84px;
     height: 175px;
     gap: 0px;

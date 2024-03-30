@@ -2,6 +2,8 @@ import { FaRegStar, FaStar, FaStarHalfAlt, FaPlus } from "react-icons/fa"
 import "./index.css"
 import imdb from '../../assets/imdb.svg'
 import flixify from '../../assets/logo.svg'
+import { TrailerCard } from "../mov_thumbn"
+import { Imgurl } from "@/constants/themes"
 
 const Headline = ({heading}) => {
   return(
@@ -13,13 +15,17 @@ const Headline = ({heading}) => {
 }
 
 const TextComp = ({data}) => {
+    let disptxt = ''
+    for (let i = 0; i < data.length - 1; i++) {
+        disptxt += data[i]
+        disptxt += '  |  ' // Space to be adjusted
+
+    }
+    disptxt += data[data.length - 1]
   return(
-    <div className="row">
-        {data.map((str, index) => (
-        <p key={index} className="txt_">
-          {str}&nbsp;&nbsp;{index < data.length - 1 ? '|' : ''}&nbsp;&nbsp;
-        </p>
-      ))}
+    <div className="txt_">
+        {/* <pre className="txt_">{disptxt}</pre> */}
+        {disptxt}
     </div>
   )
 }
@@ -90,17 +96,30 @@ const HeadnTxt = ({heading, data}) => {
     )
 }
 
-const MoviePage = (props) => {
+const MoviePage_ = (props) => {
     let data = {
         title: "Avengers: Endgame",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         director: ['Anthony Russo', 'Joe Russo'],
         cast: ['Robert Downey Jr.', 'Scarlett Johannson', 'Chris Evans', 'Chris Hemsworth', 'Mark Ruffalo', 'Jeremy Ranner', 'Brie Larson', 'Paul Rudd'],
-        trailer: [],
         release: 2023,
-        lang: ['Hindi', 'English', 'Bengali'],
-        genre: [],
-        rating: {imdb: 9, flixify: 3.6}
+        lang: ['Hindi', 'English', 'Bengali', 'Telugu', 'Tamil'],
+        genre: ['Action', 'Adventure', 'Fiction', 'Superhero', 'Thriller'],
+        rating: {imdb: 9, flixify: 3.6},
+        trailers : [
+            {
+                thum: Imgurl,
+                url : '',
+                mm: 2,
+                ss: 30
+            },
+            {
+                thum: Imgurl,
+                url : '',
+                mm: 5,
+                ss: 30
+            }
+        ]
     }
   return(
     <div className="MoviePage_">
@@ -117,16 +136,20 @@ const MoviePage = (props) => {
                 <HeadnTxt heading='Director' data={data.director} />
                 <HeadnTxt heading='Cast' data={data.cast} />
                 <Headline heading='Trailers' />
+                <ArrangeComp dir="row" dat_arr={data.trailers} Component={TrailerCard} />
             </div>
             <div className="content rightc">
-
+                <HeadnTxt heading='Release_Year' data={[data.release]} />
+                <Headline heading='Language' />
+                <ArrangeComp dir="row" dat_arr={data.lang} Component={LangGen} />
+                <Headline heading='Genres' />
+                <ArrangeComp dir="row" dat_arr={data.genre} Component={LangGen} />
+                <Headline heading='Ratings' />
+                <ArrangeComp dir="column" dat_arr={transformRatingObject(data.rating)} Component={Rating} />
             </div>
         </div>
-        <TextComp data={data.director} />
-        <ArrangeComp dir="row" dat_arr={data.lang} Component={LangGen} />
-        <ArrangeComp dir="column" dat_arr={transformRatingObject(data.rating)} Component={Rating} />
     </div>
   )
 }
 
-export default MoviePage;
+export default MoviePage_;

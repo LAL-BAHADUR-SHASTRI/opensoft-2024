@@ -3,6 +3,7 @@ import VideoJS from "@/components/videojs";
 import { useRef } from "react";
 import videojs from "video.js";
 import Nav from "@/components/Navbar";
+import { MoviePage_ } from "@/components/Movie_page";
 
 
 const Player = () => {
@@ -57,6 +58,7 @@ const MoviePage = () => {
   return (
   <div style={styles.container}>
     <Player />
+    <MoviePage_ />
     <div style={{height : 10}} />
   </div>
   )
@@ -68,6 +70,7 @@ export default MoviePage;
 const styles = Stylesheet.create({
   container: {
     display: 'flex',
+    flexDirection:  'column'
   },
   player: {
     width: '75vw',
