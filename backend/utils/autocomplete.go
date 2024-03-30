@@ -17,14 +17,14 @@ func getOpenAIClient() *openai.Client {
 }
 
 // AutocompleteSearch performs a MongoDB text search on the 'title' field.
-func AutocompleteSearch(collection *mongo.Collection, searchTerm string) ([]string, error) {
+func AutocompleteSearch(collection *mongo.Collection, searchTerm string) ([]bson.M, error) {
 	searchStage := bson.D{{"$search", bson.D{{"autocomplete", bson.D{{"query", searchTerm}, {"path", "title"}}}}}}
 
 	return runSearch(collection, searchStage)
 }
 
 // FuzzySearch performs a MongoDB fuzzy text search on the 'title' field.
-func FuzzySearch(collection *mongo.Collection, searchTerm string) ([]string, error) {
+func FuzzySearch(collection *mongo.Collection, searchTerm string) ([]bson.M, error) {
 	searchStage := bson.D{
 		{"$search", bson.D{
 			{"text", bson.D{
@@ -41,7 +41,7 @@ func FuzzySearch(collection *mongo.Collection, searchTerm string) ([]string, err
 	return runSearch(collection, searchStage)
 }
 
-func SemanticSearch(collection *mongo.Collection, searchTerm string) ([]string, error) {
+func SemanticSearch(collection *mongo.Collection, searchTerm string) ([]bson.M, error) {
 	embedding, err := generateEmbedding(searchTerm)
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func SemanticSearch(collection *mongo.Collection, searchTerm string) ([]string, 
 var projectOpts = bson.D{{"title", 1}, {"imdb.rating", 1}, {"_id", 1}, {"poster", 1}, {"runtime", 1}}
 
 // runSearch executes the MongoDB aggregation pipeline and returns the search results.
-func runSearch(collection *mongo.Collection, searchStage bson.D) ([]string, error) {
+func runSearch(collection *mongo.Collection, searchStage bson.D) ([]bson.M, error) {
 	projectStage := bson.D{{"$project", projectOpts}}
 
 	cursor, err := collection.Aggregate(context.TODO(), mongo.Pipeline{searchStage, projectStage})
@@ -74,22 +74,21 @@ func runSearch(collection *mongo.Collection, searchStage bson.D) ([]string, erro
 	}
 	defer cursor.Close(context.Background())
 
-	var titles []string
+	// var titles []string
+	var movies []bson.M
 	for cursor.Next(context.Background()) {
-		var result bson.D
+		var result bson.M
 		if err := cursor.Decode(&result); err != nil {
 			return nil, err
 		}
-		if title, ok := result.Map()["title"]; ok {
-			titles = append(titles, title.(string))
-		}
+		movies = append(movies, result)
 	}
 
 	if err := cursor.Err(); err != nil {
 		return nil, err
 	}
 
-	return titles, nil
+	return movies, nil
 }
 
 // generateEmbedding generates the embedding of the given text using OpenAI's API.
