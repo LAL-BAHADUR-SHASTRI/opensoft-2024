@@ -10,11 +10,12 @@ const SearchResultCard = ({data, hideShadow}) => {
     name : data?.title,
     release: 2001,
     duration: data?.duration,
-    id: data['_id']
+    id: data['_id'],
+    img : data.poster
   }
   return (
     <div onClick={() => console.log('click')} className="searchResultCard" style={styles.container}>
-      <img style={styles.banner} src={Imgurl} />
+      <img style={styles.banner} src={data.img || Imgurl} />
       <div style={styles.details} >
         <p style={styles.name}>{data.name}</p>
         <p style={styles.subtext}>

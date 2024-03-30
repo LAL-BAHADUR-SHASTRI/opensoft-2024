@@ -79,16 +79,19 @@ const Search = () => {
   }))
 
   useEffect(() => {
+    let newtrie = myTrie;
     (async () => {
       if(lastMessage){
+
 
         let autoComp =JSON.parse(lastMessage?.data).fuzzy; 
         autoComp =  autoComp ? autoComp : [];
         if(autoComp.length > 0){
           console.log('autocomp',autoComp[0].title)
           autoComp.forEach(el => {
-            myTrie.insert(el?.title.trim());
+            newtrie.insert(el?.title.trim().toLowerCase());
           });
+          setTrie(myTrie);
         }
       
         let fuzzy =JSON.parse(lastMessage?.data).fuzzy;
@@ -97,7 +100,10 @@ const Search = () => {
           setFuzzy(autoComp.slice(0,3).concat(fuzzy.slice(0,4)))
         }
       }
-      setSuggestion(myTrie.suggest(prefix)[0]);
+      console.log('suggest',newtrie.suggest(prefix))
+      setSuggestion(myTrie.suggest(prefix.toLowerCase())[0]);
+      let s = myTrie.suggest[0];
+      if(!s.startsWith(prefix)){setSuggestion('')};
     })();
   },[lastMessage]);
 
@@ -117,6 +123,9 @@ const Search = () => {
       sendMessage(
         JSON.stringify({type: "search", msg: value})
       );
+    }
+    if(!e){
+      setFuzzy([]);
     }
   };
 
