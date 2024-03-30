@@ -36,7 +36,8 @@
     "videojs-contrib-quality-levels": "^4.1.0",
     "videojs-max-quality-selector": "^1.0.0",
     "vite-plugin-svgr": "^4.2.0",
-    "ws": "^8.16.0"
+    "ws": "^8.16.0",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/node": "^20.11.28",

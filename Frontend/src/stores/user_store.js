@@ -9,6 +9,9 @@ const userStore = create((set) => ({
   bookmarks: [],
   id: "",
   tier: 0,
+  addBookMark: (movie) =>
+    set((state) => ({ bookmarks: [...state.bookmarks, movie] })),
+
   setUserData: (email, bookmarks, id, tier) =>
     set({ email: email, bookmarks: bookmarks, id: id, tier: tier }),
 }));

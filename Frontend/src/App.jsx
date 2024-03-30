@@ -35,7 +35,7 @@ function App() {
    }
    
     console.log(userToken)
-    const response = await fetch(`http://10.145.59.41:8080/user/with_token`,
+    const response = await fetch(`${import.meta.env.VITE_BHOST}/user/with_token`,
       {
         method: "GET",
         headers: {
