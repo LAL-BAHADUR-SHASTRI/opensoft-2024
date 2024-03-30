@@ -16,8 +16,8 @@ const HomePage = () => {
       .then(data => {
         setData(data);
         setLoading(false);
-        console.log('Success:', data);
-        Toast.success('Data Loaded Successfully');
+        console.log('Success fetching Movies:', data);
+        // Toast.success('Data Loaded Successfully');
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -31,8 +31,8 @@ const HomePage = () => {
       .then(response => response.json())
       .then(data => {
         setGenres(data);
-        console.log('Success:', data);
-        Toast.success('Data Loaded Successfully');
+        console.log('Success fetching Genres:', data);
+        // Toast.success('Data Loaded Successfully');
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -84,7 +84,7 @@ const styles = Stylesheet.create({
     fontWeight: 'bold', 
     fontSize: 32,
     width: "fit-content",
-    
+    marginTop: "10px",
   },
   scroller: {
     display: 'flex',
