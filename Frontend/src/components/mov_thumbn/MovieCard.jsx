@@ -6,18 +6,17 @@ import Stylesheet from "reactjs-stylesheet";
 import { useState } from "react";
 
 import imdb from '../../assets/imdb.svg'
+import { calcDur } from "@/lib/utils";
 
 const MovieCard = (props) => {
     const [hovering, sethovering] = useState(false)
     const [hoverply, sethoverply] = useState(false)
     let data = {
-        rating: '8.8/10',
+        rating: 8.8,
         tags: ['Action','Adventure','Fiction'],
         title: 'Avengers : Endgame',
-        duration_hh: '2',
-        duration_mm: '30',
+        runtime: 150,
         series: false,
-        // series: true,
         episodes: '8'
     }
   return(
@@ -27,7 +26,7 @@ const MovieCard = (props) => {
         onMouseLeave={() => sethovering(false)}
     >
         <img
-            src={data?.obj?.img || data.series ? Imgurl : Img2url} 
+            src={props?.data?.poster || Img2url} 
             className="mov_img"
         />
         <div 
@@ -39,17 +38,18 @@ const MovieCard = (props) => {
                 <span className="movie-details">
                     <div className="row_">
                         <img src={imdb} className="imdb_l" />
-                        <p className="rating_">{data.rating}</p>
+                        <p className="rating_">{(props?.data?.imdb?.rating || data.rating)}{'/10'}</p>
                     </div>
                     <p className="title_" >
-                        {data.title}
+                        {(props?.data?.title || data.title)}
                     </p>
                     <p className="dur_ep" >
-                        {data.series ? `${data.episodes} episodes` : `${data.duration_hh}h ${data.duration_mm}min`}
+                        {(calcDur(props?.data?.runtime || data.runtime))}
+                        {/* {data.series ? `${data.episodes} episodes` : `${data.duration_hh} h ${data.duration_mm} min`} */}
                     </p>
                     <div className="row_">
-                        {data?.tags.map((el) =>
-                        <p className="tag_">{el}</p>
+                        {(props?.data?.genres || data.tags).map((el) =>
+                            <p className="tag_">{el}</p>
                         )}
                     </div>
                 </span>

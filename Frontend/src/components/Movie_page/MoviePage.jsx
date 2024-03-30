@@ -3,6 +3,7 @@ import "./index.css"
 import imdb from '../../assets/imdb.svg'
 import flixify from '../../assets/logo.svg'
 import { TrailerCard } from "../mov_thumbn"
+import ArrangeComp from "./ArrangeCompn"
 import { Imgurl } from "@/constants/themes"
 
 const Headline = ({heading}) => {
@@ -75,16 +76,6 @@ function transformRatingObject(ratingObject) {
         logo: platform,
         val: rating
     }));
-}
-
-const ArrangeComp = ({dat_arr, Component, dir}) => {
-    return (
-        <div className={dir}>
-            {dat_arr.map((item, index) => (
-            <Component key={index} data={item} />
-        ))}
-        </div>
-    )
 }
 
 const HeadnTxt = ({heading, data}) => {
