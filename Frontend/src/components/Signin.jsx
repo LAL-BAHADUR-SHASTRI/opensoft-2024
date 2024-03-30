@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Toast from "./Toast";
 
 function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  
+  const emailRef = useRef("");
+  const passwordRef = useRef("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -12,20 +15,22 @@ function SignIn() {
     });
   };
 
-  console.log(formData)
+  
 
 
   const handleSubmit = async () => {
     // Toast.success("Sign In Successful");
-    await fetch(`${import.meta.env.VITE_BHOST}/user/sign_in`,{
+    console.log({ email: emailRef.current.value, password: passwordRef.current.value });
+    await fetch("http://10.145.59.41:8080/user/sign_in",{
       method: "POST",
-      headers: {},
-      body: JSON.stringify(formData)
+      // headers: {},
+      body: JSON.stringify({ email: emailRef.current.value, password: passwordRef.current.value }),
+      // redirect: 'follow'
     })
       .then(response => response.json())
       .then(data => {
-        console.log('Success:', data);
-        localStorage.setItem("accessToken",data)
+        console.log('Success:', data["token"]);
+        localStorage.setItem("accessToken",data["token"])
         Toast.success('signin Successful');
       })
       .catch(error => {
@@ -34,7 +39,7 @@ function SignIn() {
       });
     console.log(formData);
   };
-
+  
   return (
     <div className="flex items-center justify-center min-h-screen bg-signin backdrop-blur-md">
       <div className="my-8 w-1/3 max-w-sm p-4 bg-black rounded-lg opacity-85 shadow sm:p-6 md:p-8 backdrop-blur-lg">
@@ -42,9 +47,9 @@ function SignIn() {
           <div className=" mx-auto py-4">
             <img className="w-24" src="logo.svg" />
           </div>
-          <form
+          <div
             className="text-left flex flex-col gap-6 "
-            onSubmit={handleSubmit}>
+            >
             <div>
               <label
                 htmlFor="email"
@@ -67,8 +72,10 @@ function SignIn() {
                   type="email"
                   name="email"
                   id="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
+              
+                  ref={emailRef}
+                  // onChange={handleInputChange}
+
                   className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                   placeholder="name@company.com"
                   required
@@ -112,8 +119,9 @@ function SignIn() {
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  value={formData.password}
-                  onChange={handleInputChange}
+                  
+                  ref={passwordRef}
+                  // onChange={handleInputChange}
                   className="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ps-10"
                   required
                 />
@@ -142,11 +150,12 @@ function SignIn() {
             </div>
 
             <button
-              type="submit"
+              // type="submit"
+              onClick={handleSubmit}
               className="w-full bg-secondary text-secondary-foreground focus:ring-2 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
               Sign In
             </button>
-          </form>
+          </div>
           <div className="text-xs font-medium text-white flex justify-center">
             Don't have an account?{" "}
             <a href="#" className="text-g-700 hover:underline">

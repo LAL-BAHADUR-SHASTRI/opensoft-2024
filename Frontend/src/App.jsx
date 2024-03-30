@@ -3,7 +3,7 @@ import './App.css'
 import Nav from './components/Navbar'
 import HomePage from './pages/Home';
 import MoviePage from './pages/MoviePage';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ErrorPage from './pages/404page';
 import SignIn from './components/Signin';
@@ -27,9 +27,36 @@ function App() {
     // Add more data entries as needed
   ];
 
+ async function getUserWithJwt() {
+   const userToken = localStorage.getItem('accessToken')
+   if (!userToken) {
+     return;
+   }
+   
+    console.log(userToken)
+    const response = await fetch(`http://10.145.59.41:8080/user/with_token`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": userToken
+        }
+    }
+    )
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log('Success:', data);
 
-  const [userToken,setUserToken] = useState(localStorage.getItem('accessToken'))
-  console.log(userToken,'userToken')
+  }
+   
+  useEffect(() => {
+    // const [userToken, setUserToken] = useState(localStorage.getItem('accessToken'))
+    // const userToken = localStorage.getItem('accessToken')
+    
+   getUserWithJwt()
+  }, []);
 
   return (
     <>
