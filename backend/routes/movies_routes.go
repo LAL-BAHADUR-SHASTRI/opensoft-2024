@@ -36,6 +36,7 @@ func MovieServiceRouter(r *gin.Engine) {
 		movie.GET("/countries", getListofCountries)
 		movie.GET("/filter", getMoviesByFilter)
 		movie.GET("/socket", MySocketHandler)
+		
 	}
 }
 

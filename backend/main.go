@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"opensoft_2024/routes"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -23,7 +24,6 @@ func setupRouter() *gin.Engine {
 	routes.UserServiceRouter(r)
 	routes.MovieServiceRouter(r)
 	routes.PaymentServiceRouter(r)
-
 	r.GET("/ws", func(c *gin.Context) {
 		routes.ServeWebSocket(c.Writer, c.Request)
 	})
