@@ -33,7 +33,7 @@ This README provides instructions on how to set up and run the backend for the O
 
 3. **Configuration**
 
-    Before running the server, ensure that you have the necessary configuration in place. The database credentials are stored in the `db.go` file. Make sure to review and update these credentials according to your database setup (e.g., database configuration, API keys, etc.).
+    Before running the server, ensure that you have the necessary configuration in place. The database credentials are stored in the `db.go` file. Make sure to review and update these credentials according to your database setup.
 
 4. **Running the Server**
 
@@ -43,44 +43,72 @@ This README provides instructions on how to set up and run the backend for the O
     go run main.go
     ```
 
-    This will start the server on `localhost:8080` and will include the following routes:
+    This will start the server on `localhost:8080` and will include the following routes for CRUD operations:
 
     - **User Management**
+        - `POST /user/sign_up`: Create (Sign up) a new user
+        - `GET /user/`: Read (Get) all users
+        - `POST /user/sign_in`: Authenticate (Sign in) a user
+        - `PUT /user/`: Update an existing user
         - `DELETE /user/`: Delete all users
-        - `POST /user/sign_in`: Sign in a user
-        - `GET /user/`: Get all users
-        - `POST /user/sign_up`: Sign up a user
-        - `PUT /user/`: Update a user
-        - `GET /user/with_token`: Get user with token
-        - `POST /user/bookmark`: Add a bookmark
+        - `GET /user/with_token`: Get user details with token
+        - `POST /user/bookmark`: Add a bookmark for a user
+
     - **Movies**
-        - `GET /movie/id/:id`: Get movie by ID
+        - `GET /movie/id/:id`: Get a single movie by ID
         - `GET /movie/`: Get all movies
         - `GET /movie/topimdb`: Get top IMDB movies
         - `GET /movie/genre/:genre`: Get movies by genre
         - `GET /movie/language/:language`: Get movies by language
         - `GET /movie/country/:country`: Get movies by country
-        - `GET /movie/latest`: Get latest movies
-        - `GET /movie/genres`: Get list of genres
-        - `GET /movie/languages`: Get list of languages
-        - `GET /movie/countries`: Get list of countries
-        - `GET /movie/filter`: Get movies by filter
+        - `GET /movie/latest`: Get the latest movies
+        - `GET /movie/genres`: Get all genres
+        - `GET /movie/languages`: Get all languages
+        - `GET /movie/countries`: Get all countries
+        - `GET /movie/filter`: Get movies based on various filters
+
     - **Payments**
-        - `DELETE /payment/`: Delete all payments
-        - `POST /payment/create`: Create a payment
-        - `PUT /payment/update`: Update a payment
+        - `POST /payment/create`: Create a new payment
         - `GET /payment/`: Get all payments
-        - `GET /payment/user/:user_id`: Get payment by user ID
+        - `PUT /payment/update`: Update an existing payment
+        - `DELETE /payment/`: Delete all payments
+        - `GET /payment/user/:user_id`: Get payments by user ID
+
     - **Search**
-        - `GET /search/semantic/:searchTerm`: Semantic search
-        - `GET /search/fuzzy/:searchTerm`: Fuzzy search
-        - `GET /search/autocomplete/:searchTerm`: Autocomplete search
+        - `GET /search/semantic/:searchTerm`: Perform semantic search
+        - `GET /search/fuzzy/:searchTerm`: Perform fuzzy search
+        - `GET /search/autocomplete/:searchTerm`: Perform autocomplete search
+
     - **WebSockets**
-        - `GET /ws`: WebSocket endpoint
+        - `GET /ws`: Connect to the WebSocket endpoint
 
 5. **Security Warning**
 
     Be aware of the security implications of trusting all proxies. For production, configure the trusted proxies appropriately. Refer to the [official Gin documentation](https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies) for more details.
+
+## Search Functionality
+
+- **Autocomplete Search**: Provides real-time suggestions to users as they type their query, making search faster and more efficient.
+
+- **Fuzzy Search**: Allows for the matching of partial or misspelled queries to relevant results, overcoming user input errors and variations in spelling.
+
+- **Semantic Search**: Goes beyond literal matching to understand the context and intent behind a search query, providing more relevant and contextually appropriate results.
+
+## JWT Authentication
+
+The application implements JWT (JSON Web Token) authentication for sign-in and sign-up features, ensuring secure transmission of user credentials and effective identity verification.
+
+## WebSockets for Real-Time Communication
+
+The backend utilizes WebSockets to enable real-time communication between the client and server, reducing latency and enhancing system scalability.
+
+## Payment Gateway Integration
+
+The backend includes a payment gateway integration for tier-based subscriptions, allowing users to subscribe to different tiers with varying levels of access and benefits.
+
+## HTTP Routes for CRUD Operations
+
+The backend uses HTTP routes to perform CRUD (Create, Read, Update, Delete) operations on various resources like users, movies, and payments, providing a structured and efficient way to manage data interactions in the application.
 
 ## Additional Information
 
