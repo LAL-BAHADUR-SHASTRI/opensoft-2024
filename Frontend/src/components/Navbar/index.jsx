@@ -106,7 +106,7 @@ const Search = () => {  // yar isko animate bhi karna hai .... baad me karunga
   };
 
   const handleKeyDown = (e) => {
-    if (e.keyCode === 39) {
+    if (e.keyCode === 39 || e.keyCode === 9) {
       setPrefix(suggestion);
     }
   };
@@ -174,6 +174,7 @@ const Search = () => {  // yar isko animate bhi karna hai .... baad me karunga
         name="search-bar"
         id="search-bar2"
         className="inputnev"
+        tabIndex={-1}
         value={suggestion}
       />
       </motion.div>
