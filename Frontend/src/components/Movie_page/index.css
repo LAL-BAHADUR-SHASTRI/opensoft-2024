@@ -105,6 +105,14 @@
     align-items: center;
 }
 
+.central {
+    display: flex;
+    position: relative;
+    width: 100%;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+
 .movtitle {
     display: flex;
     position: relative;
@@ -128,4 +136,25 @@
     border: 1.55px solid #F0AB00;
     align-items: center;
     justify-content: space-evenly;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 57.5%;
+    /* justify-content: center; */
+    align-items: flex-start;
+}
+
+.headnTxt {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.rightc {
+    width: 36.5%;
 }

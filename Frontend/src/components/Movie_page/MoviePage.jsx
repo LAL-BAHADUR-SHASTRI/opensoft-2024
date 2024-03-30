@@ -1,4 +1,4 @@
-import { FaRegStar, FaStar, FaStarHalfAlt, FaStarHalf, FaPlus } from "react-icons/fa"
+import { FaRegStar, FaStar, FaStarHalfAlt, FaPlus } from "react-icons/fa"
 import "./index.css"
 import imdb from '../../assets/imdb.svg'
 import flixify from '../../assets/logo.svg'
@@ -81,12 +81,21 @@ const ArrangeComp = ({dat_arr, Component, dir}) => {
     )
 }
 
+const HeadnTxt = ({heading, data}) => {
+    return (
+        <div className="headnTxt">
+            <Headline heading={heading} />
+            <TextComp data={data} />
+        </div>
+    )
+}
+
 const MoviePage = (props) => {
     let data = {
         title: "Avengers: Endgame",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         director: ['Anthony Russo', 'Joe Russo'],
-        cast: [],
+        cast: ['Robert Downey Jr.', 'Scarlett Johannson', 'Chris Evans', 'Chris Hemsworth', 'Mark Ruffalo', 'Jeremy Ranner', 'Brie Larson', 'Paul Rudd'],
         trailer: [],
         release: 2023,
         lang: ['Hindi', 'English', 'Bengali'],
@@ -102,7 +111,17 @@ const MoviePage = (props) => {
                 <div>Watchlist</div>
             </div>
         </div>
-        <Headline heading='Director' />
+        <div className="central">
+            <div className="content">
+                <HeadnTxt heading='Description' data={[data.description]} />
+                <HeadnTxt heading='Director' data={data.director} />
+                <HeadnTxt heading='Cast' data={data.cast} />
+                <Headline heading='Trailers' />
+            </div>
+            <div className="content rightc">
+
+            </div>
+        </div>
         <TextComp data={data.director} />
         <ArrangeComp dir="row" dat_arr={data.lang} Component={LangGen} />
         <ArrangeComp dir="column" dat_arr={transformRatingObject(data.rating)} Component={Rating} />
