@@ -6,6 +6,7 @@ import Stylesheet from "reactjs-stylesheet";
 import { useState } from "react";
 
 import imdb from '../../assets/imdb.svg'
+import { calcDur } from "@/lib/utils";
 
 const MovieCard = (props) => {
     const [hovering, sethovering] = useState(false)
@@ -14,8 +15,7 @@ const MovieCard = (props) => {
         rating: 8.8,
         tags: ['Action','Adventure','Fiction'],
         title: 'Avengers : Endgame',
-        duration_hh: '2',
-        duration_mm: '30',
+        runtime: 150,
         series: false,
         episodes: '8'
     }
@@ -44,7 +44,7 @@ const MovieCard = (props) => {
                         {(props?.data?.title || data.title)}
                     </p>
                     <p className="dur_ep" >
-                        {`${data.duration_hh} h ${data.duration_mm} min`}
+                        {(calcDur(props?.data?.runtime || data.runtime))}
                         {/* {data.series ? `${data.episodes} episodes` : `${data.duration_hh} h ${data.duration_mm} min`} */}
                     </p>
                     <div className="row_">

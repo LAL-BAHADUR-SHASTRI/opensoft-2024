@@ -13,6 +13,7 @@ import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 import './index.css'
 import imdb from '../../assets/imdb.svg'
 import { COLORS } from "@/constants/themes";
+import { calcDur } from "@/lib/utils"
 
 
 const Carousel = (props) => {
@@ -56,7 +57,7 @@ const Carousel = (props) => {
           loop={true}
           autoplay={true}
         >
-          {props.data.map((item,index) => (
+          {(props?.data || Array.from({length: 8})).map((item,index) => (
             <SwiperSlide >
               <div style={styles.card} >
                 <img className="poster" src={item?.poster || Imgurl} />
@@ -72,17 +73,7 @@ const Carousel = (props) => {
                     {(item?.title || data.title)}
                   </p>
                   <p className="movie-duration" >
-                    {(() => {
-                      let val =  item?.runtime || data.runtime;
-                      let dur = '';
-                      if (val > 60) {
-                        dur += Math.round((val/60)-0.5).toString();
-                        dur += ' hr '
-                      }
-                      dur += (val%60).toString();
-                      dur += ' min'
-                      return dur;
-                      })()}
+                    {(calcDur(item?.runtime || data.runtime))}
                   </p>
                   <p className="movie-description" >
                     {item?.plot?.length > 100 ? item?.plot.slice(0,100)+'...' : item?.plot || data.desc}
