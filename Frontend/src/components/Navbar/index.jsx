@@ -266,8 +266,10 @@ const Nav = ({onTabChange, simpleNav = false}) => {
   const [selected, setSelected] = useState(0)
   const navigate = useNavigate();
 
-  const isLoggedin = userStore()
-  
+  // const isLoggedin = userStore.getState().id != "";
+  // const
+  // const  email = userStore((state) => state.getEmail());
+  const isLoggedin = false;
   return (
     <nav className="navbar">
       <img onClick={() => { navigate('/'); onTabChange(0); setSelected(0); }} className="logo" src={logo} /> {/*logo*/}

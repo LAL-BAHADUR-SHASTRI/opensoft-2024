@@ -9,6 +9,7 @@ const userStore = create((set) => ({
   bookmarks: [],
   id: "",
   tier: 0,
+  getEmail: () => userStore.getState().email,
   addBookMark: (movie) =>
     set((state) => ({ bookmarks: [...state.bookmarks, movie] })),
 
