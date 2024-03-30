@@ -7,6 +7,7 @@ import Toast from "@/components/Toast";
 
 const HomePage = () => {
   const [data, setData] = useState([]);
+  const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,6 +22,20 @@ const HomePage = () => {
       .catch(error => {
         console.error('Error fetching data:', error);
         setLoading(false);
+        Toast.error('Error Fetching Data');
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BHOST}/movie/genres`)
+      .then(response => response.json())
+      .then(data => {
+        setGenres(data);
+        console.log('Success:', data);
+        Toast.success('Data Loaded Successfully');
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
         Toast.error('Error Fetching Data');
       });
   }, []);
