@@ -30,6 +30,7 @@ func FuzzySearch(collection *mongo.Collection, searchTerm string) ([]bson.M, err
 			{"text", bson.D{
 				{"query", searchTerm},
 				{"path", "title"},
+
 				{"fuzzy", bson.D{
 					{"maxEdits", 2},
 					{"prefixLength", 3},
@@ -55,7 +56,7 @@ func SemanticSearch(collection *mongo.Collection, searchTerm string) ([]bson.M, 
 			{"queryVector", embedding},
 			{"path", "plot_embedding"},
 			{"numCandidates", 100},
-			{"limit", 100},
+			{"limit", 50},
 			{"index", "PlotSemanticSeach"},
 		}},
 	}
@@ -67,8 +68,9 @@ var projectOpts = bson.D{{"title", 1}, {"imdb.rating", 1}, {"_id", 1}, {"poster"
 // runSearch executes the MongoDB aggregation pipeline and returns the search results.
 func runSearch(collection *mongo.Collection, searchStage bson.D) ([]bson.M, error) {
 	projectStage := bson.D{{"$project", projectOpts}}
+	limitStage := bson.D{{"$limit", 10}}
 
-	cursor, err := collection.Aggregate(context.TODO(), mongo.Pipeline{searchStage, projectStage})
+	cursor, err := collection.Aggregate(context.TODO(), mongo.Pipeline{searchStage, limitStage, projectStage})
 	if err != nil {
 		return nil, err
 	}
