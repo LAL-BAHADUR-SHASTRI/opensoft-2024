@@ -1,6 +1,6 @@
 import { MovieCard } from "@/components/mov_thumbn";
 import { Select, SelectContent,SelectGroup,SelectLabel, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Stylesheet from "reactjs-stylesheet";
 
 
