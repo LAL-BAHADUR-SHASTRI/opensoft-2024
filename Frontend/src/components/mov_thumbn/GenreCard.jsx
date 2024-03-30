@@ -30,10 +30,10 @@ const GenreCard = (props) => {
       onMouseLeave={() => sethovering(false)}
     >
       <div className="genre_txt_o">
-        <div className="genre_txt">{props?.title || 'Genre_title'}</div>
+        <div className="genre_txt">{props?.data || 'Genre_title'}</div>
       </div>
-      <Roll img1={props.img1} img2={props.img2} dir={true} hovering={hovering} />
-      <Roll img1={props.img3} img2={props.img4} dir={false} hovering={hovering} />
+      <Roll img1={props.data.img1} img2={props.data.img2} dir={true} hovering={hovering} />
+      <Roll img1={props.data.img3} img2={props.data.img4} dir={false} hovering={hovering} />
     </div>
     </div>
   )

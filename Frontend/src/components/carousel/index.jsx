@@ -17,16 +17,16 @@ import { COLORS } from "@/constants/themes";
 
 const Carousel = (props) => {
 
-  let Imgurl = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj8uK1L5G7UwQfdiartTL4sg-QtDgo8wsUBnRZ6V9foaCBlTOd8NZQyexTr0xiPsZlpKKJkrCfTtRhTD8gcfHwxNGrKSgi2bqwaiKpolFVr3chDgkRtVKL_fNwHScrKfEiZhYlCO9_FEu_m/w1920-h1080-c/avengers-endgame-uhdpaper.com-8K-94.jpg;' 
-
+  const Imgurl = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj8uK1L5G7UwQfdiartTL4sg-QtDgo8wsUBnRZ6V9foaCBlTOd8NZQyexTr0xiPsZlpKKJkrCfTtRhTD8gcfHwxNGrKSgi2bqwaiKpolFVr3chDgkRtVKL_fNwHScrKfEiZhYlCO9_FEu_m/w1920-h1080-c/avengers-endgame-uhdpaper.com-8K-94.jpg;'
+  
   const [index, setindex] = useState(2);
 
    let data = {
     rating: '8.8/10',
     tags: ['Action','Adventure','Fiction'],
     title: 'Avengers : Endgame',
-    duration: '2:30',
-    desc: 'Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate '
+    runtime: 150,
+    desc: 'Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi...'
   }
 
   return (
@@ -56,26 +56,36 @@ const Carousel = (props) => {
           loop={true}
           autoplay={true}
         >
-          {Array.from({length: 8}).map((item,index) => (
+          {props.data.map((item,index) => (
             <SwiperSlide >
               <div style={styles.card} >
-                <img className="poster" src={Imgurl} />
+                <img className="poster" src={item?.poster || Imgurl} />
                 <span className="movie-details">
                   <div style={styles.row}>
                     <img src={imdb} className="imdb-logo" />
-                    <p className="rating">{data.rating}</p>
-                    {data?.tags.map((el) =>
+                    <p className="rating">{item?.imdb.rating || data.rating}</p>
+                    {(item?.tags || data.tags).map((el) =>
                       <p className="tags">{el}</p>
                     )}
                   </div>
                   <p className="movie-title" >
-                    {data.title}
+                    {(item?.title || data.title)}
                   </p>
                   <p className="movie-duration" >
-                    {data.duration}min
+                    {(() => {
+                      let val =  item?.runtime || data.duration;
+                      let dur = '';
+                      if (val > 60) {
+                        dur += Math.round((val/60)-0.5).toString();
+                        dur += ' hr '
+                      }
+                      dur += (val%60).toString();
+                      dur += ' min'
+                      return dur;
+                      })()}
                   </p>
                   <p className="movie-description" >
-                    {data?.desc.length > 100 ? data?.desc.slice(0,100)+'...' : data?.desc}
+                    {item?.desc?.length > 100 ? item?.desc.slice(0,100)+'...' : item?.desc || data.desc}
                   </p>
                   <div style={styles.row}>
                     <p className="play-now">
