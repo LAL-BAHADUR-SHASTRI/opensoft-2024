@@ -92,7 +92,7 @@ func getTopImdbMovies(c *gin.Context) {
 	sortStage := bson.D{{"$sort", bson.D{{"imdb.rating", -1}}}}
 	limitStage := bson.D{{"$limit", 10}}
 	// return only title,id,imdb.rating, poster and runtime
-	projectStage := bson.D{{"$project", bson.D{{"title", 1}, {"imdb.rating", 1}, {"runtime", 1}, {"poster", 1}, {"genres", 1}, {"plot", 1}}}}
+	projectStage := bson.D{{"$project", bson.D{{"title", 1}, {"imdb.rating", 1}, {"runtime", 1}, {"poster", 1}, {"genres", 1}}}}
 
 	cursor, err := movieCollection.Aggregate(database.Ctx, mongo.Pipeline{matchStage, sortStage, limitStage, projectStage})
 	if err != nil {
@@ -172,7 +172,7 @@ func getMoviesByCountry(c *gin.Context) {
 
 func getLatestMovies(c *gin.Context) {
 	// Find the movies
-	cursor, err := movieCollection.Find(database.Ctx, bson.D{}, options.Find().SetSort(bson.D{{"released", -1}}).SetProjection(bson.D{{"title", 1}, {"imdb.rating", 1}, {"runtime", 1}, {"poster", 1}}).SetLimit(1000))
+	cursor, err := movieCollection.Find(database.Ctx, bson.D{}, options.Find().SetSort(bson.D{{"released", -1}}).SetProjection(bson.D{{"title", 1}, {"imdb.rating", 1}, {"runtime", 1}, {"poster", 1}, {"genres", 1}, {"plot", 1}}).SetLimit(10))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve movies"})
 		return
