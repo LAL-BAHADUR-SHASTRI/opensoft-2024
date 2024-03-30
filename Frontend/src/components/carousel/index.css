@@ -96,6 +96,9 @@
 
 .poster {
   border-radius: 15px;
+  width: 967px;
+  height: 546px;
+  object-fit: cover;
 }
 
 .swiper-pagination-bullet {

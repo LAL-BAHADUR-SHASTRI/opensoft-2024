@@ -10,10 +10,20 @@ const Roll = (subprops) => {
   return(
     <div style={{...styles.roll_static,...varStyle, ...varStyle2  }}>
       <img
-        src={subprops?.img1 || Img2url} className="rollimg"
+        src={subprops?.img1 || Img2url}
+        className="rollimg"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = Img2url;
+        }}
       />
       <img
-        src={subprops?.img2 || Img2url} className="rollimg"
+        src={subprops?.img2 || Img2url}
+        className="rollimg"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = Img2url;
+        }}
       />
     </div>
   )

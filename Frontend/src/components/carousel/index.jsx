@@ -12,14 +12,12 @@ import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 
 import './index.css'
 import imdb from '../../assets/imdb.svg'
-import { COLORS } from "@/constants/themes";
+import { COLORS, Imgurl, Img2url } from "@/constants/themes";
 import { calcDur } from "@/lib/utils"
 
 
 const Carousel = (props) => {
 
-  const Imgurl = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj8uK1L5G7UwQfdiartTL4sg-QtDgo8wsUBnRZ6V9foaCBlTOd8NZQyexTr0xiPsZlpKKJkrCfTtRhTD8gcfHwxNGrKSgi2bqwaiKpolFVr3chDgkRtVKL_fNwHScrKfEiZhYlCO9_FEu_m/w1920-h1080-c/avengers-endgame-uhdpaper.com-8K-94.jpg;'
-  
   const [index, setindex] = useState(2);
 
    let data = {
@@ -60,7 +58,10 @@ const Carousel = (props) => {
           {(props?.data || Array.from({length: 8})).map((item,index) => (
             <SwiperSlide >
               <div style={styles.card} >
-                <img className="poster" src={item?.poster || Imgurl} />
+                <img className="poster" src={item?.poster || Imgurl} onError={(e) => {
+                    e.target.onerror = null; // To avoid infinite loop
+                    e.target.src = Imgurl; // Provides fallback image URL
+                  }} />
                 <span className="movie-details">
                   <div style={styles.row}>
                     <img src={imdb} className="imdb-logo" />

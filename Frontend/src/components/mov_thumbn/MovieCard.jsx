@@ -27,6 +27,10 @@ const MovieCard = (props) => {
     >
         <img
             src={props?.data?.poster || Img2url} 
+            onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = Img2url;
+              }}
             className="mov_img"
         />
         <div 
