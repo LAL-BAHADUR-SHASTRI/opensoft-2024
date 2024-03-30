@@ -1,2 +1,2 @@
-import MoviePage from "./MoviePage";
-export {MoviePage};
+import MoviePage_ from "./MoviePage";
+export {MoviePage_};
