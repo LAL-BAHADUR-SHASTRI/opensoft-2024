@@ -1,6 +1,6 @@
 import { MovieCard } from "@/components/mov_thumbn";
 import { Select, SelectContent,SelectGroup,SelectLabel, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Stylesheet from "reactjs-stylesheet";
 
 
@@ -48,12 +48,29 @@ const SelectBar = () => {
 
 
 const MovieList = () => {
+  const [movData, setMovData] = useState([]);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BHOST}/movie/`)
+    .then(response => response.json())
+    .then(data => {
+        setMovData(data);
+        setLoading(false);
+        console.log('Success fetching Movie Data:', data);
+      })
+      .catch(error => {
+        console.error('Error fetching Movie Data:', error);
+        setLoading(false);
+        Toast.error('Error Fetching Movie Data');
+      });
+  }, []);
+
   return (
     <div style={styles.container}>
       <SelectBar />
       <div style={styles.movieBox}>
-        {Array.from({length: 15}).map((item,index) => (
-          <MovieCard />
+        {movData.map((item,index) => (
+          <MovieCard data={item} />
         ))}
       </div>
     </div>

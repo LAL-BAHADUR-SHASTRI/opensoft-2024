@@ -1,38 +1,47 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+// import Toast from "";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import Toast from "./Toast";
 
 function SignUp() {
-  const [formData, setFormData] = useState({
-    email: "",
-    createpass: "",
-    confirmpass: "",
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
+  
+  const emailRef = useRef("");
+  const passwordRef = useRef("");
+  const confirmPasswordRef = useRef("");
+  const navigate = useNavigate();
+   
   const handleSubmit = async () => {
+    const formData = {
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+      tier :0
+    };
     // Toast.success("Sign In Successful");
-    await fetch(`${import.meta.env.VITE_BHOST}/user/sign_up`,{
+     try {
+    const response = await fetch(`http://10.145.59.41:8080/user/sign_up`, {
       method: "POST",
-      headers: {},
+      headers: {
+        "Content-Type": "application/json" // Specify content type
+      },
       body: JSON.stringify(formData)
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        localStorage.setItem("accessToken",data)
-        Toast.success('signin Successful');
-      })
-      .catch(error => {
-        console.error('Error :', error);
-        Toast.error('Error !');
-      });
-    console.log(formData);
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Success:', data.token);
+       localStorage.setItem("accessToken", data.token);
+        
+       Toast.success('Signup Successful');
+
+       navigate("/");
+  } catch (error) {
+    console.error('Error:', error);
+    Toast.error('Error!');
+  }
+  
   };
 
   return (
@@ -42,9 +51,9 @@ function SignUp() {
           <div className=" mx-auto py-4">
             <img className="w-24"  src="logo.svg" />
           </div>
-          <form
+          <div
             className="text-left flex flex-col gap-6 "
-            onSubmit={handleSubmit}>
+            >
             <div>
               <label
                 htmlFor="email"
@@ -67,8 +76,7 @@ function SignUp() {
                   type="email"
                   name="email"
                   id="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
+                  ref={emailRef}
                   className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                   placeholder="name@company.com"
                   required
@@ -112,8 +120,7 @@ function SignUp() {
                   name="createpass"
                   id="createpass"
                   placeholder="••••••••"
-                  value={formData.createpass}
-                  onChange={handleInputChange}
+                  ref={passwordRef}
                   className="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ps-10"
                   required
                 />
@@ -156,19 +163,18 @@ function SignUp() {
                   name="confirmpass"
                   id="confirmpass"
                   placeholder="••••••••"
-                  value={formData.confirmpass}
-                  onChange={handleInputChange}
+                  ref={confirmPasswordRef}
                   className="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                   required
                 />
               </div>
             </div>
             <button
-              type="submit"
+              onClick={handleSubmit}
               className="w-full bg-secondary text-secondary-foreground focus:ring-2 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
               Sign Up
             </button>
-          </form>
+          </div>
           <div className="text-xs font-medium text-white flex justify-center">
             Already have an account?{" "}
             <a href="#" className="text-g-700 hover:underline">

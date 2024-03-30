@@ -4,25 +4,42 @@ import './index.css'
 import Carousel from "@/components/carousel";
 import { ContWatch, GenreCard } from "@/components/mov_thumbn";
 import Toast from "@/components/Toast";
+import ArrangeComp from "@/components/Movie_page/ArrangeCompn";
 
 const HomePage = () => {
-  const [data, setData] = useState([]);
+  const [carData, setCarData] = useState([]);
+  const [contWData, setCW] = useState([]);
   const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
  
+  
+  
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BHOST}/movie/`)
-      .then(response => response.json())
-      .then(data => {
-        setData(data);
+    fetch(`${import.meta.env.VITE_BHOST}/movie/topimdb`)
+    .then(response => response.json())
+    .then(data => {
+        setCarData(data);
         setLoading(false);
-        console.log('Success:', data);
-        Toast.success('Data Loaded Successfully');
+        console.log('Success fetching Carousel:', data);
       })
       .catch(error => {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching Carousel:', error);
         setLoading(false);
-        Toast.error('Error Fetching Data');
+        Toast.error('Error Fetching Carousel');
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BHOST}/movie/CW`)
+      .then(response => response.json())
+      .then(data => {
+        setCW(data);
+        console.log('Success fetching Continue Watching:', data);
+      })
+      .catch(error => {
+        console.error('Error fetching Continue Watchingta:', error);
+        setLoading(false);
+        Toast.error('Error Fetching Continue Watching');
       });
   }, []);
 
@@ -31,12 +48,11 @@ const HomePage = () => {
       .then(response => response.json())
       .then(data => {
         setGenres(data);
-        console.log('Success:', data);
-        Toast.success('Data Loaded Successfully');
+        console.log('Success fetching Genres:', data);
       })
       .catch(error => {
-        console.error('Error fetching data:', error);
-        Toast.error('Error Fetching Data');
+        console.error('Error fetching Genres:', error);
+        Toast.error('Error Fetching Genres');
       });
   }, []);
 
@@ -49,22 +65,11 @@ const HomePage = () => {
   }
   return (
     <div style={styles.container}>
-      <Carousel />
+      <Carousel data={carData} />
       <h2 style={styles.heading}>Continue Watching</h2>
-      <div className="scroller" style={styles.scroller} >
-        <ContWatch />
-        <ContWatch />
-        <ContWatch />
-      </div>
+      <ArrangeComp dir="scroller" style={styles.scroller} Component={ContWatch} dat_arr={contWData}/>
       <h2 style={styles.heading}>Top Genres</h2>
-      <div className="scroller" style={styles.scroller} >
-          <GenreCard />
-          <GenreCard />
-          <GenreCard />
-          <GenreCard />
-          <GenreCard />
-          <GenreCard />
-      </div>
+      <ArrangeComp dir="scroller" style={styles.scroller} Component={GenreCard} dat_arr={genres}/>
       <div style={{height: 100}}/>
     </div>
   )
@@ -84,7 +89,7 @@ const styles = Stylesheet.create({
     fontWeight: 'bold', 
     fontSize: 32,
     width: "fit-content",
-    
+    marginTop: "30px",
   },
   scroller: {
     display: 'flex',

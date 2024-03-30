@@ -5,15 +5,15 @@ import { FaPlay } from "react-icons/fa6";
 const ContWatch = (props) => {
     const prog_bar = {
         height: '100%',
-        width: `${props?.watchLen || 30}%`,
+        width: `${props?.data?.watchLen || 30}%`,
         background: '#F0AB00',
-    borderBottomLeftRadius: 10
+        borderBottomLeftRadius: 10
       }
   return(
     <div className="ContWatch_">
         <div className="divimg">
             <img
-                src={props?.obj?.img || Imgurl} className="img_"
+                src={props?.data?.poster || Imgurl} className="img_"
             />
         </div>
         <div className="play-button">
