@@ -14,9 +14,10 @@ import Success from './components/Success';
 import SignUp from './components/Signup';
 import About from './pages/About';
 import { LineChart } from 'lucide-react';
+import { ToastContainer } from 'react-toastify';
 // import useWindowDimensions from './hooks/useWindowDimensions'
 
-function App() {
+function App() {    
   const [ActiveTab, setActiveTab] = useState(0);
   const data=[
     { year: "Hello", number: 30 },
@@ -29,6 +30,7 @@ function App() {
   return (
     <>
       <Router>
+        <ToastContainer />
         <Routes>
           <Route path="/signin" element={
             <>
