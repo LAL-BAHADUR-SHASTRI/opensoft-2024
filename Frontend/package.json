@@ -27,6 +27,7 @@
     "react-router-dom": "^6.22.3",
     "react-search-autocomplete": "^8.5.2",
     "react-use-websocket": "^3.0.0",
+    "react-toastify": "^10.0.5",
     "reactjs-stylesheet": "^1.0.9",
     "swiper": "^11.0.7",
     "tailwind-merge": "^2.2.2",
