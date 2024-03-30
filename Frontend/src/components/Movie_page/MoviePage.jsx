@@ -71,11 +71,18 @@ const Rating = ({data}) => {
     )
 }
 
-function transformRatingObject(ratingObject) {
-    return Object.entries(ratingObject).map(([platform, rating]) => ({
-        logo: platform,
-        val: rating
-    }));
+function genFlixifyrt(x) {
+    let t = Math.min(x, 10-x)/2;
+    let k = Math.round((x - t + Math.random()*2*t)*5);
+    return k/10;
+}
+
+function transformRatingObject(x) {
+    let res = [
+        {logo:"imdb", val:x},
+        {logo:"flixify", val:genFlixifyrt(x)}
+    ]
+    return res;
 }
 
 const HeadnTxt = ({heading, data}) => {
