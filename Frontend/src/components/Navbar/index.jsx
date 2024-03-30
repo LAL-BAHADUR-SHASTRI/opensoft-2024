@@ -6,11 +6,11 @@ import { motion } from "framer-motion";
 import { FaCircleUser } from "react-icons/fa6";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import {create} from 'zustand';
 
 import "./index.css"
 import logo from '../../assets/logo.svg'
 import SearchResultCard from "./SearchResultCard";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
 import Trie from "./trie";
 
 import {
@@ -21,6 +21,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import MovieList from "@/pages/Movielist";
 
 
 //<--buttons-->
@@ -62,26 +63,40 @@ const NavButtons = ({selected,setSelected,onTabChange}) => {
 
 const Search = () => {  
 
-  
-  const [isTyping, setTyping] = useState(false);
   const [isActive, setActive] = useState(false);
   const [prefix,setPrefix] = useState("");
   const [suggestion, setSuggestion ] = useState("");
   const [socketUrl, setSocketUrl] = useState('ws://10.145.128.28:8080/ws') 
-  const [messageHistory, setMessageHistory] = useState([]);
-
+  const [myTrie, setTrie] = useState(new Trie())
   const {sendMessage, lastMessage, readyState} = useWebSocket(socketUrl);
+  const [fuzzyList, setFuzzy] = useState([]);
+
+  const useStore = create((set) => ({
+    movieList: [],
+    search: prefix,
+    setSearch: (state) => set({search: state}),
+    setMovieList: (state) => set({movieList: state})
+  }))
 
   useEffect(() => {
-    if(lastMessage){
-      setMessageHistory((prev) => prev.concat(lastMessage));
-      console.log('array',JSON.parse(lastMessage?.data).autocomplete)
-      let words =JSON.parse(lastMessage?.data).autocomplete; 
-      words =  words ? words : [];
-      if(words.length > 0){
-        setDictionary(words)
+    (async () => {
+      if(lastMessage){
+        let words =JSON.parse(lastMessage?.data).autocomplete; 
+        words =  words ? words : [];
+        if(words.length > 0){
+          words.forEach(el => {
+            myTrie.insert(el.trim());
+          });
+        }
+      
+        let fuzzy =JSON.parse(lastMessage?.data).fuzzy;
+        fuzzy = fuzzy ? fuzzy : [];
+        if(fuzzy.length > 0){
+          setFuzzy(fuzzy.slice(0,5))
+        }
       }
-    }
+      setSuggestion(myTrie.suggest(prefix)[0]);
+    })();
   },[lastMessage]);
 
   const connectionStatus = {
@@ -92,49 +107,12 @@ const Search = () => {
     [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
   }[readyState];
 
-  const [dictionary, setDictionary] = useState([]);
-  const [myTrie, setTrie] = useState(new Trie())
-
-
-  useEffect(() => {
-    var newTrie = myTrie;
-    console.log('making trie');
-    (async()=>{
-    // const dictionary = await getWords();
-    for (let i = 0; i < dictionary.length; i++) {
-      const word = dictionary[i];
-      console.log('inserting word');
-      myTrie.insert(word)
-    }
-    setTrie(newTrie)
-  })();
-  },[dictionary])
-
-  useEffect(( ) => {
-    console.log('i am here')
-    var value = prefix;
-    var found_words = myTrie.find(value).sort((a, b) => {
-      return a.length - b.length;
-    });
-    console.log('found',found_words)
-    var first_word = found_words[0];
-    if (
-      found_words.length !== 0 &&
-        value !== "" &&
-        value[value.length - 1] !== " "
-    ) {
-      if (first_word != null) {
-        var remainder = first_word.slice(prefix.length);
-        setSuggestion(value + remainder);
-      }
-    } else {
-      setSuggestion(value);
-    }
-  },[])
-
-  const onChange = (e) => {
+ const onChange = (e) => {
     var value = e.target.value;
     setPrefix(value);
+    sendMessage(
+      JSON.stringify({type: "search", msg: value})
+    );
   };
 
   const handleKeyDown = (e) => {
@@ -149,15 +127,6 @@ const Search = () => {
     }
   };
 
-  useEffect(() => {
-    if(prefix.length > 0) setTyping(true); else setTyping(false);
-    console.log(prefix) ;
-
-    sendMessage(
-      JSON.stringify({type: "search", msg: prefix})
-    );
-  },[prefix]);
-  
   const searchinput = useCallback((inputel) => {
     if(inputel) {
       inputel.focus();
@@ -165,8 +134,11 @@ const Search = () => {
   },[])
 
   const hideShadow = () => {
+    setPrefix('');
+    setSuggestion('');
+    console.log('cleanu')
     setActive(false);
-    setTyping(false); 
+    setFuzzy([]);
   }
 
   useEffect(() => {
@@ -182,11 +154,11 @@ const Search = () => {
       {isActive && (
         <div style={styles.backShadow} >
           <div style={{width: '100%', height: '100%', zIndex: 1}} onClick={hideShadow} ></div>
-          <div  style={styles.searchResults} >
-          {Array.from({length: 5}).map((item,index) => (
-            <SearchResultCard />
+          {fuzzyList.length  && <div  style={styles.searchResults} >
+          {fuzzyList.map((item,index) => (
+            <SearchResultCard hideShadow={hideShadow} data={item} />
             ))}
-          </div>
+          </div>}
         </div>
       )}
       <motion.div 
@@ -216,7 +188,7 @@ const Search = () => {
         id="search-bar2"
         className="inputnev"
         tabIndex={-1}
-        value={suggestion}
+        value={prefix.length >0 ? suggestion : ''}
       />
       </motion.div>
     </>
@@ -314,7 +286,7 @@ const styles = Stylesheet.create({
     position: 'absolute',
     width: '100vw',
     height: 'calc(100vh)',
-    bottom: -80,
+    bottom: -70,
     left: 0,
     zIndex: 10,
     background: 'linear-gradient(rgba(50,50,50,0.5),rgba(60,60,60,0.6),rgba(60,60,60,0.8))',

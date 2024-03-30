@@ -1,12 +1,17 @@
 import Stylesheet from "reactjs-stylesheet";
 import { COLORS, Imgurl } from "@/constants/themes";
 import { FaPlay } from "react-icons/fa6";
+import {useNavigate} from 'react-router-dom';
 
-const SearchResultCard = (data) => {
+
+const SearchResultCard = ({data, hideShadow}) => {
+  const navigate = useNavigate();
+  console.log(data)
   data = {
-    name : 'SpiderMan',
+    name : data,
     release: 2001,
-    duration: '2:30'
+    duration: '2:30',
+    id: 1
   }
   return (
     <div onClick={() => console.log('click')} className="searchResultCard" style={styles.container}>
@@ -21,7 +26,7 @@ const SearchResultCard = (data) => {
 
         </p>
       </div>
-      <div style={styles.playbutton} >
+      <div style={styles.playbutton} onClick={() => {navigate(`/movie/${data.id}`); hideShadow();}} >
         <FaPlay />
         <p style={{marginLeft: 8}} >Play</p>
       </div>
