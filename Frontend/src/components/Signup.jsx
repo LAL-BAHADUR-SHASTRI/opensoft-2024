@@ -18,7 +18,7 @@ function SignUp() {
     };
     // Toast.success("Sign In Successful");
      try {
-    const response = await fetch(`http://10.145.59.41:8080/user/sign_up`, {
+    const response = await fetch(`${meta.env.VITE_BHOST}/user/sign_up`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json" // Specify content type
