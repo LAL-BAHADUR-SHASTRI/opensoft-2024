@@ -42,7 +42,7 @@ func MovieServiceRouter(r *gin.Engine) {
 // getMovies handles the GET request for retrieving all movies
 func getMovies(c *gin.Context) {
 	// Find the movies
-	cursor, err := movieCollection.Find(database.Ctx, bson.D{}, options.Find().SetProjection(bson.D{{"title", 1}, {"imdb.rating", 1}, {"runtime", 1}, {"poster", 1}}).SetLimit(10))
+	cursor, err := movieCollection.Find(database.Ctx, bson.D{}, options.Find().SetProjection(bson.D{{"title", 1}, {"imdb.rating", 1}, {"runtime", 1}, {"poster", 1}, {"genres", 1}}).SetLimit(20))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve movies"})
 		return
@@ -89,9 +89,9 @@ func getTopImdbMovies(c *gin.Context) {
 	// removing movies with blank imdb rating
 	matchStage := bson.D{{"$match", bson.D{{"imdb.rating", bson.D{{"$ne", ""}}}}}}
 	sortStage := bson.D{{"$sort", bson.D{{"imdb.rating", -1}}}}
-	limitStage := bson.D{{"$limit", 100}}
+	limitStage := bson.D{{"$limit", 10}}
 	// return only title,id,imdb.rating, poster and runtime
-	projectStage := bson.D{{"$project", bson.D{{"title", 1}, {"imdb.rating", 1}, {"runtime", 1}, {"poster", 1}}}}
+	projectStage := bson.D{{"$project", bson.D{{"title", 1}, {"imdb.rating", 1}, {"runtime", 1}, {"poster", 1}, {"genres", 1}, {"plot", 1}}}}
 
 	cursor, err := movieCollection.Aggregate(database.Ctx, mongo.Pipeline{matchStage, sortStage, limitStage, projectStage})
 	if err != nil {
@@ -194,8 +194,27 @@ func getListofGenres(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve genres"})
 		return
 	}
+	// also return 4 posters for each genre while checking non empty fields
+	var genrePosters []bson.M
+	for _, genre := range cursor {
+		filter := bson.D{{"genres", genre}, {"poster", bson.D{{"$ne", ""}}}}
+		opts := options.Find().SetProjection(bson.D{{"poster", 1}}).SetLimit(4)
+		cursor, err := movieCollection.Find(database.Ctx, filter, opts)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve genres"})
+			return
+		}
+		defer cursor.Close(context.Background())
 
-	c.JSON(http.StatusOK, cursor)
+		var results []bson.M
+		if err := cursor.All(context.TODO(), &results); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode movies"})
+			return
+		}
+
+		genrePosters = append(genrePosters, bson.M{"genre": genre, "posters": results})
+	}
+	c.JSON(http.StatusOK, genrePosters)
 }
 
 func getListofLanguages(c *gin.Context) {
