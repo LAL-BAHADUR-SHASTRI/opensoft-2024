@@ -1,6 +1,7 @@
 # Backend Setup for OpenSoft 2024 Project
 
-![Go Logo](https://upload.wikimedia.org/wikipedia/commons/0/05/Go_Logo_Blue.svg)
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Go_Logo_Blue.svg" width="100" alt="Go Logo"/>
+<img src="https://blog.golang.org/gopher/gopher.png" width="100" alt="Go Gopher"/>
 
 This README provides instructions on how to set up and run the backend for the OpenSoft 2024 project using Go and the Gin web framework.
 
