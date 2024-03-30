@@ -20,8 +20,18 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={
+            <>
+              <Nav simpleNav={true} onTabChange={setActiveTab}/>
+              <SignIn />
+            </>
+          } />
+          <Route path="/signup" element={
+            <>
+              <Nav simpleNav={true} onTabChange={setActiveTab}/>
+              <SignUp />
+            </>
+          } />
           <Route path="*" element={<ErrorPage text="404 Page Not Found :(" />} />
           <Route path="/" element={
             <>
@@ -37,13 +47,13 @@ function App() {
           } />
           <Route path="/:id/success" element={
             <>
-              <Nav onTabChange={setActiveTab}/>
+              <Nav simpleNav={true} onTabChange={setActiveTab}/>
               <Success />
             </>
           } />
           <Route path="/purchase" element={
             <>
-              <Nav onTabChange={setActiveTab}/>
+              <Nav simpleNav={true} onTabChange={setActiveTab}/>
               <Purchase />
             </>
           } />
