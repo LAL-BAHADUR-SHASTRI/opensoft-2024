@@ -6,7 +6,7 @@ import Stylesheet from "reactjs-stylesheet";
 import { useState } from "react";
 
 import imdb from '../../assets/imdb.svg'
-import { calcDur } from "@/lib/utils";
+import { calcDur, getRandImg } from "@/lib/utils";
 
 const MovieCard = (props) => {
     const [hovering, sethovering] = useState(false)
@@ -27,10 +27,10 @@ const MovieCard = (props) => {
         onMouseLeave={() => sethovering(false)}
     >
         <img
-            src={props?.data?.poster || Img2url} 
+            src={props?.data?.poster || getRandImg()} 
             onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = Img2url;
+                e.target.src = getRandImg();
               }}
             className="mov_img"
         />

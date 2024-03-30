@@ -2,6 +2,7 @@ import { Imgurl, Img2url } from "@/constants/themes";
 import "./index.css"
 import Stylesheet from "reactjs-stylesheet";
 import { useState } from "react";
+import { getRandImg } from "@/lib/utils";
 
 const Roll = (subprops) => {
   let varStyle = subprops.dir ? styles.initdir0 : styles.initdir1;
@@ -10,19 +11,19 @@ const Roll = (subprops) => {
   return(
     <div style={{...styles.roll_static,...varStyle, ...varStyle2  }}>
       <img
-        src={subprops?.img1 || Img2url}
+        src={subprops?.img1 || getRandImg()}
         className="rollimg"
         onError={(e) => {
           e.target.onerror = null;
-          e.target.src = Img2url;
+          e.target.src = getRandImg();
         }}
       />
       <img
-        src={subprops?.img2 || Img2url}
+        src={subprops?.img2 || getRandImg()}
         className="rollimg"
         onError={(e) => {
           e.target.onerror = null;
-          e.target.src = Img2url;
+          e.target.src = getRandImg();
         }}
       />
     </div>
@@ -43,8 +44,8 @@ const GenreCard = (props) => {
         <div className="genre_txt">{props?.data?.genre || 'Genre_title'}</div>
       </div>
       {/* {console.log(props?.data?.posters[0]?.poster || Img2url)} */}
-      <Roll img1={props?.data?.posters[0]?.poster || Img2url} img2={props?.data?.posters[1]?.poster || Img2url} dir={true} hovering={hovering} />
-      <Roll img1={props?.data?.posters[2]?.poster || Img2url} img2={props?.data?.posters[3]?.poster || Img2url} dir={false} hovering={hovering} />
+      <Roll img1={props?.data?.posters[0]?.poster || getRandImg()} img2={props?.data?.posters[1]?.poster || getRandImg()} dir={true} hovering={hovering} />
+      <Roll img1={props?.data?.posters[2]?.poster || getRandImg()} img2={props?.data?.posters[3]?.poster || getRandImg()} dir={false} hovering={hovering} />
     </div>
     </div>
   )
