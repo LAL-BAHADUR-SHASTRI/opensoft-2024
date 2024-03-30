@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"opensoft_2024/utils"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,8 +21,9 @@ func SearchServiceRouter(r *gin.Engine) {
 }
 
 func Semantic(c *gin.Context) {
+	startTime := time.Now() // Start time measurement
+
 	searchTerm := c.Param("searchTerm")
-	// Convert or normalize the searchTerm
 	normalizedSearchTerm := strings.TrimSpace(strings.ToLower(searchTerm))
 
 	semanticResults, err := utils.SemanticSearch(embedded_movieCollection, normalizedSearchTerm)
@@ -42,9 +44,13 @@ func Semantic(c *gin.Context) {
 	}
 
 	c.Data(http.StatusOK, "application/json", jsonResults)
+
+	duration := time.Since(startTime) // End time measurement
+	log.Printf("Semantic search for '%s' took %s\n", searchTerm, duration)
 }
 
 func Fuzzy(c *gin.Context) {
+	startTime := time.Now()
 	searchTerm := c.Param("searchTerm")
 	// Convert or normalize the searchTerm
 	normalizedSearchTerm := strings.TrimSpace(strings.ToLower(searchTerm))
@@ -67,9 +73,12 @@ func Fuzzy(c *gin.Context) {
 	}
 
 	c.Data(http.StatusOK, "application/json", jsonResults)
+	duration := time.Since(startTime) // End time measurement
+	log.Printf("Semantic search for '%s' took %s\n", searchTerm, duration)
 }
 
 func Autocomplete(c *gin.Context) {
+	startTime := time.Now()
 	searchTerm := c.Param("searchTerm")
 	// Convert or normalize the searchTerm
 	normalizedSearchTerm := strings.TrimSpace(strings.ToLower(searchTerm))
@@ -92,4 +101,6 @@ func Autocomplete(c *gin.Context) {
 	}
 
 	c.Data(http.StatusOK, "application/json", jsonResults)
+	duration := time.Since(startTime) // End time measurement
+	log.Printf("Semantic search for '%s' took %s\n", searchTerm, duration)
 }
