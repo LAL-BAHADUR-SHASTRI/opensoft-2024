@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Toast from "./Toast";
 
 function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -12,6 +13,7 @@ function SignIn() {
   };
 
   const handleSubmit = () => {
+    // Toast.success("Sign In Successful");
     console.log(formData);
   };
 
@@ -108,7 +110,6 @@ function SignIn() {
                     type="checkbox"
                     value=""
                     className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
-                    required
                   />
                 </div>
                 <label

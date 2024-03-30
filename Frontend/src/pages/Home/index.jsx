@@ -1,10 +1,37 @@
 import Stylesheet from "reactjs-stylesheet";
-
+import { useEffect,useState } from "react";
 import './index.css'
 import Carousel from "@/components/carousel";
 import { ContWatch, GenreCard } from "@/components/mov_thumbn";
+import Toast from "@/components/Toast";
 
 const HomePage = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BHOST}/movie/`)
+      .then(response => response.json())
+      .then(data => {
+        setData(data);
+        setLoading(false);
+        console.log('Success:', data);
+        Toast.success('Data Loaded Successfully');
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+        Toast.error('Error Fetching Data');
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-500"></div>
+      </div>
+    );
+  }
   return (
     <div style={styles.container}>
       <Carousel />
