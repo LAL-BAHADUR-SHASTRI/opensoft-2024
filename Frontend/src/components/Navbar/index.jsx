@@ -1,6 +1,6 @@
 import Stylesheet from "reactjs-stylesheet";
 import { useCallback, useEffect, jseRef, useState } from "react"
-import { LuSearch } from "react-icons/lu";
+import { LuCreditCard, LuLogOut, LuSearch, LuUser } from "react-icons/lu";
 import { COLORS } from "@/constants/themes";
 import { motion } from "framer-motion";
 import { FaCircleUser } from "react-icons/fa6";
@@ -11,11 +11,21 @@ import logo from '../../assets/logo.svg'
 import SearchResultCard from "./SearchResultCard";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import Trie from "./trie";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+
 //<--buttons-->
 
 
-const NavButtons = ({onTabChange}) => {
-  const [selected, setSelected] = useState(0)
+const NavButtons = ({selected,setSelected,onTabChange}) => {
 
   const buttons = ['Home','Movies','Watchlist','About'];
   const navigate = useNavigate();
@@ -180,10 +190,21 @@ const Search = () => {  // yar isko animate bhi karna hai .... baad me karunga
 
 //<--User-->
 const UserData = ({isLoggedin}) => {
-  if(isLoggedin){
+  if(!isLoggedin){
     return (
       <div style={{display: 'flex', flexDirection: "row", paddingRight: 30}}>
-        <FaCircleUser size={32} style={{color: COLORS.yellow}} />
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <FaCircleUser size={32} style={{color: COLORS.yellow}} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className='dark:bg-gray-50' >
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className='hover:bg-gray-100' ><LuUser className="mr-2" /> Profile</DropdownMenuItem>
+            <DropdownMenuItem  className='hover:bg-gray-100' ><LuCreditCard  className="mr-2" />  Subscription</DropdownMenuItem>
+            <DropdownMenuItem  className='hover:bg-gray-100' ><LuLogOut className="mr-2" /> Log Out </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     )
   }
@@ -203,15 +224,16 @@ const UserData = ({isLoggedin}) => {
 
 const Nav = ({onTabChange}) => {
 
-
+  const [selected, setSelected] = useState(0)
+  const navigate = useNavigate();
 
   const isLoggedin = false;
   
   return (
     <nav className="navbar">
-      <img className="logo" src={logo} /> {/*logo*/}
+      <img onClick={() => { navigate('/'); onTabChange(0); setSelected(0); }} className="logo" src={logo} /> {/*logo*/}
       <div style={styles.buttonContainer}>
-        <NavButtons onTabChange={onTabChange}/>
+        <NavButtons onTabChange={onTabChange} selected={selected} setSelected={setSelected} />
         <Search />
       </div>
       <UserData isLoggedin={isLoggedin}/>

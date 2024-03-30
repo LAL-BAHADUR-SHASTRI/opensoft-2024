@@ -15,19 +15,42 @@ import SignUp from './components/Signup';
 // import useWindowDimensions from './hooks/useWindowDimensions'
 
 function App() {
+  const [ActiveTab, setActiveTab] = useState(0);
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Intro/>} />
-        <Route path="/movie/:id" element={<MoviePage />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/purchase" element={<Purchase />} />
-        <Route path="/:id/success" element={<Success />} />
-        <Route path="*" element={<ErrorPage text="404 Page Not Found :(" />} />
-      </Routes>
-      <Footer />
-    </Router>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="*" element={<ErrorPage text="404 Page Not Found :(" />} />
+          <Route path="/" element={
+            <>
+              <Nav onTabChange={setActiveTab}/>
+              <Intro ActiveTab={ActiveTab} />
+            </>
+          } />
+          <Route path="/movie/:id" element={
+            <>
+              <Nav onTabChange={setActiveTab}/>
+              <MoviePage />
+            </>
+          } />
+          <Route path="/:id/success" element={
+            <>
+              <Nav onTabChange={setActiveTab}/>
+              <Success />
+            </>
+          } />
+          <Route path="/purchase" element={
+            <>
+              <Nav onTabChange={setActiveTab}/>
+              <Purchase />
+            </>
+          } />
+        </Routes>
+        <Footer />
+      </Router>
+    </>
   )
 }
 export default App;
