@@ -12,6 +12,8 @@ import { MoviePage_ } from "@/components/Movie_page";
 const Player = () => {
   
   const playerRef = useRef(null);
+
+  const maxQual = 720;
  
   const videoJsOptions = {
     autoplay: false,
@@ -52,7 +54,7 @@ const Player = () => {
 
   return (
   <div style={styles.player}>
-      <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+      <VideoJS max={maxQual}  options={videoJsOptions} onReady={handlePlayerReady} />
   </div>
   )
 }

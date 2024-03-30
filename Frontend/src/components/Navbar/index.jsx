@@ -81,18 +81,20 @@ const Search = () => {
   useEffect(() => {
     (async () => {
       if(lastMessage){
-        let words =JSON.parse(lastMessage?.data).autocomplete; 
-        words =  words ? words : [];
-        if(words.length > 0){
-          words.forEach(el => {
-            myTrie.insert(el.trim());
+
+        let autoComp =JSON.parse(lastMessage?.data).fuzzy; 
+        autoComp =  autoComp ? autoComp : [];
+        if(autoComp.length > 0){
+          console.log('autocomp',autoComp[0].title)
+          autoComp.forEach(el => {
+            myTrie.insert(el?.title.trim());
           });
         }
       
         let fuzzy =JSON.parse(lastMessage?.data).fuzzy;
         fuzzy = fuzzy ? fuzzy : [];
         if(fuzzy.length > 0){
-          setFuzzy(fuzzy.slice(0,5))
+          setFuzzy(autoComp.slice(0,3).concat(fuzzy.slice(0,4)))
         }
       }
       setSuggestion(myTrie.suggest(prefix)[0]);
@@ -110,9 +112,12 @@ const Search = () => {
  const onChange = (e) => {
     var value = e.target.value;
     setPrefix(value);
-    sendMessage(
-      JSON.stringify({type: "search", msg: value})
-    );
+    if(connectionStatus == 'Open'){
+      console.log('hi')
+      sendMessage(
+        JSON.stringify({type: "search", msg: value})
+      );
+    }
   };
 
   const handleKeyDown = (e) => {
