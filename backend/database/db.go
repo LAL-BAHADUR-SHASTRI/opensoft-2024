@@ -28,15 +28,24 @@ func InitDB() (*mongo.Client, context.Context) {
 	if err := client.Database("admin").RunCommand(context.TODO(), bson.D{{"ping", 1}}).Err(); err != nil {
 		panic(err)
 	}
-	
+
 	fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
 	return client, ctx
 }
 
-var	Client, Ctx = InitDB()
+var Client *mongo.Client
+var Ctx context.Context
 
-func OpenCollection(client *mongo.Client, collectionName string)*mongo.Collection{
-	var collection *mongo.Collection =client.Database("sample_mflix").Collection(collectionName)
-	return collection
+func init() {
+	Client, Ctx = InitDB()
 }
 
+func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection {
+	if client == nil {
+		log.Println("Mongodb Client is nil")
+		return nil
+	}
+
+	var collection *mongo.Collection = client.Database("sample_mflix").Collection(collectionName)
+	return collection
+}
