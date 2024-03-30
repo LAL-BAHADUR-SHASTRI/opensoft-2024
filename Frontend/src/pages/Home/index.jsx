@@ -11,8 +11,6 @@ const HomePage = () => {
   const [contWData, setCW] = useState([]);
   const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
- 
-  
   
   useEffect(() => {
     fetch(`${import.meta.env.VITE_BHOST}/movie/topimdb`)
@@ -30,7 +28,7 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BHOST}/movie/CW`)
+    fetch(`${import.meta.env.VITE_BHOST}/movie/latest`)
       .then(response => response.json())
       .then(data => {
         setCW(data);

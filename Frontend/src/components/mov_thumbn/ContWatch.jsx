@@ -13,7 +13,12 @@ const ContWatch = (props) => {
     <div className="ContWatch_">
         <div className="divimg">
             <img
-                src={props?.data?.poster || Imgurl} className="img_"
+                src={props?.data?.poster || Imgurl}
+                onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = Imgurl;
+                  }}
+                className="img_"
             />
         </div>
         <div className="play-button">
