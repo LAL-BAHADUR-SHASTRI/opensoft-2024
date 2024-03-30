@@ -27,6 +27,10 @@ function App() {
     // Add more data entries as needed
   ];
 
+
+  const [userToken,setUserToken] = useState(localStorage.getItem('accessToken'))
+  console.log(userToken,'userToken')
+
   return (
     <>
       <Router>
@@ -51,7 +55,7 @@ function App() {
               <Intro ActiveTab={ActiveTab} />
             </>
           } />
-          <Route path="/movie/:id" element={
+          <Route simpleNav={true} path="/movie/:id" element={
             <>
               <Nav onTabChange={setActiveTab}/>
               <MoviePage />

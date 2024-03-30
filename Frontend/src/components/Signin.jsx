@@ -12,8 +12,26 @@ function SignIn() {
     });
   };
 
-  const handleSubmit = () => {
+  console.log(formData)
+
+
+  const handleSubmit = async () => {
     // Toast.success("Sign In Successful");
+    await fetch(`${import.meta.env.VITE_BHOST}/user/sign_in`,{
+      method: "POST",
+      headers: {},
+      body: JSON.stringify(formData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        localStorage.setItem("accessToken",data)
+        Toast.success('signin Successful');
+      })
+      .catch(error => {
+        console.error('Error :', error);
+        Toast.error('Error !');
+      });
     console.log(formData);
   };
 
@@ -34,9 +52,9 @@ function SignIn() {
                 Email
               </label>
               <div className=" relative">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                   <svg
-                    class="w-4 h-4 text-secondary "
+                    className="w-4 h-4 text-secondary "
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="currentColor"
@@ -64,9 +82,9 @@ function SignIn() {
                 Password
               </label>
               <div className=" relative">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                   <svg
-                    class="w-4 h-4 text-secondary "
+                    className="w-4 h-4 text-secondary "
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 485.017 485.017"

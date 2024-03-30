@@ -9,7 +9,7 @@ const HomePage = () => {
   const [data, setData] = useState([]);
   const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
-
+ 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_BHOST}/movie/`)
       .then(response => response.json())

@@ -67,14 +67,20 @@ const Search = () => {
   const [isActive, setActive] = useState(false);
   const [prefix,setPrefix] = useState("");
   const [suggestion, setSuggestion ] = useState("");
-  const [socketUrl, setSocketUrl] = useState('') 
+  const [socketUrl, setSocketUrl] = useState('ws://10.145.128.28:8080/ws') 
   const [messageHistory, setMessageHistory] = useState([]);
 
   const {sendMessage, lastMessage, readyState} = useWebSocket(socketUrl);
 
   useEffect(() => {
-    if(lastMessage != null){
+    if(lastMessage){
       setMessageHistory((prev) => prev.concat(lastMessage));
+      console.log('array',JSON.parse(lastMessage?.data).autocomplete)
+      let words =JSON.parse(lastMessage?.data).autocomplete; 
+      words =  words ? words : [];
+      if(words.length > 0){
+        setDictionary(words)
+      }
     }
   },[lastMessage]);
 
@@ -86,32 +92,31 @@ const Search = () => {
     [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
   }[readyState];
 
-  const dictionary = {
-    words: ['hello','helium','world','car','carpet','test','this','that','those','working','is']
-  }
-  
-  let socket = null;
+  const [dictionary, setDictionary] = useState([]);
+  const [myTrie, setTrie] = useState(new Trie())
 
 
-  let myTrie = new Trie();
-
-  (async()=>{
+  useEffect(() => {
+    var newTrie = myTrie;
+    console.log('making trie');
+    (async()=>{
     // const dictionary = await getWords();
-    const words = dictionary.words;
-    for (let i = 0; i < words.length; i++) {
-      const word = words[i];
+    for (let i = 0; i < dictionary.length; i++) {
+      const word = dictionary[i];
+      console.log('inserting word');
       myTrie.insert(word)
     }
+    setTrie(newTrie)
   })();
+  },[dictionary])
 
-  const onChange = (e) => {
-    var value = e.target.value;
-    setPrefix(value);
-    var words = value.split(" ");
-    var trie_prefix = words[words.length - 1].toLowerCase();
-    var found_words = myTrie.find(trie_prefix).sort((a, b) => {
+  useEffect(( ) => {
+    console.log('i am here')
+    var value = prefix;
+    var found_words = myTrie.find(value).sort((a, b) => {
       return a.length - b.length;
     });
+    console.log('found',found_words)
     var first_word = found_words[0];
     if (
       found_words.length !== 0 &&
@@ -119,12 +124,17 @@ const Search = () => {
         value[value.length - 1] !== " "
     ) {
       if (first_word != null) {
-        var remainder = first_word.slice(trie_prefix.length);
+        var remainder = first_word.slice(prefix.length);
         setSuggestion(value + remainder);
       }
     } else {
       setSuggestion(value);
     }
+  },[])
+
+  const onChange = (e) => {
+    var value = e.target.value;
+    setPrefix(value);
   };
 
   const handleKeyDown = (e) => {
@@ -135,16 +145,17 @@ const Search = () => {
     if(e.key === 'Enter'){
       sendMessage(
         JSON.stringify({type: "click", msg: prefix})
-         );
+      );
     }
   };
 
   useEffect(() => {
     if(prefix.length > 0) setTyping(true); else setTyping(false);
     console.log(prefix) ;
+
     sendMessage(
-     JSON.stringify({type: "search", msg: prefix})
-      );
+      JSON.stringify({type: "search", msg: prefix})
+    );
   },[prefix]);
   
   const searchinput = useCallback((inputel) => {
@@ -202,7 +213,6 @@ const Search = () => {
       />
       <input
         type="text"
-        name="search-bar"
         id="search-bar2"
         className="inputnev"
         tabIndex={-1}
