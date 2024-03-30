@@ -32,6 +32,7 @@ func MovieServiceRouter(r *gin.Engine) {
 		movie.GET("/country/:country", getMoviesByCountry)
 		movie.GET("/latest", getLatestMovies)
 		movie.GET("/genres", getListofGenres)
+		movie.GET("/genrelist", GetGenreListH)
 		movie.GET("/languages", getListofLanguages)
 		movie.GET("/countries", getListofCountries)
 		movie.GET("/filter", getMoviesByFilter)
@@ -238,6 +239,16 @@ func getListofGenres(c *gin.Context) {
 		genrePosters = append(genrePosters, bson.M{"genre": genre, "posters": results})
 	}
 	c.JSON(http.StatusOK, genrePosters)
+}
+
+func GetGenreListH(c *gin.Context){
+	// get only the genres
+	cursor, err := movieCollection.Distinct(database.Ctx, "genres", bson.D{})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve genres"})
+		return
+	}
+	c.JSON(http.StatusOK, cursor)
 }
 
 func getListofLanguages(c *gin.Context) {
