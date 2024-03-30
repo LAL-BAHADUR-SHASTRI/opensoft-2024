@@ -2,7 +2,6 @@ import { Imgurl, Img2url } from "@/constants/themes";
 import "./index.css"
 import Stylesheet from "reactjs-stylesheet";
 import { useState } from "react";
-import {motion} from 'framer-motion'
 
 const Roll = (subprops) => {
   let varStyle = subprops.dir ? styles.initdir0 : styles.initdir1;
@@ -43,27 +42,26 @@ const GenreCard = (props) => {
 export default GenreCard;
 
 const styles = Stylesheet.create({
-  roll_static: {
-    height: '284px',
-    width: '142px',
-    display: 'flex',
-    zIndex: '0',
-    flexDirection: 'column',
-    transition: 'all 0.5s ease',
-  },
-  initdir0: {
-    // top: 0
-    justifyContent: "flex-start"
-  },
-  initdir1: {
-    // bottom: 0
-    justifyContent: "flex-end"
-  },
-  trans0: {
-    transform: 'translateY(38%)'
-  },
-  trans1: {
-    transform: 'translateY(-38%)'
-  }
-
+    roll_static: {
+        height: '284px',
+        width: '142px',
+        display: 'flex',
+        zIndex: '0',
+        flexDirection: 'column',
+        transition: 'all 0.5s ease'
+    },
+    initdir0: {
+        // top: 0
+        justifyContent: "flex-start"
+    },
+    initdir1: {
+        // bottom: 0
+        justifyContent: "flex-end"
+    },
+    trans0: {
+        transform: 'translateY(38%)'
+    },
+    trans1: {
+        transform: 'translateY(-38%)'
+    }
 })
