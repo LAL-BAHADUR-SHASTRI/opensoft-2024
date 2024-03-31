@@ -63,7 +63,7 @@ const HomePage = ({onTabChange}) => {
   }
 
   function genContWatch () {
-    let res = [topRated[5],topRated[8],topRated[10],topRated[15],topRated[17],topRated[19]];
+    let res = [topRated[9],topRated[8],topRated[1],topRated[5],topRated[6],topRated[3]];
     return res;
   }
 
