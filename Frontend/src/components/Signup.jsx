@@ -18,7 +18,7 @@ function SignUp() {
     };
     // Toast.success("Sign In Successful");
      try {
-    const response = await fetch(`${meta.env.VITE_BHOST}/user/sign_up`, {
+    const response = await fetch(`${import.meta.env.VITE_BHOST}/user/sign_up`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json" // Specify content type
@@ -37,6 +37,7 @@ function SignUp() {
        Toast.success('Signup Successful');
 
        navigate("/");
+      window.location.reload();
   } catch (error) {
     console.error('Error:', error);
     Toast.error('Error!');

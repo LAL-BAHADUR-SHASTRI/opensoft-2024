@@ -56,7 +56,7 @@ const MovieCard = (props) => {
                         {/* {data.series ? `${data.episodes} episodes` : `${data.duration_hh} h ${data.duration_mm} min`} */}
                     </p>
                     <div className="row_">
-                        {(props?.data?.genres || data.tags).map((el) =>
+                        {props.data.genres  && (props?.data?.genres).map((el) =>
                             <p className="tag_">{el}</p>
                         )}
                     </div>
