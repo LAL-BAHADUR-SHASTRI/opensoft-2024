@@ -1,0 +1,351 @@
+/* ContWatch */
+
+.ContWatch_ {
+    margin: 0 10px;
+    width: 391px;
+    height: 199px;
+    left: 4px;
+    gap: 0px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.divimg {
+    height: 194px;
+    overflow: hidden;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.img_{
+    height: 100%;
+    width: 100%;
+    transition: all 0.5s;
+
+  object-fit: cover;
+}
+
+.img_:hover {
+    transform: scale(1.15);
+}
+
+.play-button {
+    background: #F0AB00;
+    position: absolute;
+    z-index: 9;
+    display: flex;
+    width: 91px;
+    height: 36px;
+    top: 142px;
+    left: 285px;
+    gap: 0px;
+    border-radius: 34.16px;
+    opacity: 0px;
+    align-items: center;
+    justify-content: center;
+}
+
+.play-button:hover {
+    cursor:pointer;
+}
+
+.playimg_ {
+    margin-right: 3px;
+    width: 14.51px;
+    height: 15.61px;
+    gap: 0px;
+    opacity: 0px;
+
+}
+
+.playtxt_ {
+    margin-left: 3px;
+    font-family: Manrope;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24.85px;
+    letter-spacing: 0.01em;
+    text-align: left;
+    width: 32px;
+    height: 25px;
+    gap: 0px;
+    opacity: 0px;
+}
+
+.progress {
+    width: 391px;
+    height: 5px;
+    top: 194px;
+    gap: 0px;
+    opacity: 0px;
+    background: #404040;
+    border-radius: 0px 0px 10px 0px;
+}
+
+
+/* MovieCard */
+
+.MovieCard_ {
+    margin: 10px;
+    gap: 0px;
+    border-radius: 10px;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    transition: all 0.5s ease;
+    overflow: hidden;
+}
+
+.portrait {
+    width: 285px;
+    height: 374px;
+}
+
+.landscape {
+    width: 390px;
+    height: 200px;
+}
+
+.mov_img {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.play_layer {
+    display: flex;
+    position: absolute;
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    opacity: 0%;
+    background: rgba(0, 0, 0, 0);
+    transition: all 0.5s ease;
+}
+
+.play_b {
+    display: flex;
+    position: relative;
+    height: 32px;
+    width: 32px;
+    margin: 12px;
+    margin-right: 19px;
+    /* height: 8.56%;
+    aspect-ratio: 1/1;
+    margin: 4.21%;
+    margin-right: 6.67%; */
+}
+
+.play_b:hover {
+    cursor:pointer;
+}
+
+.b {
+    position: absolute;
+    width: 99%;
+    height: 98%;
+    color: #F0AB00;
+}
+
+.scroll_d {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 200%;
+    z-index: 1;
+    transition: all 0.5s ease;
+}
+
+.blk {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    background: rgba(0, 0, 0, 0);
+}
+
+.data {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+    gap: 0px;
+    opacity: 0px;
+    font-family: Manrope;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 24.85px;
+    text-align: left;
+}
+
+.row_ {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.imdb_l {
+    width: 34px;
+    height: 16px;
+}
+
+.rating_ {
+    justify-content: center;
+    margin-left: 3px;
+    
+}
+
+.title_ {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+}
+
+.dur_ep {
+    height: 25px;
+    color: #F0AB00;
+}
+
+.tag_ {
+    display: flex;
+    position: inherit;
+    justify-content: center;
+    font-size: 10px;
+    align-items: center;
+    background: #1A1A1A;
+    margin-right: 6px;
+    border-radius: 3px;
+    color: white;
+    height: 14px;
+    padding: 0px 6px 0px 6px;
+    gap: 10px;
+    font-weight: 400;
+    line-height: 24.85px;
+    text-align: left;
+}
+
+
+/* GenreCard */
+
+.rollimg {
+    width: 142px;
+}
+
+.GenreCard_ {
+    gap: 0px;
+    border-radius: 10px;
+    border: 2px solid #1D175A;
+    margin: 10px;
+    height: 284px;
+    width: 284px;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    overflow: hidden;
+}
+
+.GenreCard_ :not(.genre_txt, .genre_txt_o) {
+  filter: blur(0.5px);
+}
+
+.genre_txt_o {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: all 0.5s ease;
+}
+
+.genre_txt {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    width: 100%;
+    gap: 0px;
+    font-family: Manrope;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 24.85px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.genre_txt_o:hover {
+    transform: scale(1.12);
+}
+
+
+/* TrailerCard */
+
+.TrailerCard_ {
+    margin-right: 30px;
+    /* margin-left: 0px; */
+    width: 343.84px;
+    height: 175px;
+    gap: 0px;
+    border-radius: 8.79px;
+    border: 1.76px solid #1D175A;    
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+.trCim {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s;
+    object-fit: cover;
+}
+
+.dur_pl {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.ti_dur {
+    display: flex;
+    position: relative;
+    /* width: 59.02px; */
+    height: 22px;
+    margin-bottom: 10px;
+    margin-left: 12px;
+    padding: 0px 5.28px 0px 5.28px;
+    gap: 6.16px;
+    border-radius: 2.64px;
+    background: #181818;
+    border: 0.44px solid #262626;
+    align-items: center;
+    justify-content: center;
+}
+
+.ti {
+    height: 15px;
+    gap: 0px;
+    color: #FFFFFF;
+}
+
+.dur {
+    height: 22px;
+    font-family: Manrope;
+    font-size: 14.07px;
+    font-weight: 500;
+    line-height: 21.85px;
+    text-align: left;
+    color: #FFFFFF;
+}

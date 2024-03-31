@@ -1,0 +1,174 @@
+.row {
+    display: flex;
+    width: 90%;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.column {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: left;
+    align-items: flex-start;
+    margin-bottom: 50px;
+}
+
+.heading {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.txt_ {
+    font-family: Manrope;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 23.81px;
+    text-align: left;
+    color: #FFFFFF;
+    display: flex;
+    width: 90%;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.htxt_ {
+    font-family: Manrope;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: left;
+    color: #F0AB00;
+    margin-right: 8px;
+    z-index: 1;
+}
+
+.line_ {
+    width: 100%;
+    height: 0px;
+    border: 1px solid #333333;
+}
+
+.lg_ {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #181818;
+    margin-right: 10px;
+    border-radius: 3px;
+    color: white;
+    height: 26px;
+    padding: 0px 6px 0px 6px;
+    gap: 10px;
+    border: 0.5px solid #262626;
+    font-family: Manrope;
+    font-size: 15.5px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+}
+
+.star-rating {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.logo_ {
+    width: 52px;
+    height: 25px;
+}
+
+.rtxt_ {
+    font-family: Manrope;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 23.81px;
+    text-align: left;
+    color: #FFFFFF;
+    height: 24px;
+}
+
+.star {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 22px;
+    margin-right: 22px;
+}
+
+.topbar {
+    display: flex;
+    position: relative;
+    /* height: 100px; */
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.central {
+    display: flex;
+    position: relative;
+    width: 100%;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+
+.movtitle {
+    display: flex;
+    position: relative;
+    font-family: Manrope;
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 60px;
+    text-align: left;
+    height: 100%;
+    color: #FFFFFF;
+}
+
+.watchlist_button {
+    display: flex;
+    position: relative;
+    width: 145.97px;
+    height: 36.23px;
+    gap: 0px;
+    color: #F0AB00;
+    border-radius: 34.16px;
+    border: 1.55px solid #F0AB00;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 57.5%;
+    /* justify-content: center; */
+    align-items: flex-start;
+}
+
+.headnTxt {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.rightc {
+    width: 36.5%;
+}
+
+.MoviePage_ {
+    margin-left: 20px;
+    margin-right: 20px;
+}
