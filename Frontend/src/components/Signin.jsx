@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import Toast from "./Toast";
+import { useNavigate } from "react-router-dom";
 
 function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -16,29 +17,43 @@ function SignIn() {
   };
 
   
-
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     // Toast.success("Sign In Successful");
-    console.log({ email: emailRef.current.value, password: passwordRef.current.value });
-    await fetch(`${meta.env.VITE_BHOST}/user/sign_in`,{
+    const formData = {
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    };
+    // Toast.success("Sign In Successful");
+     try {
+    const response = await fetch(`${import.meta.env.VITE_BHOST}/user/sign_in`, {
       method: "POST",
-      // headers: {},
-      body: JSON.stringify({ email: emailRef.current.value, password: passwordRef.current.value }),
-      // redirect: 'follow'
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data["token"]);
-        localStorage.setItem("accessToken",data["token"])
-        Toast.success('signin Successful');
-      })
-      .catch(error => {
-        console.error('Error :', error);
-        Toast.error('Error !');
-      });
-    console.log(formData);
+      headers: {
+        "Content-Type": "application/json" // Specify content type
+      },
+      body: JSON.stringify(formData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Success:', data.token);
+       localStorage.setItem("accessToken", data.token);
+        
+       Toast.success('SignIn Successful');
+
+       navigate("/");
+      window.location.reload();
+  } catch (error) {
+    console.error('Error:', error);
+    Toast.error('Error!');
+  }
+  
   };
+
   
   return (
     <div className="flex items-center justify-center min-h-screen bg-signin backdrop-blur-md">

@@ -49,30 +49,44 @@ const SelectBar = () => {
 
 const MovieList = () => {
   const [movData, setMovData] = useState([]);
+  const [fromSearch, setFromSearch] = useState(false);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BHOST}/movie/`)
-    .then(response => response.json())
-    .then(data => {
-        setMovData(data);
-        setLoading(false);
-        console.log('Success fetching Movie Data:', data);
-      })
-      .catch(error => {
-        console.error('Error fetching Movie Data:', error);
-        setLoading(false);
-        Toast.error('Error Fetching Movie Data');
-      });
+    let val ;
+    const movielist = JSON.parse(localStorage.getItem('movieList'))?.semantic || '';
+    if(movielist){
+      if(movielist.length > 0){
+        console.log('from Movielis')
+        setMovData(movielist);
+        setFromSearch(true);
+        val = true;
+    // localStorage.removeItem('movieList');
+      }
+    }
+
+    if(!val){
+      fetch(`${import.meta.env.VITE_BHOST}/movie/`)
+        .then(response => response.json())
+        .then(data => {
+          setMovData(data);
+          console.log('Success fetching Movie Data:', data);
+        })
+        .catch(error => {
+          console.error('Error fetching Movie Data:', error);
+          Toast.error('Error Fetching Movie Data');
+        });
+    } 
   }, []);
+
 
   return (
     <div style={styles.container}>
       <SelectBar />
-      <div style={styles.movieBox}>
-        {movData.map((item,index) => (
+      {!!movData && <div style={styles.movieBox}>
+         {movData?.map((item,index) => (
           <MovieCard data={item} />
         ))}
-      </div>
+      </div>}
     </div>
   );
 }

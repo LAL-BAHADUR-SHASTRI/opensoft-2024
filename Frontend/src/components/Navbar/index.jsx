@@ -21,7 +21,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import MovieList from "@/pages/Movielist";
 import userStore from "@/stores/user_store";
 
 
@@ -34,6 +33,7 @@ const NavButtons = ({ selected, setSelected, onTabChange }) => {
   const handlePress = (goto) => {
     onTabChange(goto);
     setSelected(goto);
+    localStorage.removeItem('movieList');
     navigate("/");
   };
 
@@ -64,27 +64,21 @@ const Search = ({ onTabChange, setSelected }) => {
   const [isActive, setActive] = useState(false);
   const [prefix,setPrefix] = useState("");
   const [suggestion, setSuggestion ] = useState("");
-  const [socketUrl, setSocketUrl] = useState('ws://10.145.59.41:8080/ws') 
+  const [socketUrl, setSocketUrl] = useState(`${import.meta.env.VITE_WS_HOST}`) 
   const [myTrie, setTrie] = useState(new Trie())
   const {sendMessage, lastMessage, readyState} = useWebSocket(socketUrl);
   const [fuzzyList, setFuzzy] = useState([]);
 
-  const useStore = create((set) => ({
-    movieList: [],
-    search: prefix,
-    setSearch: (state) => set({ search: state }),
-    setMovieList: (state) => set({ movieList: state }),
-  }));
-
   useEffect(() => {
     let newtrie = myTrie;
     (async () => {
-      if (lastMessage) {
-        let autoComp = JSON.parse(lastMessage?.data).fuzzy;
-        autoComp = autoComp ? autoComp : [];
-        if (autoComp.length > 0) {
-          console.log("autocomp", autoComp[0].title);
-          autoComp.forEach((el) => {
+      if(lastMessage){
+
+        console.log(lastMessage.data)
+        let autoComp =JSON.parse(lastMessage?.data).fuzzy; 
+        autoComp =  autoComp ? autoComp : [];
+        if(autoComp.length > 0){
+          autoComp.forEach(el => {
             newtrie.insert(el?.title.trim().toLowerCase());
           });
           setTrie(myTrie);
@@ -96,6 +90,16 @@ const Search = ({ onTabChange, setSelected }) => {
         if (fuzzy.length > 0) {
           fuzzy = fuzzy.filter((item, index) => fuzzy.indexOf(item) == index);
           setFuzzy(fuzzy);
+        }
+
+        let semantic =JSON.parse(lastMessage?.data).semantic;
+        semantic = semantic ? semantic : [];
+        if(semantic.length > 0){
+          console.log('semantic',semantic)
+          localStorage.setItem('movieList', JSON.stringify({'semantic' : semantic}));
+          setSelected(1);
+          onTabChange(1);
+          hideShadow();
         }
       }
       console.log("suggest", newtrie.suggest(prefix));
@@ -134,9 +138,6 @@ const Search = ({ onTabChange, setSelected }) => {
     }
     if (e.key === "Enter") {
       sendMessage(JSON.stringify({ type: "click", msg: prefix }));
-      setSelected(1);
-      onTabChange(1);
-      hideShadow();
     }
   };
 
@@ -230,8 +231,8 @@ if (user.id != "") {
   
 }
 //<--User-->
-const UserData = ({ isLoggedin }) => {
-  if (isLoggedin) {
+const UserData = ({isLoggedin,setLoggedin}) => {
+  if(isLoggedin){
     return (
       <div style={{ display: "flex", flexDirection: "row", paddingRight: 30 }}>
         <DropdownMenu>
@@ -241,14 +242,13 @@ const UserData = ({ isLoggedin }) => {
           <DropdownMenuContent className="dark:bg-gray-50">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="hover:bg-gray-100">
-              <LuUser className="mr-2" /> Profile
-            </DropdownMenuItem>
-            <DropdownMenuItem className="hover:bg-gray-100">
-              <LuCreditCard className="mr-2" /> Subscription
-            </DropdownMenuItem>
-            <DropdownMenuItem className="hover:bg-gray-100">
-              <LuLogOut className="mr-2" /> Log Out{" "}
+            <DropdownMenuItem className='hover:bg-gray-100' ><LuUser className="mr-2" /> Profile</DropdownMenuItem>
+            <DropdownMenuItem  className='hover:bg-gray-100' ><LuCreditCard  className="mr-2" />  Subscription</DropdownMenuItem>
+            <DropdownMenuItem  className='hover:bg-gray-100' >
+              <div 
+                onClick={() => {localStorage.removeItem('accessToken'); setLoggedin(false)}} 
+              style={{display: 'flex',flexDirection: 'row',alignItems: 'center'}}>
+                <LuLogOut className="mr-2" /> Log Out </div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -274,7 +274,7 @@ const Nav = ({ onTabChange, simpleNav = false }) => {
   const [selected, setSelected] = useState(0);
   const navigate = useNavigate();
 
-  const isLoggedin = userStore()
+  const [isLoggedin,setLoggedin] = useState(localStorage.getItem('accessToken'))
   
   return (
     <nav className="navbar">
@@ -302,7 +302,7 @@ const Nav = ({ onTabChange, simpleNav = false }) => {
           />
         </div>
       )}
-      <UserData isLoggedin={isLoggedin} />
+      <UserData setLoggedin={setLoggedin} isLoggedin={isLoggedin} />
     </nav>
   );
 };
