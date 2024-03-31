@@ -69,6 +69,8 @@ const Search = ({ onTabChange, setSelected }) => {
   const {sendMessage, lastMessage, readyState} = useWebSocket(socketUrl);
   const [fuzzyList, setFuzzy] = useState([]);
 
+  const [final, setfinal] = useState([])
+
   useEffect(() => {
     let newtrie = myTrie;
     (async () => {
@@ -78,6 +80,7 @@ const Search = ({ onTabChange, setSelected }) => {
         let autoComp =JSON.parse(lastMessage?.data).fuzzy; 
         autoComp =  autoComp ? autoComp : [];
         if(autoComp.length > 0){
+          setfinal([...final,...autoComp])
           autoComp.forEach(el => {
             newtrie.insert(el?.title.trim().toLowerCase());
           });
@@ -86,8 +89,9 @@ const Search = ({ onTabChange, setSelected }) => {
 
         let fuzzy = JSON.parse(lastMessage?.data).fuzzy;
         fuzzy = fuzzy ? fuzzy : [];
-        fuzzy = autoComp.slice(0, 3).concat(fuzzy.slice(0, 4));
         if (fuzzy.length > 0) {
+          setfinal([...final,...fuzzy])
+          fuzzy = autoComp.slice(0, 3).concat(fuzzy.slice(0, 4));
           fuzzy = fuzzy.filter((item, index) => fuzzy.indexOf(item) == index);
           setFuzzy(fuzzy);
         }
@@ -95,10 +99,12 @@ const Search = ({ onTabChange, setSelected }) => {
         let semantic =JSON.parse(lastMessage?.data).semantic;
         semantic = semantic ? semantic : [];
         if(semantic.length > 0){
+          semantic=[...final,...semantic]
           console.log('semantic',semantic)
           localStorage.setItem('movieList', JSON.stringify({'semantic' : semantic}));
           setSelected(1);
           onTabChange(1);
+          setfinal([]);
           hideShadow();
         }
       }
