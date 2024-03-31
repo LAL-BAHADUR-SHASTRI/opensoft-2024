@@ -227,7 +227,6 @@ const Search = ({ onTabChange, setSelected }) => {
       </motion.div>
     )
 }
-
 const user = userStore.getState();
 if(user.email){
   console.log(user.email)
@@ -238,6 +237,7 @@ if (user.id != "") {
 }
 //<--User-->
 const UserData = ({isLoggedin,setLoggedin}) => {
+const navigate = useNavigate();
   if(isLoggedin){
     return (
       <div style={{ display: "flex", flexDirection: "row", paddingRight: 30 }}>
@@ -249,7 +249,12 @@ const UserData = ({isLoggedin,setLoggedin}) => {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className='hover:bg-gray-100' ><LuUser className="mr-2" /> Profile</DropdownMenuItem>
-            <DropdownMenuItem  className='hover:bg-gray-100' ><LuCreditCard  className="mr-2" />  Subscription</DropdownMenuItem>
+            <DropdownMenuItem  className='hover:bg-gray-100' >
+              <div onClick={() => navigate('/purchase')}
+              style={{display: 'flex',flexDirection: 'row',alignItems: 'center'}}>
+              <LuCreditCard  className="mr-2" />  Subscription
+              </div>
+            </DropdownMenuItem>
             <DropdownMenuItem  className='hover:bg-gray-100' >
               <div 
                 onClick={() => {localStorage.removeItem('accessToken'); setLoggedin(false)}} 
