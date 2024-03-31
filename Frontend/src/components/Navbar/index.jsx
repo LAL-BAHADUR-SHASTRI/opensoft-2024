@@ -67,7 +67,7 @@ const Search = () => {
   const [isActive, setActive] = useState(false);
   const [prefix,setPrefix] = useState("");
   const [suggestion, setSuggestion ] = useState("");
-  const [socketUrl, setSocketUrl] = useState('ws://10.145.128.28:8080/ws') 
+  const [socketUrl, setSocketUrl] = useState('127.0.0.0:8080/ws') 
   const [messageHistory, setMessageHistory] = useState([]);
 
   const {sendMessage, lastMessage, readyState} = useWebSocket(socketUrl);

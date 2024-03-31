@@ -30,7 +30,7 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BHOST}/movie/CW`)
+    fetch(`${import.meta.env.VITE_BHOST}/movie/latest`)
       .then(response => response.json())
       .then(data => {
         setCW(data);
