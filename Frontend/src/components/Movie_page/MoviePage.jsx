@@ -6,7 +6,8 @@ import { TrailerCard } from "../mov_thumbn"
 import ArrangeComp from "./ArrangeCompn"
 import { Imgurl } from "@/constants/themes"
 import userStore from "@/stores/user_store"
-
+import {useParams} from "react-router"
+import Toast from "../Toast"
 const Headline = ({heading}) => {
   return(
     <div className="row heading">
@@ -105,6 +106,7 @@ const MoviePage_ = (props) => {
         lang: ['Hindi', 'English', 'Bengali', 'Telugu', 'Tamil'],
         genre: ['Action', 'Adventure', 'Fiction', 'Superhero', 'Thriller'],
         imdb: {rating: 9},
+        runtime: 150,
         trailers : [
             {
                 thum: Imgurl,
@@ -122,33 +124,40 @@ const MoviePage_ = (props) => {
     }
     
     // const user_store = userStore((state) => state)
-    
-    // async function addBookMark() {
-    //     const response = await fetch(`${import.meta.env.VITE_BHOST}/user/bookmark`, {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             "Authorization": localStorage.getItem('accessToken')
-    //         },
-    //         body: JSON.stringify({
-    //             user_id: user_store.id,
-    //             movie_id: props?.data?.id || 0
-    //         })
-    //     })
-    //     if (!response.ok) {
-    //         throw new Error(`HTTP error! status: ${response.status}`);
-    //     }
-    //     const data = await response.json();
-    //     console.log('Success:', data);
-    //     // userStore.addBookMark(props?.data || data)  
+    const user_id = userStore.getState().id
+    const movie_id = useParams().id
+   
+    const bookmarData = {
+                user_id: user_id,
+                movie_id: movie_id
+    }
+  
+    async function addBookMark() {
+        const response = await fetch(`${import.meta.env.VITE_BHOST}/user/bookmark`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('accessToken')
+            },
+            body: JSON.stringify(bookmarData)
+        })
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Success:', data);
+        Toast.success('Added to Watchlist');
+        // userStore.addBookMark(props?.data || data)  
         
-    // }
+    }
 
   return(
     <div className="MoviePage_">
         <div className="topbar">
             <div className="movtitle">{(props?.data?.title || data.title)}</div>
-            <div className="watchlist_button">
+              <div className="watchlist_button" onClick={
+                  addBookMark
+            }>
                 <FaPlus />
                 <div>Watchlist</div>
             </div>
@@ -158,8 +167,9 @@ const MoviePage_ = (props) => {
                 <HeadnTxt heading='Description' data={[props?.data?.fullplot || data.description]} />
                 <HeadnTxt heading='Director' data={props?.data?.directors || data.director} />
                 <HeadnTxt heading='Cast' data={props?.data?.cast || data.cast} />
-                <Headline heading='Trailers' />
-                <ArrangeComp dir="row" dat_arr={data.trailers} Component={TrailerCard} />
+                <Headline heading='Trailer' />
+                <ArrangeComp dir="row" dat_arr={[{url: (props?.data?.poster || Imgurl), runtime: (props?.data?.runtime || data.runtime)}]} Component={TrailerCard} />
+                {/* <ArrangeComp dir="row" dat_arr={data.trailers} Component={TrailerCard} /> */}
             </div>
             <div className="content rightc">
                 <HeadnTxt heading='Release_Year' data={[props?.data?.year || data.release]} />

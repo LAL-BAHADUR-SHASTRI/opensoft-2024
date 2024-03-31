@@ -49,8 +49,8 @@ function App() {
     }
     const data = await response.json();
    console.log('Success:', data);
-    userStore.setState({email: data.email, bookmarks: data.bookmarks, id: data.id, tier: data.tier})
-    
+    userStore.setState({email: data.email, bookmarks: data.bookmarks, id: data["ID"], tier: data.tier})
+    console.log(userStore.getState())
   }
    
   useEffect(() => {

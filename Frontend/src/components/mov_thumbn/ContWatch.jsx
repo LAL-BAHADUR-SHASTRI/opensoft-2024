@@ -2,15 +2,18 @@ import { Imgurl } from "@/constants/themes";
 import "./index.css"
 import { FaPlay } from "react-icons/fa6";
 import { genRand } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 const ContWatch = (props) => {
+    const navigate = useNavigate();
     const prog_bar = {
         height: '100%',
-        width: `${genRand(0,100)}%`,
+        width: `${genRand(0,80)}%`,
         // width: `${props?.data?.watchLen || 30}%`,
         background: '#F0AB00',
         borderBottomLeftRadius: 10
       }
+    let id = '1';
   return(
     <div className="ContWatch_">
         <div className="divimg">
@@ -23,7 +26,10 @@ const ContWatch = (props) => {
                 className="img_"
             />
         </div>
-        <div className="play-button">
+        <div
+            className="play-button" 
+            onClick={() => {navigate(`/movie/${props?.data?._id || id}`); hideShadow();}}
+        >
             <FaPlay className="playimg_"/>
             <div className="playtxt_">Play</div>
         </div>

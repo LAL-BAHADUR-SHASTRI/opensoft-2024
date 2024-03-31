@@ -276,6 +276,9 @@ const Nav = ({ onTabChange, simpleNav = false }) => {
 
   const [isLoggedin,setLoggedin] = useState(localStorage.getItem('accessToken'))
   
+  // const isLoggedin = userStore.getState().id != "";
+  // const
+  // const  email = userStore((state) => state.getEmail());
   return (
     <nav className="navbar">
       <img

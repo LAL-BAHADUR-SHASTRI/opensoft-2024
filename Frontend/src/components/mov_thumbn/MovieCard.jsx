@@ -7,11 +7,14 @@ import { useState } from "react";
 
 import imdb from '../../assets/imdb.svg'
 import { calcDur, getRandImg } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 const MovieCard = (props) => {
+    const navigate = useNavigate();
     const [hovering, sethovering] = useState(false)
     const [hoverply, sethoverply] = useState(false)
     let data = {
+        id: 1,
         rating: 8.8,
         tags: ['Action','Adventure','Fiction'],
         title: 'Avengers : Endgame',
@@ -68,6 +71,7 @@ const MovieCard = (props) => {
                 className="play_b"
                 onMouseEnter={() => sethoverply(true)}
                 onMouseLeave={() => sethoverply(false)}
+                onClick={() => {navigate(`/movie/${props?.data?._id || data.id}`); hideShadow();}}
             >
                 <FaRegCirclePlay 
                     className="b" 

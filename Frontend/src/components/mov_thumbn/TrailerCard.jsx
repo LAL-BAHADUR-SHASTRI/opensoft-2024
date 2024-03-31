@@ -21,7 +21,7 @@ const TrailerCard = ({data}) => {
         onMouseLeave={() => sethovering(false)}
     >
         <img
-            src={data?.thum || Imgurl}
+            src={data?.url || Imgurl}
             onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = Imgurl;
@@ -32,7 +32,7 @@ const TrailerCard = ({data}) => {
         <div className="dur_pl">
             <div className="ti_dur">
                 <LuClock3 className="ti" />
-                <p className="dur">{data.mm}:{data.ss}</p>
+                <p className="dur">{Math.round(data.runtime/60)}:{data.runtime%60}</p>
             </div>
             <div 
                 className="play_b"

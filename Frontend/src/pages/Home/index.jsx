@@ -61,11 +61,17 @@ const HomePage = () => {
       </div>
     );
   }
+
+  function genContWatch () {
+    let res = [topRated[5],topRated[8],topRated[10],topRated[15],topRated[17],topRated[19]];
+    return res;
+  }
+
   return (
     <div style={styles.container}>
       <Carousel data={carData} />
       <h2 style={styles.heading}>Continue Watching</h2>
-      <ArrangeComp dir="scroller" style={styles.scroller} Component={ContWatch} dat_arr={carData}/>
+      <ArrangeComp dir="scroller" style={styles.scroller} Component={ContWatch} dat_arr={genContWatch()}/>
       <h2 style={styles.heading}>New Releases</h2>
       <ArrangeComp dir="scroller" style={styles.scroller} Component={MovieCard} dat_arr={carData}/>
       <h2 style={styles.heading}>Top Rated Movies</h2>
