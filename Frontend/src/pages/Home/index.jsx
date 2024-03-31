@@ -76,7 +76,10 @@ const HomePage = ({onTabChange}) => {
       <h2 style={styles.heading}>Top Rated Movies</h2>
       <ArrangeComp dir="scroller" style={styles.scroller} Component={MovieCard} dat_arr={topRated}/>
       <h2 style={styles.heading}>Top Genres</h2>
-      <ArrangeComp dir="scroller" style={styles.scroller} Component={GenreCard} dat_arr={genres} onTabChange={onTabChange}/>
+      {genres.length > 0 ? <ArrangeComp dir="scroller" style={styles.scroller} Component={GenreCard} dat_arr={genres} onTabChange={onTabChange}/>: 
+      <div className="flex justify-center items-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-500"></div>
+      </div>}
       <div style={{height: 100}}/>
     </div>
   )
