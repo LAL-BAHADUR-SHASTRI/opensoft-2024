@@ -21,16 +21,20 @@ const About = () => {
       ];
     return (
         <div className="ml-60 mr-60">
-            <h1 className="text-2xl text-white font-bold mb-4">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cupiditate quam iste explicabo quasi aut nulla odio ad repellendus rem, possimus, molestiae omnis dicta tempore culpa aspernatur voluptates eveniet eaque at!</h1>
-            <p className="text-white italic">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis illo in eligendi perspiciatis nobis voluptates officiis tempore delectus ad cum modi amet et corporis qui laborum, ipsam quos at ducimus.</p>
+            <h1 className="text-2xl text-white font-bold mb-4">Discover Cinema, Redefined: Welcome to Flexify</h1>
+            <p className="text-white italic">Welcome to Flexify, where the magic of movies meets cutting-edge technology. Powered by MongoDB Atlas, Flexify brings you an unparalleled movie-watching experience, replete with advanced search options, semantic search results, and a seamless backend infrastructure built upon the robust foundation of Golang.</p>
+            <h1 className="text-xl text-white font-bold mb-4">Unleash the Power of Advanced Search</h1>
+            <p className="text-white italic">Flexify isn't just another movie website; it's a gateway to cinematic exploration. With our advanced search options, powered by MongoDB Atlas, finding your favorite movies has never been easier. Our autocomplete feature anticipates your queries, while fuzzy search results ensure that even intermediate searches yield relevant and accurate results.</p>
             <img src="statbackg.png" className="mx-auto"></img>
-            <p className="text-white italic">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis illo in eligendi perspiciatis nobis voluptates officiis tempore delectus ad cum modi amet et corporis qui laborum, ipsam quos at ducimus.</p>
+            <h1 className="text-xl text-white font-bold mb-4">Precision Perfected: Semantic Search Results </h1>
+            <p className="text-white italic">At Flexify, we've invested countless hours in fine-tuning our semantic search capabilities. Say goodbye to vague results; our system delivers precise and tailored recommendations, ensuring that every movie suggestion resonates with your preferences.</p>
             <div className="m-auto w-2/3"><LineChart data={data} type="Year"/></div>
             {/* <div><DonutChart data={data} type="Year"/></div> */}
-            <p className="text-white italic">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis illo in eligendi perspiciatis nobis voluptates officiis tempore delectus ad cum modi amet et corporis qui laborum, ipsam quos at ducimus.</p>
+            <h1 className="text-xl text-white font-bold mb-4">Next-Level Backend Systems</h1>
+            <p className="text-white italic">Behind the scenes, Flexify operates on the best-in-class backend systems crafted upon Golang. Our architecture prioritizes concurrency and scalability, guaranteeing a seamless browsing experience even during peak traffic hours.</p>
             <div className="size-48 w-4/12 h-9/12 mx-auto"><BarGraph data={data2} type="Year"/></div>
-            <p className="text-white italic">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis illo in eligendi perspiciatis nobis voluptates officiis tempore delectus ad cum modi amet et corporis qui laborum, ipsam quos at ducimus.</p>
-
+            <h1 className="text-xl text-white font-bold mb-4">Security at the Forefront</h1>
+            <p className="text-white italic">Your security is our utmost priority. With robust login mechanisms and meticulous user data handling, Flexify ensures that your personal information remains safe and secure. Our integrated payment method adds an extra layer of protection, allowing you to enjoy premium content with peace of mind.</p>
         </div>
     );
 }
