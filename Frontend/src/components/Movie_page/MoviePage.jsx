@@ -5,7 +5,9 @@ import flixify from '../../assets/logo.svg'
 import { TrailerCard } from "../mov_thumbn"
 import ArrangeComp from "./ArrangeCompn"
 import { Imgurl } from "@/constants/themes"
-
+import userStore from "@/stores/user_store"
+import {useParams} from "react-router"
+import Toast from "../Toast"
 const Headline = ({heading}) => {
   return(
     <div className="row heading">
@@ -120,11 +122,42 @@ const MoviePage_ = (props) => {
             }
         ]
     }
+    
+    // const user_store = userStore((state) => state)
+    const user_id = userStore.getState().id
+    const movie_id = useParams().id
+   
+    const bookmarData = {
+                user_id: user_id,
+                movie_id: movie_id
+    }
+  
+    async function addBookMark() {
+        const response = await fetch(`${import.meta.env.VITE_BHOST}/user/bookmark`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('accessToken')
+            },
+            body: JSON.stringify(bookmarData)
+        })
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Success:', data);
+        Toast.success('Added to Watchlist');
+        // userStore.addBookMark(props?.data || data)  
+        
+    }
+
   return(
     <div className="MoviePage_">
         <div className="topbar">
             <div className="movtitle">{(props?.data?.title || data.title)}</div>
-            <div className="watchlist_button">
+              <div className="watchlist_button" onClick={
+                  addBookMark
+            }>
                 <FaPlus />
                 <div>Watchlist</div>
             </div>
