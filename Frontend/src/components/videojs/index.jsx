@@ -24,7 +24,7 @@ const SpeedControl = ({ onChange }) => {
 export const VideoJS = (props) => {
   const videoRef = React.useRef(null);
   const playerRef = React.useRef(null);
-  const {options, onReady} = props;
+  const {options, onReady, max} = props;
 
   React.useEffect(() => {
 
@@ -69,9 +69,10 @@ export const VideoJS = (props) => {
     let qualityLevels = player.qualityLevels();
     videojs.log(qualityLevels)
 
-
+    console.log(max)
+    
     player.maxQualitySelector({
-      'maxHeight': 720,
+      'maxHeight': max,
       'minHeight': 360,
     });
 

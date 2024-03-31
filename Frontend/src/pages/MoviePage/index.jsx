@@ -13,7 +13,29 @@ const Player = () => {
   
   const playerRef = useRef(null);
 
-  const maxQual = 720;
+  const userTier = parseInt(localStorage.getItem('userTier'));
+  // const userTier = 2
+  const [maxqual, setmaxQual] = useState(240);
+
+  useEffect(() => {
+    if(userTier == 3) {
+      setmaxQual(720)
+    }
+    if(userTier == 2) {
+      setmaxQual(480)
+    }
+    if(userTier == 1) {
+      setmaxQual(360)
+    }
+  })
+
+  const src = userTier == 0? {
+    'src' : 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+    'type' : 'video/mp4'
+  }: {
+        'src': "https://vz-b4f1e97e-483.b-cdn.net/65c65840-de66-4c27-afd0-a3b5a904b768/playlist.m3u8", 
+       'type': "application/x-mpegURL" ,
+    }
  
   const videoJsOptions = {
     autoplay: false,
@@ -30,10 +52,7 @@ const Player = () => {
     plugins: {
     },
     sources: [
-      {
-        src: "https://vz-b4f1e97e-483.b-cdn.net/65c65840-de66-4c27-afd0-a3b5a904b768/playlist.m3u8", 
-       type: "application/x-mpegURL" ,
-      },
+      src
     ]
   }
     
@@ -54,7 +73,7 @@ const Player = () => {
 
   return (
   <div style={styles.player}>
-      <VideoJS max={maxQual}  options={videoJsOptions} onReady={handlePlayerReady} />
+      <VideoJS max={maxqual}  options={videoJsOptions} onReady={handlePlayerReady} />
   </div>
   )
 }

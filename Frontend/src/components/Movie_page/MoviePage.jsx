@@ -142,6 +142,7 @@ const MoviePage_ = (props) => {
             body: JSON.stringify(bookmarData)
         })
         if (!response.ok) {
+      Toast.error('You are not authorized to create bookmark, chose one of our plans')
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
