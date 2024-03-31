@@ -1,0 +1,121 @@
+:root {
+  --nav-height: 70px;
+  --dark-shadow: rgba(15, 15, 15, 0.75); 
+  --yellow: rgba(270, 171, 0, 1);
+  --offwhite: rgba(153, 153, 153, 1);
+}
+
+#root{
+  font-family: "Manrope", sans-serif;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  background: var(--dark-shadow);
+  height: var(--nav-height);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  align-self: center;
+  margin-left: 30px;
+  width: 110px;
+}
+
+.menuButtons {
+  display: flex;
+  flex-direction: row;
+}
+
+.menuButton {
+  font-size: 16px;
+  color: var(--offwhite);
+  padding: 0.5rem;
+  padding-bottom: 0.2rem;
+  cursor: pointer;
+}
+
+.menuButton:hover {
+  background-color: rgba(200, 200, 200, 0.1);
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+
+.signup {
+  align-items: center;
+  background-color: var(--yellow);
+  padding-top: 0.3rem;
+  padding-bottom: 0.1rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  border-radius: 1rem;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.signin {
+  color: var(--yellow);
+  align-items: center;
+  padding-top: 0.3rem;
+  padding-bottom: 0.1rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  border-radius: 1rem;
+  justify-content: center;
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.selected-bottom-bar {
+  border: 1.5px solid var(--yellow);
+  border-radius: 8px;
+}
+
+
+.searchbox {
+  z-index: 2;
+  margin-left: 1rem;
+  color: white;
+  transition: 0.57s all ease-in;
+  width: 90%;
+}
+.searchbox:focus-visible {
+  outline: none;
+}
+
+.inputnev {
+  font-size: inherit;
+  overflow-wrap: break-word;
+  position: absolute;
+  word-wrap: break-word;
+  background-color: transparent;
+  left: 15px
+}
+
+#search-bar2 {
+  z-index: 1;
+  color: gray;
+  cursor: none;
+  margin-left: 1rem;
+  left: 15px;
+  width: 90%;
+}
+
+
+textarea:focus, input:focus {
+    outline: none;
+}
+
+.searchResultCard:not(:last-child) {
+  border-bottom: 0.2px solid rgba(153, 153, 153, 0.5);
+}
+
+.searchResultCard:last-child {
+  margin-bottom: -10px;
+}
+
+.searchResultCard:first-child {
+  margin-top: -10px;
+}

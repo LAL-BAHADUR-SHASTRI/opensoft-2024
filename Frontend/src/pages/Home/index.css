@@ -1,0 +1,7 @@
+.container {
+  transition: 0.3s all ease-in-out;
+}
+.scroller::-webkit-scrollbar {
+  display: none;
+}
+
