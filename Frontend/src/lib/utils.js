@@ -9,7 +9,7 @@ export function cn(...inputs) {
 export function calcDur(val) {
   // let val =  item?.runtime || data.runtime;
   let dur = '';
-  if (val > 60) {
+  if (val >= 60) {
     dur += Math.round((val/60)-0.5).toString();
     dur += ' hr '
   }
