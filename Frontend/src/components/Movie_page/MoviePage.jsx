@@ -104,6 +104,7 @@ const MoviePage_ = (props) => {
         lang: ['Hindi', 'English', 'Bengali', 'Telugu', 'Tamil'],
         genre: ['Action', 'Adventure', 'Fiction', 'Superhero', 'Thriller'],
         imdb: {rating: 9},
+        runtime: 150,
         trailers : [
             {
                 thum: Imgurl,
@@ -133,8 +134,9 @@ const MoviePage_ = (props) => {
                 <HeadnTxt heading='Description' data={[props?.data?.fullplot || data.description]} />
                 <HeadnTxt heading='Director' data={props?.data?.directors || data.director} />
                 <HeadnTxt heading='Cast' data={props?.data?.cast || data.cast} />
-                <Headline heading='Trailers' />
-                <ArrangeComp dir="row" dat_arr={data.trailers} Component={TrailerCard} />
+                <Headline heading='Trailer' />
+                <ArrangeComp dir="row" dat_arr={[{url: (props?.data?.poster || Imgurl), runtime: (props?.data?.runtime || data.runtime)}]} Component={TrailerCard} />
+                {/* <ArrangeComp dir="row" dat_arr={data.trailers} Component={TrailerCard} /> */}
             </div>
             <div className="content rightc">
                 <HeadnTxt heading='Release_Year' data={[props?.data?.year || data.release]} />

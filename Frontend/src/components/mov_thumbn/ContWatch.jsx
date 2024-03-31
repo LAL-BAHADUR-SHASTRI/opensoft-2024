@@ -8,7 +8,7 @@ const ContWatch = (props) => {
     const navigate = useNavigate();
     const prog_bar = {
         height: '100%',
-        width: `${genRand(0,100)}%`,
+        width: `${genRand(0,80)}%`,
         // width: `${props?.data?.watchLen || 30}%`,
         background: '#F0AB00',
         borderBottomLeftRadius: 10

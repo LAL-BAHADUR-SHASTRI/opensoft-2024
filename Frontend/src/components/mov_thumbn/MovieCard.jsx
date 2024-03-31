@@ -66,12 +66,12 @@ const MovieCard = (props) => {
         <div
             className="play_layer" 
             style={hovering ? styles.op_max : {}}
-            onClick={() => {navigate(`/movie/${props?.data?._id || data.id}`); hideShadow();}}
         >
             <div 
                 className="play_b"
                 onMouseEnter={() => sethoverply(true)}
                 onMouseLeave={() => sethoverply(false)}
+                onClick={() => {navigate(`/movie/${props?.data?._id || data.id}`); hideShadow();}}
             >
                 <FaRegCirclePlay 
                     className="b" 
