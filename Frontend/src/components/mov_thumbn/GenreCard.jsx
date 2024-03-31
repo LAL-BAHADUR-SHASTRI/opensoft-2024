@@ -1,8 +1,10 @@
 import { Imgurl, Img2url } from "@/constants/themes";
 import "./index.css"
 import Stylesheet from "reactjs-stylesheet";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { getRandImg } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
+import { MovieListContext } from "@/App";
 
 const Roll = (subprops) => {
   let varStyle = subprops.dir ? styles.initdir0 : styles.initdir1;
@@ -31,14 +33,16 @@ const Roll = (subprops) => {
 }
 
 const GenreCard = (props) => {
-
-  const [hovering, sethovering] = useState(false)
+  const {setGenre} = useContext(MovieListContext);
+  const navigate = useNavigate();
+  const [hovering, sethovering] = useState(false);
   return(
     <div>
     <div 
       className="GenreCard_" 
       onMouseEnter={() => sethovering(true)}
       onMouseLeave={() => sethovering(false)}
+      onClick={() => {console.log("Setting to :",props?.data?.genre); setGenre((prev) => props.data.genre) ;props.onTabChange(1);navigate(`/`); hideShadow();}}
     >
       <div className="genre_txt_o">
         <div className="genre_txt">{props?.data?.genre || 'Genre_title'}</div>
