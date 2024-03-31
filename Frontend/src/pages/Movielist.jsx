@@ -68,40 +68,62 @@ const SelectBar = ({genres,languages,countries,onDataChange, filterGenre}) => {
 
   return (
     <div style={styles.selectbar}>
-      <form>
-        <div style={styles.filter}>
-          <select className='w-40 text-black' name="genre" onChange={handleSelectChange} value={formData.genre}>
-          <option value="">Genre</option>
+      <form className=" w-full flex items-center justify-center mb-8 gap-4">
+        <div className="w-60 p-2">
+          <select
+            className="w-full mx-2 p-2 text-black"
+            name="genre"
+            onChange={handleSelectChange}
+            value={formData.genre}>
+            <option value="">Genre</option>
             {genres.map((start_year) => (
-                <option value={start_year}>{start_year}</option>
+              <option value={start_year}>{start_year}</option>
             ))}
-        </select>
+          </select>
         </div>
-        <div style={styles.filter}>
-          <select className='w-40 text-black' name="language" onChange={handleSelectChange} value={formData.language}>
-          <option value="">Language</option>
+        <div className="w-60 p-2">
+          <select
+            className="w-full mx-2 p-2 text-black"
+            name="language"
+            onChange={handleSelectChange}
+            value={formData.language}>
+            <option value="">Language</option>
             {languages.map((start_year) => (
-                <option value={start_year}>{start_year}</option>
+              <option value={start_year}>{start_year}</option>
             ))}
-        </select>
+          </select>
         </div>
-        <div style={styles.filter}>
-          <select className='w-40 text-black' name="country" onChange={handleSelectChange} value={formData.country}>
-          <option value="">Country</option>
+        <div className="w-60 p-2">
+          <select
+            className="w-full mx-2 p-2 text-black"
+            name="country"
+            onChange={handleSelectChange}
+            value={formData.country}>
+            <option value="">Country</option>
             {countries.map((start_year) => (
-                <option value={start_year}>{start_year}</option>
+              <option value={start_year}>{start_year}</option>
             ))}
-        </select>
+          </select>
         </div>
-        <button type="button" className=' bg-blue-500 rounded text-gray-50 w-1/3 mt-4 mr-2 mb-4 ml-2' onClick={submitForm}>
-          Filter
-        </button>
-        <button type="button" className=' bg-blue-500 rounded text-gray-50 w-1/3 mt-0 mr-2 mb-4 ml-2' onClick={onReset}>
+        <div>
+          <button
+            type="button"
+            className=" bg-secondary rounded text-secondary-foreground w-20 px-4 py-2 "
+            onClick={submitForm}>
+            Filter
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            className=" bg-secondary rounded text-secondary-foreground w-20 px-4 py-2 "
+            onClick={onReset}>
             Reset
-        </button>
-        </form>
+          </button>
+        </div>
+      </form>
     </div>
-  ) 
+  ); 
 }
 
 
@@ -233,9 +255,6 @@ const styles = Stylesheet.create({
     color: 'white',
     margin: 10,
     alignItems: 'center',
-  },
-  filter : {
-    paddingLeft: 30
   },
   movieBox: {
     display: 'flex',
