@@ -2,20 +2,18 @@ import Stylesheet from "reactjs-stylesheet";
 import { useEffect,useState } from "react";
 import './index.css'
 import Carousel from "@/components/carousel";
-import { ContWatch, GenreCard } from "@/components/mov_thumbn";
+import { ContWatch, GenreCard, MovieCard } from "@/components/mov_thumbn";
 import Toast from "@/components/Toast";
 import ArrangeComp from "@/components/Movie_page/ArrangeCompn";
 
 const HomePage = () => {
   const [carData, setCarData] = useState([]);
-  const [contWData, setCW] = useState([]);
+  const [topRated, setTR] = useState([]);
   const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
- 
-  
   
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BHOST}/movie/topimdb`)
+    fetch(`${import.meta.env.VITE_BHOST}/movie/latest`)
     .then(response => response.json())
     .then(data => {
         setCarData(data);
@@ -30,16 +28,16 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BHOST}/movie/latest`)
+    fetch(`${import.meta.env.VITE_BHOST}/movie/topimdb`)
       .then(response => response.json())
       .then(data => {
-        setCW(data);
-        console.log('Success fetching Continue Watching:', data);
+        setTR(data);
+        console.log('Success fetching Top Rated:', data);
       })
       .catch(error => {
-        console.error('Error fetching Continue Watchingta:', error);
+        console.error('Error fetching Top Rated:', error);
         setLoading(false);
-        Toast.error('Error Fetching Continue Watching');
+        Toast.error('Error Fetching Top Rated');
       });
   }, []);
 
@@ -67,7 +65,11 @@ const HomePage = () => {
     <div style={styles.container}>
       <Carousel data={carData} />
       <h2 style={styles.heading}>Continue Watching</h2>
-      <ArrangeComp dir="scroller" style={styles.scroller} Component={ContWatch} dat_arr={contWData}/>
+      <ArrangeComp dir="scroller" style={styles.scroller} Component={ContWatch} dat_arr={carData}/>
+      <h2 style={styles.heading}>New Releases</h2>
+      <ArrangeComp dir="scroller" style={styles.scroller} Component={MovieCard} dat_arr={carData}/>
+      <h2 style={styles.heading}>Top Rated Movies</h2>
+      <ArrangeComp dir="scroller" style={styles.scroller} Component={MovieCard} dat_arr={topRated}/>
       <h2 style={styles.heading}>Top Genres</h2>
       <ArrangeComp dir="scroller" style={styles.scroller} Component={GenreCard} dat_arr={genres}/>
       <div style={{height: 100}}/>

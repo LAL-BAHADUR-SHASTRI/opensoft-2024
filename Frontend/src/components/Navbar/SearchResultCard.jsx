@@ -1,18 +1,24 @@
 import Stylesheet from "reactjs-stylesheet";
-import { COLORS, Imgurl } from "@/constants/themes";
+import { COLORS } from "@/constants/themes";
 import { FaPlay } from "react-icons/fa6";
+import {useNavigate} from 'react-router-dom';
+import { getRandImg } from "@/lib/utils";
 
-const SearchResultCard = (data) => {
+
+const SearchResultCard = ({data, hideShadow}) => {
+  const navigate = useNavigate();
   data = {
-    name : 'SpiderMan',
+    name : data?.title,
     release: 2001,
-    duration: '2:30'
+    duration: data?.duration,
+    id: data['_id'],
+    img : data.poster
   }
   return (
     <div onClick={() => console.log('click')} className="searchResultCard" style={styles.container}>
-      <img style={styles.banner} src={Imgurl} />
+      <img style={styles.banner} src={data.img || getRandImg()} />
       <div style={styles.details} >
-        <p style={styles.name}>{data.name}</p>
+        <p style={styles.name}>{data.name.length > 15 ? data.name.slice(0,15)+'...' : data.name }</p>
         <p style={styles.subtext}>
           <p style={{paddingRight: 10, borderRightWidth: 1, borderRightColor: COLORS.offwhite }} >
             {data.release} 
@@ -21,7 +27,7 @@ const SearchResultCard = (data) => {
 
         </p>
       </div>
-      <div style={styles.playbutton} >
+      <div style={styles.playbutton} onClick={() => {navigate(`/movie/${data.id}`); hideShadow();}} >
         <FaPlay />
         <p style={{marginLeft: 8}} >Play</p>
       </div>

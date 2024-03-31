@@ -1,3 +1,4 @@
+import { imgurl_P } from "@/constants/themes";
 import { clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -15,4 +16,14 @@ export function calcDur(val) {
   dur += (val%60).toString();
   dur += ' min'
   return dur;
+}
+
+export function genRand(min, max) {
+  return Math.floor(Math.random()
+      * (max - min + 1)) + min;
+};
+
+export function getRandImg() {
+  let t = genRand(0,9);
+  return imgurl_P[t];
 }
