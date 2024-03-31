@@ -1,16 +1,26 @@
 import { MovieCard } from "@/components/mov_thumbn";
 import { Select, SelectContent,SelectGroup,SelectLabel, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Stylesheet from "reactjs-stylesheet";
+import { MovieListContext } from "@/App";
 
 
-const SelectBar = ({genres,languages,countries,onDataChange}) => {
-
+const SelectBar = ({genres,languages,countries,onDataChange, filterGenre}) => {
   const [formData, setFormData] = useState({
     genre: '',
     language: '',
     country: ''
   });
+
+  useEffect(() => {
+    if (filterGenre === undefined || filterGenre === null){
+      return 
+    }
+
+    console.log("settign to : ",filterGenre)
+    setFormData((prevData) => ({...prevData,genre:filterGenre}));
+    submitForm();   
+  },[filterGenre])
 
   const onReset = () => {
     setFormData({
@@ -95,7 +105,9 @@ const SelectBar = ({genres,languages,countries,onDataChange}) => {
 }
 
 
-const MovieList = () => {
+const MovieList = ({filterGenre}) => {
+
+  const {genre} = useContext(MovieListContext);
   const [loading, setLoading] = useState(true);
   const [movData, setMovData] = useState([]);
   const [fromSearch, setFromSearch] = useState(false);
@@ -189,6 +201,7 @@ const MovieList = () => {
   return (
     <div style={styles.container}>
       <SelectBar
+        filterGenre={genre || null}
         genres={genres}
         languages={languages}
         countries={countries}
