@@ -28,11 +28,11 @@ const About = () => {
             <img src="statbackg.png" className="mx-auto"></img>
             <h1 className="text-xl text-white font-bold mb-4">Precision Perfected: Semantic Search Results </h1>
             <p className="text-white italic">At Flexify, we've invested countless hours in fine-tuning our semantic search capabilities. Say goodbye to vague results; our system delivers precise and tailored recommendations, ensuring that every movie suggestion resonates with your preferences.</p>
-            <div className="m-auto w-2/3"><LineChart data={data} type="Year"/></div>
+            <div className="m-auto w-2/3"><LineChart data={data} type="ms"/></div>
             {/* <div><DonutChart data={data} type="Year"/></div> */}
             <h1 className="text-xl text-white font-bold mb-4">Next-Level Backend Systems</h1>
             <p className="text-white italic">Behind the scenes, Flexify operates on the best-in-class backend systems crafted upon Golang. Our architecture prioritizes concurrency and scalability, guaranteeing a seamless browsing experience even during peak traffic hours.</p>
-            <div className="size-48 w-4/12 h-9/12 mx-auto"><BarGraph data={data2} type="Year"/></div>
+            <div className="size-48 w-4/12 h-9/12 mx-auto"><BarGraph data={data2} type="ms"/></div>
             <h1 className="text-xl text-white font-bold mb-4">Security at the Forefront</h1>
             <p className="text-white italic">Your security is our utmost priority. With robust login mechanisms and meticulous user data handling, Flexify ensures that your personal information remains safe and secure. Our integrated payment method adds an extra layer of protection, allowing you to enjoy premium content with peace of mind.</p>
         </div>
