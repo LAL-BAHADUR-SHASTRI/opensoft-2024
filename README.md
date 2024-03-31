@@ -1,8 +1,5 @@
 # Backend Setup for OpenSoft 2024 Project
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Go_Logo_Blue.svg" width="100" alt="Go Logo"/>
-<img src="https://blog.golang.org/gopher/gopher.png" width="100" alt="Go Gopher"/>
-
 This README provides instructions on how to set up and run the backend for the OpenSoft 2024 project using Go and the Gin web framework.
 
 ## Prerequisites
@@ -48,71 +45,82 @@ This README provides instructions on how to set up and run the backend for the O
 
     This will start the server on `localhost:8080` and will include the following routes for CRUD operations:
 
-    - **User Management**
-        - `POST /user/sign_up`: Create (Sign up) a new user
-        - `GET /user/`: Read (Get) all users
-        - `POST /user/sign_in`: Authenticate (Sign in) a user
-        - `PUT /user/`: Update an existing user
-        - `DELETE /user/`: Delete all users
-        - `GET /user/with_token`: Get user details with token
-        - `POST /user/bookmark`: Add a bookmark for a user
-
-    - **Movies**
-        - `GET /movie/id/:id`: Get a single movie by ID
-        - `GET /movie/`: Get all movies
-        - `GET /movie/topimdb`: Get top IMDB movies
-        - `GET /movie/genre/:genre`: Get movies by genre
-        - `GET /movie/language/:language`: Get movies by language
-        - `GET /movie/country/:country`: Get movies by country
-        - `GET /movie/latest`: Get the latest movies
-        - `GET /movie/genres`: Get all genres
-        - `GET /movie/languages`: Get all languages
-        - `GET /movie/countries`: Get all countries
-        - `GET /movie/filter`: Get movies based on various filters
-
-    - **Payments**
-        - `POST /payment/create`: Create a new payment
-        - `GET /payment/`: Get all payments
-        - `PUT /payment/update`: Update an existing payment
-        - `DELETE /payment/`: Delete all payments
-        - `GET /payment/user/:user_id`: Get payments by user ID
-
-    - **Search**
-        - `GET /search/semantic/:searchTerm`: Perform semantic search
-        - `GET /search/fuzzy/:searchTerm`: Perform fuzzy search
-        - `GET /search/autocomplete/:searchTerm`: Perform autocomplete search
-
-    - **WebSockets**
-        - `GET /ws`: Connect to the WebSocket endpoint
+    [Routes details omitted for brevity]
 
 5. **Security Warning**
 
     Be aware of the security implications of trusting all proxies. For production, configure the trusted proxies appropriately. Refer to the [official Gin documentation](https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies) for more details.
 
-## Search Functionality
+## Frontend Setup for OpenSoft 2024 Project
 
-- **Autocomplete Search**: Provides real-time suggestions to users as they type their query, making search faster and more efficient.
+This section provides instructions on how to set up and run the frontend for the OpenSoft 2024 project using React and Vite.
 
-- **Fuzzy Search**: Allows for the matching of partial or misspelled queries to relevant results, overcoming user input errors and variations in spelling.
+### Prerequisites
 
-- **Semantic Search**: Goes beyond literal matching to understand the context and intent behind a search query, providing more relevant and contextually appropriate results.
+- Node.js
+- npm (or Yarn)
 
-## JWT Authentication
+### Setup Instructions
 
-The application implements JWT (JSON Web Token) authentication for sign-in and sign-up features, ensuring secure transmission of user credentials and effective identity verification.
+1. **Navigate to the Frontend Directory**
 
-## WebSockets for Real-Time Communication
+    If you are in the project's root directory:
 
-The backend utilizes WebSockets to enable real-time communication between the client and server, reducing latency and enhancing system scalability.
+    ```bash
+    cd frontend
+    ```
 
-## Payment Gateway Integration
+2. **Install Vite (If Not Already Installed)**
 
-The backend includes a payment gateway integration for tier-based subscriptions, allowing users to subscribe to different tiers with varying levels of access and benefits.
+    ```bash
+    npm install -g create-vite
+    ```
 
-## HTTP Routes for CRUD Operations
+3. **Create a New React Project (If Starting From Scratch)**
 
-The backend uses HTTP routes to perform CRUD (Create, Read, Update, Delete) operations on various resources like users, movies, and payments, providing a structured and efficient way to manage data interactions in the application.
+    ```bash
+    npm create vite@latest my-react-app -- --template react
+    cd my-react-app
+    ```
 
-## Additional Information
+4. **Install Dependencies**
 
-For further details on the API endpoints and other functionalities, refer to the project's API documentation (if available) or explore the source code in the repository.
+    ```bash
+    npm install
+    ```
+
+5. **Configure the Development Server**
+
+    To use port 5173, modify `vite.config.js`:
+
+    ```javascript
+    import { defineConfig } from 'vite';
+    import react from '@vitejs/plugin-react';
+
+    export default defineConfig({
+      plugins: [react()],
+      server: {
+        port: 5173
+      }
+    });
+    ```
+
+6. **Run the Frontend Development Server**
+
+    Start the server with:
+
+    ```bash
+    npm run dev
+    ```
+
+    The React application will now be running on [http://localhost:5173](http://localhost:5173).
+
+### Steps to Run the Frontend
+
+To run the frontend of the OpenSoft 2024 project, navigate to the frontend directory, install the dependencies if not done already, and start the development server:
+
+1. Open a terminal and navigate to the frontend directory of your project.
+2. Install the necessary dependencies by running `npm install`.
+3. Start the development server on the specified port (5173) with `npm run dev`.
+4. Access the frontend in your browser at `http://localhost:5173`.
+
