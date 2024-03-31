@@ -14,13 +14,16 @@ import './index.css'
 import imdb from '../../assets/imdb.svg'
 import { COLORS, Imgurl, Img2url } from "@/constants/themes";
 import { calcDur } from "@/lib/utils"
+import { useNavigate } from "react-router-dom";
 
 
 const Carousel = (props) => {
 
+  const navigate = useNavigate();
   const [index, setindex] = useState(2);
 
    let data = {
+    id: 1,
     rating: '8.8/10',
     tags: ['Action','Adventure','Fiction'],
     title: 'Avengers : Endgame',
@@ -80,9 +83,11 @@ const Carousel = (props) => {
                     {item?.plot?.length > 100 ? item?.plot.slice(0,100)+'...' : item?.plot || data.desc}
                   </p>
                   <div style={styles.row}>
-                    <p className="play-now">
-                      <FaPlay style={{marginRight: 10}} size={12} /> Play Now
-                    </p>
+                    <div onClick={() => {navigate(`/movie/${item?._id || data.id}`); hideShadow();}} >
+                      <p className="play-now">
+                        <FaPlay style={{marginRight: 10}} size={12} /> Play Now
+                      </p>
+                    </div>
                     <p className="add-to-watchlist">
                       <FaPlus style={{marginRight: 10}} size={12} />  WatchList
                     </p>

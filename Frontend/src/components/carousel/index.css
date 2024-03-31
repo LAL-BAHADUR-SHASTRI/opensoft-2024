@@ -115,6 +115,11 @@
   background-color: var(--yellow);
 }
 
+.swiper-pagination.swiper-pagination-bullets.swiper-pagination-horizontal {
+  width: fit-content;
+  left: 44%;
+}
+
 .movie-title {
   font-size: 28px;
   font-weight: bold;
@@ -147,6 +152,11 @@
   margin: 2px 0px;
   border-radius: 14px;
 }
+
+.play-now:hover {
+  cursor: pointer;
+}
+
 .add-to-watchlist {
   display: flex;
   flex-direction: row;
