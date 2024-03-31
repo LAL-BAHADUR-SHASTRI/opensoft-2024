@@ -21,7 +21,7 @@ const BarGraph = ({ data,type }) => {
     labels: data.map(entry => entry.year),
     datasets: [
       {
-        label: 'Number of news per ' + type+' in Bar Graph',
+        label: 'Total ' + type+' in Bar Graph',
         data: data.map(entry => entry.number),
         backgroundColor: randomColors,
         borderColor: randomColors,

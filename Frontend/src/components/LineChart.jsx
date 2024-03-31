@@ -21,7 +21,7 @@ const LineChart = ({ data,type }) => {
     labels: data.map(entry => entry.year),
     datasets: [
       {
-        label: 'Number of news per ' + type+' in Line Chart',
+        label: 'Total ' + type+' in Line Chart',
         data: data.map(entry => entry.number),
         fill: false,
         borderColor: randomColor,
