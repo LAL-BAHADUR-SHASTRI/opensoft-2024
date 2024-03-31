@@ -151,6 +151,7 @@
   padding: 0.2rem 0.4rem;
   margin: 2px 0px;
   border-radius: 14px;
+  margin: 10px;
 }
 
 .play-now:hover {
@@ -168,4 +169,5 @@
   border-radius: 14px;
   border: 1px solid var(--yellow);
   font-weight: bold;
+  margin: 10px;
 }
