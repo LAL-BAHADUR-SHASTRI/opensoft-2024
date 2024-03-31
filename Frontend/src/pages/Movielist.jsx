@@ -111,6 +111,7 @@ const MovieList = () => {
         console.log('from Movielis')
         setMovData(movielist);
         setFromSearch(true);
+        setLoading(false);
         val = true;
     // localStorage.removeItem('movieList');
       }
@@ -121,10 +122,12 @@ const MovieList = () => {
         .then(response => response.json())
         .then(data => {
           setMovData(data);
+          setLoading(false);
           console.log('Success fetching Movie Data:', data);
         })
         .catch(error => {
           console.error('Error fetching Movie Data:', error);
+          setLoading(false);
           Toast.error('Error Fetching Movie Data');
         });
     } 
