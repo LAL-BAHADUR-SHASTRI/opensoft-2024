@@ -23,10 +23,10 @@ function PlanCard({ name, description, price, duration, index }) {
 }
 
 function Purchase() {
-  const plans = [
+  let plans = [
     {
       name: "Starter",
-      price: "199",
+      price: "149",
       duration: "month",
       description:
         "Access to a wide selection of movies and shows, including new releases and exclusive content.",
@@ -35,11 +35,12 @@ function Purchase() {
       hdr: "NO",
       dolbyAtmos: "NO",
       adFree: "NO",
+      tier: 1,
     },
     {
       name: "Standard",
-      price: "169",
-      duration: "month (rs1015 for 6 months)",
+      price: "249",
+      duration: "month ",
       description:
         "Access to a wide selection of movies and shows, including new releases and exclusive content and much more",
       devices: "Two devices simultaneously",
@@ -47,11 +48,12 @@ function Purchase() {
       hdr: "YES",
       dolbyAtmos: "NO",
       adFree: "YES",
+      tier: 2,
     },
     {
       name: "Premium",
-      price: "149",
-      duration: "month (rs1799 for 12 months)",
+      price: "399",
+      duration: "month ",
       description:
         "Access to a wide selection of movies and shows, including new releases and exclusive content and much more",
       devices: "One device simultaneously",
@@ -59,8 +61,18 @@ function Purchase() {
       hdr: "YES",
       dolbyAtmos: "YES",
       adFree: "YES",
+      tier: 3,
     },
   ];
+
+    const userTier = localStorage.getItem('userTier');
+  // useEffect(() => {
+  //   if(userTier != 0){
+  //     if(userTier == 1){ plans = plans.slice(0,-1)}
+  //     if(userTier == 2){ plans = plans.slice(1,-1)}
+  //     if(userTier == 3){ plans = plans.slice(2,-1)}
+  //   }
+  // },[])
 
   function loadScript(src, id, index) {
     return new Promise((resolve) => {
@@ -79,23 +91,29 @@ function Purchase() {
   }
 
   useEffect(() => {
-    let rzpPaymentForm = document.getElementById("paybutton1");
-    if (!rzpPaymentForm.hasChildNodes()) {
-      loadScript(
-        "https://checkout.razorpay.com/v1/payment-button.js",
-        "pl_NsIdwKXOtpBqKV",
-        1
-      );
+    if(userTier == 0){
+      let rzpPaymentForm = document.getElementById("paybutton1");
+      if (!rzpPaymentForm.hasChildNodes()) {
+        loadScript(
+          "https://checkout.razorpay.com/v1/payment-button.js",
+          "pl_NsIdwKXOtpBqKV",
+          1
+        );
+      }
     }
-    rzpPaymentForm = document.getElementById("paybutton2");
-    if (!rzpPaymentForm.hasChildNodes()) {
-      loadScript(
-        "https://checkout.razorpay.com/v1/payment-button.js",
-        "pl_NsJS8PZbpq0Fg9",
-        2
-      );
+    if(userTier <= 1){
+    let rzpPaymentForm = document.getElementById("paybutton2");
+      if (!rzpPaymentForm.hasChildNodes()) {
+        loadScript(
+          "https://checkout.razorpay.com/v1/payment-button.js",
+          "pl_NsJS8PZbpq0Fg9",
+          2
+        );
+      }
     }
-    rzpPaymentForm = document.getElementById("paybutton3");
+
+    if(userTier <= 2){
+    let rzpPaymentForm = document.getElementById("paybutton3");
     if (!rzpPaymentForm.hasChildNodes()) {
       loadScript(
         "https://checkout.razorpay.com/v1/payment-button.js",
@@ -103,7 +121,8 @@ function Purchase() {
         3
       );
     }
-  });
+    }
+  },[]);
 
   const handlePay = () => {};
 
@@ -134,12 +153,14 @@ function Purchase() {
         </p>
         <div className="flex flex-wrap gap-8 space-x-4 p-4 justify-evenly">
           {plans.map((plan, index) => (
-            <PlanCard
+            <>
+            {<PlanCard
               key={index}
               index={index + 1}
               {...plan}
               onClick={handlePay}
-            />
+            />}
+            </>
           ))}
         </div>
 
