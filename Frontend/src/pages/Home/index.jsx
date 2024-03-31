@@ -6,7 +6,7 @@ import { ContWatch, GenreCard, MovieCard } from "@/components/mov_thumbn";
 import Toast from "@/components/Toast";
 import ArrangeComp from "@/components/Movie_page/ArrangeCompn";
 
-const HomePage = () => {
+const HomePage = ({onTabChange}) => {
   const [carData, setCarData] = useState([]);
   const [topRated, setTR] = useState([]);
   const [genres, setGenres] = useState([]);
@@ -77,7 +77,7 @@ const HomePage = () => {
       <h2 style={styles.heading}>Top Rated Movies</h2>
       <ArrangeComp dir="scroller" style={styles.scroller} Component={MovieCard} dat_arr={topRated}/>
       <h2 style={styles.heading}>Top Genres</h2>
-      <ArrangeComp dir="scroller" style={styles.scroller} Component={GenreCard} dat_arr={genres}/>
+      <ArrangeComp dir="scroller" style={styles.scroller} Component={GenreCard} dat_arr={genres} onTabChange={onTabChange}/>
       <div style={{height: 100}}/>
     </div>
   )

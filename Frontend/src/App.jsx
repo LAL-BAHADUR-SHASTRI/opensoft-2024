@@ -3,7 +3,7 @@ import './App.css'
 import Nav from './components/Navbar'
 import HomePage from './pages/Home';
 import MoviePage from './pages/MoviePage';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, createContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ErrorPage from './pages/404page';
 import SignIn from './components/Signin';
@@ -18,7 +18,13 @@ import { ToastContainer } from 'react-toastify';
 import userStore from './stores/user_store';
 // import useWindowDimensions from './hooks/useWindowDimensions'
 
+const MovieListContext = createContext({
+  genre: '',
+  setGenre: () => {}
+}) 
+
 function App() {    
+  const [genre, setGenre] = useState('');
   const [ActiveTab, setActiveTab] = useState(0);
   const data=[
     { year: "Hello", number: 30 },
@@ -61,6 +67,12 @@ function App() {
 
   return (
     <>
+    <MovieListContext.Provider
+        value={{
+          genre,
+          setGenre
+        }}
+      >
       <Router>
         <ToastContainer />
         <Routes>
@@ -80,7 +92,7 @@ function App() {
           <Route path="/" element={
             <>
               <Nav onTabChange={setActiveTab}/>
-              <Intro ActiveTab={ActiveTab} />
+              <Intro ActiveTab={ActiveTab} onTabChange={setActiveTab}/>
             </>
           } />
           <Route simpleNav={true} path="/movie/:id" element={
@@ -108,10 +120,11 @@ function App() {
         </Routes>
         <Footer />
       </Router>
+      </MovieListContext.Provider>
     </>
   )
 }
-export default App;
+export {App, MovieListContext};
 
 const styles=Stylesheet.create({
   mainContainer: {
