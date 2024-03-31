@@ -1,7 +1,8 @@
 import Stylesheet from "reactjs-stylesheet";
-import { COLORS, Imgurl } from "@/constants/themes";
+import { COLORS } from "@/constants/themes";
 import { FaPlay } from "react-icons/fa6";
 import {useNavigate} from 'react-router-dom';
+import { getRandImg } from "@/lib/utils";
 
 
 const SearchResultCard = ({data, hideShadow}) => {
@@ -15,7 +16,7 @@ const SearchResultCard = ({data, hideShadow}) => {
   }
   return (
     <div onClick={() => console.log('click')} className="searchResultCard" style={styles.container}>
-      <img style={styles.banner} src={data.img || Imgurl} />
+      <img style={styles.banner} src={data.img || getRandImg()} />
       <div style={styles.details} >
         <p style={styles.name}>{data.name.length > 15 ? data.name.slice(0,15)+'...' : data.name }</p>
         <p style={styles.subtext}>
