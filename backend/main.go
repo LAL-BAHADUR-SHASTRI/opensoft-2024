@@ -5,11 +5,12 @@ import (
 	"opensoft_2024/routes"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	r := setupRouter()
-
+	godotenv.Load()
 	// Listen and Server in 0.0.0.0:8080
 	// export PORT=8080
 	r.Run(":8080")

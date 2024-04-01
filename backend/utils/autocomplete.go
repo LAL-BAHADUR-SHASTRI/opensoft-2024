@@ -3,6 +3,7 @@ package utils
 import (
 	"context"
 	"encoding/json"
+	"os"
 
 	// "fmt"
 
@@ -13,7 +14,7 @@ import (
 
 // getOpenAIClient returns a new client for OpenAI's API using the provided secret key.
 func getOpenAIClient() *openai.Client {
-	return openai.NewClient("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")
+	return openai.NewClient(os.Getenv("OPENAI_KEY"))
 }
 
 // AutocompleteSearch performs a MongoDB text search on the 'title' field.
