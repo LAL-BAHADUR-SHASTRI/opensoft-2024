@@ -1,4 +1,4 @@
-# 🎞️ FLIXIFY 🍿 
+## 🎞️Flixify🍿 
 ![Screenshot (223)](https://github.com/LAL-BAHADUR-SHASTRI/opensoft-2024/assets/106598909/edc5fe20-a322-4372-9be7-313dc9b0c51f)
 ## Superfast search results with auto-complete, fuzzy and semantic search results !
 ![Screenshot (218)](https://github.com/LAL-BAHADUR-SHASTRI/opensoft-2024/assets/106598909/22e001a8-1201-4874-a12c-5aa3bf3335bd)
